@@ -1,3 +1,4 @@
+"""
 MediCare/
 ├─ public/                       # file tĩnh phục vụ trực tiếp (favicon, robots, sitemap.xml build)
 │  ├─ favicon.ico
@@ -75,6 +76,7 @@ MediCare/
 │  ├─ DATA_DICTIONARY.md        # từ điển dữ liệu
 │  └─ UX_COPY.md                # nội dung text, cảnh báo sử dụng thuốc
 ├─ scripts/
+"""
 │  ├─ build.js                  # copy/minify (tùy chọn)
 │  └─ lint-data.mjs             # lint JSON/XML theo schema
 ├─ .editorconfig
