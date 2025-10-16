@@ -1,0 +1,288 @@
+/* =========================================================
+   ACCOUNT.CSS
+   Contains: Avatar card, Sidebar menu, Info card (Profile)
+   ========================================================= */
+
+   .account {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 40px 80px;
+    background-color: #e5ecf5;
+  }
+  
+  /* ===== LEFT SIDE (Avatar + Menu) ===== */
+  .account__left {
+    width: 450px;
+    flex-shrink: 0;
+  }
+  
+  /* Avatar Card */
+  .account__avatar-card {
+    background-color: #0651cd;
+    border-radius: 30px;
+    box-shadow: 0px 4px 4px #00000040;
+    padding: 40px 0;
+    text-align: center;
+    color: #ffffff;
+  }
+  
+  .account__avatar-icon {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+  
+  .account__avatar-name {
+    font-weight: 700;
+    font-size: 20px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .account__avatar-phone {
+    font-size: 15px;
+    font-weight: 400;
+  }
+  
+  /* Menu */
+  .account__menu {
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0px 4px 4px #00000040;
+    overflow: hidden;
+    margin-top: 30px;
+  }
+  
+  .account__menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 25px;
+    font-weight: 700;
+    font-size: 18px;
+    color: #000000;
+    border-bottom: 1px solid #d9d9d9;
+    transition: 0.2s;
+  }
+  
+  .account__menu-item:last-child {
+    border-bottom: none;
+  }
+  
+  .account__menu-item:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .account__menu-item--active {
+    background-color: #d9d9d9;
+  }
+  
+  .account__menu-icon {
+    width: 22px;
+    height: 22px;
+  }
+  
+  /* ===== RIGHT SIDE (Info Card) ===== */
+  .account__info-card {
+    flex: 1;
+    min-width: 480px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0px 4px 4px #00000040;
+    padding: 50px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Avatar inside info */
+  .account__info-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #004aad;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  
+  .account__info-avatar img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  
+  /* Info rows */
+  .account__info {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .account__info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 10px;
+  }
+  
+  .account__info-label {
+    font-weight: 700;
+    color: #000000;
+    font-size: 18px;
+  }
+  
+  .account__info-value {
+    font-weight: 400;
+    font-size: 18px;
+    color: #000000;
+    text-align: right;
+  }
+  
+  /* Button */
+  .account__info-button {
+    margin-top: 40px;
+    padding: 14px 40px;
+    background-color: #d9e4fa;
+    color: #003b8e;
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 15px;
+    border: 1px solid #a9b8dc;
+    box-shadow: 0px 4px 4px #00000040;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .account__info-button:hover {
+    background-color: #c6d6f7;
+  }
+  
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1200px) {
+    .account {
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+  
+    .account__left {
+      width: 100%;
+      max-width: 600px;
+    }
+  
+    .account__info-card {
+      width: 100%;
+      max-width: 800px;
+      padding: 40px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .account {
+      padding: 30px 20px;
+    }
+  
+    .account__info-card {
+      padding: 30px 20px;
+    }
+  
+    .account__info {
+      max-width: 100%;
+    }
+  
+    .account__info-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .account__info-value {
+      text-align: left;
+    }
+  
+    .account__info-button {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .account__avatar-icon {
+      width: 90px;
+      height: 90px;
+    }
+  
+    .account__info-avatar {
+      width: 120px;
+      height: 120px;
+    }
+  
+    .account__info-label,
+    .account__info-value {
+      font-size: 16px;
+    }
+  
+    .account__info-button {
+      font-size: 16px;
+      padding: 12px 30px;
+    }
+  }  
+  .account__info-input {
+    width: 60%;
+    text-align: right;
+    border: 1px solid #cfcfcf; /* full khung thay vì chỉ gạch dưới */
+    border-radius: 10px;        /* bo góc mềm */
+    padding: 8px 12px;          /* tạo không gian bên trong */
+    font-size: 18px;
+    color: #000;
+    font-family: inherit;
+    background-color: #f9f9f9;
+    outline: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  
+  .account__info-input:focus {
+    border-color: #004aad;        /* xanh dương khi focus */
+    background-color: #ffffff;
+  }
+  
+  
+  .account__info-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  
+  .account__info-button {
+    transition: background-color 0.2s, transform 0.1s;
+  }
+  
+  .account__info-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .account__gender-options {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .account__gender-options input[type="radio"] {
+    accent-color: #4a90e2;
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+  .account__gender-options label {
+    cursor: pointer;
+    font-size: 16px;
+  }  
+  

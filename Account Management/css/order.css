@@ -1,0 +1,303 @@
+/* =========================
+   Order Page – UI fragment
+   Style đồng bộ với account.html
+========================= */
+
+.orders {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #f1f5f9;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  
+  /* Header */
+  .orders__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .orders__title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+  }
+  
+  .orders__search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .orders__search-input {
+    height: 40px;
+    width: 260px;
+    padding: 0 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    outline: none;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+  
+  .orders__search-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+  }
+  
+  .orders__search-btn {
+    height: 40px;
+    padding: 0 20px;
+    background: #111827;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  /* Tabs (filter by status) */
+  .orders__tabs {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    background: #fff;
+    padding: 8px;
+    border-radius: 12px;
+  }
+  
+  .orders__tab {
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    font-size: 15px;
+    color: #111827;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .orders__tab:hover {
+    background: #f3f4f6;
+  }
+  
+  .orders__tab--active {
+    background: #111827;
+    color: #fff;
+    border-color: #111827;
+  }
+  
+  /* Order list */
+  .orders__list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 8px;
+  }
+  
+  /* Order card */
+  .order-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    border: 1px solid #f1f5f9;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  
+  /* Header */
+  .order-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .order-card__code {
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .order-card__date {
+    font-size: 14px;
+    color: #6b7280;
+    margin-left: 8px;
+  }
+  
+  /* Badge màu trạng thái */
+  .order-card__badge {
+    padding: 4px 10px;
+    font-size: 13px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  
+  .order-card__badge--processing {
+    color: #b45309;
+    background: #fef3c7;
+  }
+  .order-card__badge--shipping {
+    color: #1d4ed8;
+    background: #dbeafe;
+  }
+  .order-card__badge--completed {
+    color: #166534;
+    background: #dcfce7;
+  }
+  .order-card__badge--cancelled {
+    color: #991b1b;
+    background: #fee2e2;
+  }
+  
+  /* Body */
+  .order-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .order-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .order-item__thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    object-fit: cover;
+    background: #f3f4f6;
+    border: 1px solid #f1f5f9;
+  }
+  
+  .order-item__info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .order-item__name {
+    font-weight: 600;
+    color: #111827;
+    font-size: 15px;
+  }
+  
+  .order-item__sub {
+    font-size: 14px;
+    color: #6b7280;
+  }
+  
+  /* Footer */
+  .order-card__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .order-card__summary {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  
+  .order-card__label {
+    color: #6b7280;
+    font-size: 14px;
+  }
+  
+  .order-card__total {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+  }
+  
+  .order-card__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .order-card__btn {
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .order-card__btn--primary {
+    background: #111827;
+    color: #fff;
+    border-color: #111827;
+  }
+  
+  .order-card__btn--ghost {
+    color: #111827;
+  }
+  
+  .order-card__btn:hover {
+    opacity: 0.9;
+  }
+  
+  /* Pagination */
+  .orders__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .orders__page-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    cursor: pointer;
+  }
+  
+  .orders__page-btn--active {
+    background: #111827;
+    color: #fff;
+    border-color: #111827;
+  }
+  
+  .orders__page-btn--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .orders__tabs {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .orders__search-input {
+      width: 100%;
+    }
+    .orders__header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .order-card__foot {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  

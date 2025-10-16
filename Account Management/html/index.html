@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý tài khoản</title>
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/account.css" />
+  <link rel="stylesheet" href="../css/order.css" />
+  <link rel="stylesheet" href="../css/account.css" />
+</head>
+
+<body>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar__left"><span>Hotline:</span> 0123 456 789</div>
+    <div class="topbar__right">Hỗ trợ 24/7</div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <img src="assets/logo.png" alt="Logo" class="header__logo" />
+    <div class="header__search">
+      <img src="assets/search.png" alt="Search" class="header__search-icon" />
+      <input type="text" placeholder="Tìm kiếm sản phẩm..." />
+    </div>
+    <div class="header__user">
+      <img src="assets/user.png" alt="User" class="header__user-icon" />
+      <span>Tài khoản</span>
+    </div>
+    <div class="header__cart">
+      <img src="assets/cart.png" alt="Cart" class="header__cart-icon" />
+    </div>
+  </header>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <ul class="navbar__list">
+      <li class="navbar__item">Trang chủ</li>
+      <li class="navbar__item">Sản phẩm</li>
+      <li class="navbar__item">Liên hệ</li>
+      <li class="navbar__item">Giới thiệu</li>
+    </ul>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="#" class="breadcrumb__link">Trang chủ</a> /
+    <span class="breadcrumb__current">Quản lý tài khoản</span>
+  </div>
+
+  <!-- ACCOUNT SECTION -->
+  <section class="account">
+    <!-- LEFT -->
+    <div class="account__left">
+      <div class="account__avatar-card">
+        <img src="assets/avatar.png" alt="Avatar" class="account__avatar-icon" />
+        <span class="account__avatar-name">—</span>
+        <span class="account__avatar-phone">—</span>
+      </div>
+
+      <div class="account__menu">
+        <div class="account__menu-item account__menu-item--active" data-page="../html/account.html">Thông tin cá nhân
+        </div>
+        <div class="account__menu-item" data-page="order.html">Đơn hàng của tôi</div>
+        <div class="account__menu-item" data-page="address.html">Quản lý số địa chỉ</div>
+        <div class="account__menu-item" id="logout-btn"><span>Đăng xuất</span></div>
+      </div>
+    </div>
+
+    <!-- LOGOUT MODAL -->
+    <div id="logout-modal" class="logout-modal">
+      <div class="logout-modal__content">
+        <p>Bạn có chắc chắn muốn đăng xuất không?</p>
+        <div class="logout-modal__buttons">
+          <button id="confirm-logout" class="logout-btn confirm">Đăng xuất</button>
+          <button id="cancel-logout" class="logout-btn cancel">Hủy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="account__info-card" id="right-side"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__content">
+      <div class="footer__column">
+        <div class="footer__column-title">VỀ CHÚNG TÔI</div>
+        <a href="#" class="footer__link">Giới thiệu</a>
+        <a href="#" class="footer__link">Chính sách bảo mật</a>
+      </div>
+      <div class="footer__column">
+        <div class="footer__column-title">HỖ TRỢ KHÁCH HÀNG</div>
+        <a href="#" class="footer__link">Hướng dẫn mua hàng</a>
+        <a href="#" class="footer__link">Chính sách đổi trả</a>
+      </div>
+      <div class="footer__column">
+        <div class="footer__column-title">LIÊN HỆ</div>
+        <div class="footer__contact-icons">
+          <img src="assets/facebook.png" />
+          <img src="assets/instagram.png" />
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">© 2025 Huỳnh Tấn Phát. All rights reserved.</div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    /* =========================
+       CONFIG & HELPER
+    ========================= */
+    const STORAGE_DB = "db.users.v1";
+    const STORAGE_UID = "currentUserId";
+    
+    /* ==== Helper chuyển đổi ==== */
+    function dobIsoToVi(iso) {
+      if (!iso) return "";
+      const [y, m, d] = iso.split("-");
+      return [d, m, y].join("/");
+    }
+    function dobViToIso(vi) {
+      if (!vi) return "";
+      const [d, m, y] = vi.split("/");
+      return [y, m, d].join("-");
+    }
+    function genderToView(g) {
+      if (!g) return "";
+      const low = g.toLowerCase();
+      if (low === "male") return "Nam";
+      if (low === "female") return "Nữ";
+      return "Khác";
+    }
+    function genderToData(g) {
+      if (g === "Nam") return "male";
+      if (g === "Nữ") return "female";
+      return "other";
+    }
+    
+    /* =========================
+       DATABASE LOCAL
+    ========================= */
+    async function getDB() {
+      const cached = localStorage.getItem(STORAGE_DB);
+      if (cached) {
+        try { return { users: JSON.parse(cached) }; } catch {}
+      }
+      const res = await fetch("../database/database.json", { cache: "no-store" });
+      const data = await res.json();
+      const users = Array.isArray(data.users) ? data.users : [];
+      localStorage.setItem(STORAGE_DB, JSON.stringify(users));
+      return { users };
+    }
+    
+    function getUserById(db, id) {
+      if (!db?.users?.length) return null;
+      return db.users.find(u => u._id === id) || db.users[0];
+    }
+    
+    /* ==== Cập nhật DB khi người dùng chỉnh sửa ==== */
+    function updateUserInDB(db, updatedUser) {
+      const users = Array.isArray(db.users) ? [...db.users] : [];
+      const idx = users.findIndex(u => u._id === updatedUser._id);
+      if (idx !== -1) users[idx] = updatedUser;
+      else users.push(updatedUser);
+    
+      // Làm sạch dữ liệu null
+      users.forEach(u => {
+        if (u.profile) {
+          if (u.profile.fullName === null) u.profile.fullName = "";
+          if (u.profile.gender === null) u.profile.gender = "other";
+          if (u.profile.dob === null) u.profile.dob = "";
+        }
+      });
+    
+      localStorage.setItem(STORAGE_DB, JSON.stringify(users));
+      return { users };
+    }
+    
+    async function ensureCurrentUserId(db) {
+      if (!localStorage.getItem(STORAGE_UID) && db.users?.length) {
+        localStorage.setItem(STORAGE_UID, db.users[0]._id);
+      }
+      return localStorage.getItem(STORAGE_UID);
+    }
+    
+    /* =========================
+       RENDER + MODEL
+    ========================= */
+    function toViewModel(u) {
+      return {
+        _id: u._id,
+        name: u.profile?.fullName || "",
+        phone: u.phone || "",
+        gender: genderToView(u.profile?.gender || ""),
+        birthday: dobIsoToVi(u.profile?.dob || "")
+      };
+    }
+    function toDataModel(vm, old) {
+      return {
+        ...old,
+        phone: old.phone,
+        profile: {
+          ...old.profile,
+          fullName: vm.name || old.profile?.fullName,
+          gender: genderToData(vm.gender || old.profile?.gender),
+          dob: dobViToIso(vm.birthday || old.profile?.dob)
+        }
+      };
+    }
+    function renderAvatar(vm) {
+      document.querySelector(".account__avatar-name").textContent = vm.name || "—";
+      document.querySelector(".account__avatar-phone").textContent = vm.phone || "—";
+    }
+    function renderUserInfo(vm) {
+      document.querySelectorAll(".account__info-value").forEach(span => {
+        span.textContent = vm[span.dataset.field] || "";
+      });
+    }
+    
+    /* =========================
+       LOAD CONTENT (MAIN)
+    ========================= */
+    async function loadContent(page) {
+      const container = document.getElementById("right-side");
+      const html = await fetch(page).then(r => r.text());
+      container.innerHTML = html;
+    
+      // Xử lý từng loại trang
+      if (page.includes("account.html")) {
+        const db = await getDB();
+        const uid = await ensureCurrentUserId(db);
+        const user = getUserById(db, uid);
+        if (user) {
+          const vm = toViewModel(user);
+          renderAvatar(vm);
+          renderUserInfo(vm);
+          initAccountEdit(vm, user, db);
+        }
+      }
+    
+      if (page.includes("order.html")) {
+        initOrderFilter();
+      }
+    
+      if (page.includes("address.html")) {
+        console.log("address.html sẽ xử lý ở bước sau");
+      }
+    }
+    
+    /* =========================
+       ACCOUNT EDIT (CHỈNH SỬA & LƯU)
+    ========================= */
+    function initAccountEdit(vm, user, db) {
+      const editBtn = document.getElementById("edit-btn");
+      const userInfo = document.getElementById("user-info");
+      if (!editBtn || !userInfo) return;
+      if (editBtn.dataset.bound === "true") return;
+      editBtn.dataset.bound = "true";
+      let isEditing = false;
+    
+      editBtn.addEventListener("click", () => {
+        if (isEditing) return;
+        isEditing = true;
+    
+        userInfo.querySelectorAll(".account__info-value").forEach(span => {
+          const field = span.dataset.field;
+          const val = span.textContent.trim();
+          if (field === "phone") return;
+    
+          if (field === "birthday") {
+            const input = document.createElement("input");
+            input.type = "date";
+            const [d, m, y] = val.split("/");
+            input.value = y && m && d ? `${y}-${m}-${d}` : "";
+            input.className = "account__info-input";
+            input.dataset.field = field;
+            span.replaceWith(input);
+            return;
+          }
+    
+          if (field === "gender") {
+            const wrap = document.createElement("div");
+            wrap.className = "account__gender-options";
+            ["Nam", "Nữ", "Khác"].forEach(g => {
+              const radio = document.createElement("input");
+              radio.type = "radio";
+              radio.name = "gender";
+              radio.value = g;
+              if (g === val) radio.checked = true;
+              const label = document.createElement("label");
+              label.textContent = g;
+              wrap.append(radio, label);
+            });
+            span.replaceWith(wrap);
+            return;
+          }
+    
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = val;
+          input.className = "account__info-input";
+          input.dataset.field = field;
+          span.replaceWith(input);
+        });
+    
+        const btnWrap = userInfo.querySelector(".account__info-buttons");
+        btnWrap.innerHTML = "";
+        const cancelBtn = document.createElement("button");
+        cancelBtn.textContent = "Hủy";
+        cancelBtn.className = "account__info-button";
+        const saveBtn = document.createElement("button");
+        saveBtn.textContent = "Lưu";
+        saveBtn.className = "account__info-button";
+        btnWrap.append(cancelBtn, saveBtn);
+    
+        cancelBtn.onclick = () => {
+          isEditing = false;
+          loadContent("account.html");
+        };
+    
+        saveBtn.onclick = async () => {
+          const updatedVM = { ...vm };
+          userInfo.querySelectorAll(".account__info-input, .account__gender-options").forEach(el => {
+            if (el.classList.contains("account__gender-options")) {
+              const checked = el.querySelector("input[name='gender']:checked");
+              updatedVM.gender = checked ? checked.value : vm.gender;
+            } else if (el.type === "date") {
+              const [y, m, d] = el.value.split("-");
+              updatedVM.birthday = (y && m && d) ? `${d}/${m}/${y}` : vm.birthday;
+            } else {
+              updatedVM[el.dataset.field] = el.value.trim() || vm[el.dataset.field];
+            }
+          });
+    
+          // Cập nhật dữ liệu
+          const newUser = toDataModel(updatedVM, user);
+          updateUserInDB(db, newUser);
+    
+          // Cập nhật hiển thị avatar
+          renderAvatar(updatedVM);
+    
+          // === FIX: chuyển toàn bộ input về span (view mode) ===
+          userInfo.querySelectorAll(".account__info-input, .account__gender-options").forEach(el => {
+            const span = document.createElement("span");
+            span.className = "account__info-value";
+            const field = el.dataset.field || (el.querySelector("input[name='gender']") ? "gender" : "");
+            span.dataset.field = field;
+            span.textContent = updatedVM[field] || "";
+            el.replaceWith(span);
+          });
+    
+          // Trả lại nút "Chỉnh sửa thông tin"
+          btnWrap.innerHTML = "";
+          btnWrap.append(editBtn);
+          isEditing = false;
+    
+          console.log("✅ Saved:", newUser._id);
+        };
+      });
+    }
+    
+    /* =========================
+       ORDER FILTER + PAGINATION (5/SP)
+    ========================= */
+    function initOrderFilter() {
+      const tabs = document.querySelectorAll(".orders__tab");
+      const orders = Array.from(document.querySelectorAll(".order-card"));
+      const pagination = document.querySelector(".orders__pagination");
+      if (!tabs.length || !orders.length || !pagination) {
+        console.warn("initOrderFilter(): DOM chưa đủ phần tử");
+        return;
+      }
+    
+      const PER_PAGE = 5;
+      let currentStatus = "all";
+      let currentPage = 1;
+    
+      function getFilteredOrders() {
+        return orders.filter(
+          o => currentStatus === "all" || o.dataset.status === currentStatus
+        );
+      }
+    
+      function renderPage() {
+        const filtered = getFilteredOrders();
+        const totalPages = Math.ceil(filtered.length / PER_PAGE);
+        if (currentPage > totalPages) currentPage = totalPages || 1;
+    
+        orders.forEach(o => (o.style.display = "none"));
+        const start = (currentPage - 1) * PER_PAGE;
+        const end = start + PER_PAGE;
+        filtered.slice(start, end).forEach(o => (o.style.display = "flex"));
+    
+        renderPagination(totalPages);
+      }
+    
+      function renderPagination(totalPages) {
+        pagination.innerHTML = "";
+    
+        const prev = document.createElement("button");
+        prev.textContent = "Trước";
+        prev.className = "orders__page-btn";
+        if (currentPage === 1) prev.classList.add("orders__page-btn--disabled");
+        pagination.appendChild(prev);
+    
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement("button");
+          btn.textContent = i;
+          btn.className = "orders__page-btn";
+          if (i === currentPage) btn.classList.add("orders__page-btn--active");
+          pagination.appendChild(btn);
+        }
+    
+        const next = document.createElement("button");
+        next.textContent = "Sau";
+        next.className = "orders__page-btn";
+        if (currentPage === totalPages || totalPages === 0)
+          next.classList.add("orders__page-btn--disabled");
+        pagination.appendChild(next);
+    
+        pagination.querySelectorAll(".orders__page-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const text = btn.textContent.trim();
+            if (text === "Trước" && currentPage > 1) currentPage--;
+            else if (text === "Sau" && currentPage < totalPages) currentPage++;
+            else if (!isNaN(text)) currentPage = parseInt(text);
+            renderPage();
+          });
+        });
+      }
+    
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("orders__tab--active"));
+          tab.classList.add("orders__tab--active");
+          currentStatus = tab.dataset.status;
+          currentPage = 1;
+          renderPage();
+        });
+      });
+    
+      renderPage();
+      console.log("✅ initOrderFilter(): filter + pagination ready");
+    }
+    
+    /* =========================
+       MENU + LOGOUT
+    ========================= */
+    document.querySelectorAll(".account__menu-item").forEach(item => {
+      item.addEventListener("click", () => {
+        if (item.id === "logout-btn") {
+          document.getElementById("logout-modal").classList.add("active");
+          return;
+        }
+        document.querySelectorAll(".account__menu-item").forEach(i => i.classList.remove("account__menu-item--active"));
+        item.classList.add("account__menu-item--active");
+        loadContent(item.dataset.page);
+      });
+    });
+    
+    document.getElementById("cancel-logout").onclick = () =>
+      document.getElementById("logout-modal").classList.remove("active");
+    document.getElementById("confirm-logout").onclick = () => {
+      document.getElementById("logout-modal").classList.remove("active");
+      window.location.href = "../homepage.html";
+    };
+    
+    /* =========================
+       INIT
+    ========================= */
+    document.addEventListener("DOMContentLoaded", async () => {
+      const db = await getDB();
+      await ensureCurrentUserId(db);
+      loadContent("account.html");
+      const user = getUserById(db, localStorage.getItem(STORAGE_UID));
+      if (user) renderAvatar(toViewModel(user));
+    });
+    </script>        
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+<!-- order.html -->
+<section class="orders" id="orders">
+    <!-- Header -->
+    <div class="orders__header">
+      <h2 class="orders__title">Đơn hàng của tôi</h2>
+      <div class="orders__search">
+        <input
+          type="text"
+          id="orders-search-input"
+          class="orders__search-input"
+          placeholder="Tìm theo tên đơn, mã đơn..."
+        />
+        <button class="orders__search-btn" id="orders-search-btn">Tìm</button>
+      </div>
+    </div>
+  
+    <!-- Filter Tabs -->
+    <div class="orders__tabs" id="orders-tabs">
+      <button class="orders__tab orders__tab--active" data-status="all">Tất cả</button>
+      <button class="orders__tab" data-status="processing">Chờ xử lý</button>
+      <button class="orders__tab" data-status="shipping">Đang giao</button>
+      <button class="orders__tab" data-status="completed">Hoàn thành</button>
+      <button class="orders__tab" data-status="cancelled">Đã hủy</button>
+    </div>
+  
+    <!-- List -->
+    <div class="orders__list" id="orders-list">
+      <!-- Card 1 -->
+      <article class="order-card" data-status="processing">
+        <header class="order-card__head">
+          <div>
+            <span class="order-card__code">Mã đơn: <strong>DH001</strong></span>
+            <span class="order-card__date">Ngày đặt: 12/10/2025</span>
+          </div>
+          <span class="order-card__badge order-card__badge--processing">Chờ xử lý</span>
+        </header>
+  
+        <div class="order-card__body">
+          <div class="order-item">
+            <img class="order-item__thumb" src="assets/product-1.png" alt="">
+            <div class="order-item__info">
+              <div class="order-item__name">Sản phẩm A</div>
+              <div class="order-item__sub">x2 • 120.000đ</div>
+            </div>
+          </div>
+          <div class="order-item">
+            <img class="order-item__thumb" src="assets/product-2.png" alt="">
+            <div class="order-item__info">
+              <div class="order-item__name">Sản phẩm B</div>
+              <div class="order-item__sub">x1 • 89.000đ</div>
+            </div>
+          </div>
+        </div>
+  
+        <footer class="order-card__foot">
+          <div class="order-card__summary">
+            <span class="order-card__label">Tổng tiền:</span>
+            <span class="order-card__total">329.000đ</span>
+          </div>
+          <div class="order-card__actions">
+            <button class="order-card__btn order-card__btn--primary">Xem chi tiết</button>
+            <button class="order-card__btn order-card__btn--ghost">Hủy đơn</button>
+          </div>
+        </footer>
+      </article>
+  
+      <!-- Card 2 -->
+      <article class="order-card" data-status="shipping">
+        <header class="order-card__head">
+          <div>
+            <span class="order-card__code">Mã đơn: <strong>DH002</strong></span>
+            <span class="order-card__date">Ngày đặt: 09/10/2025</span>
+          </div>
+          <span class="order-card__badge order-card__badge--shipping">Đang giao</span>
+        </header>
+  
+        <div class="order-card__body">
+          <div class="order-item">
+            <img class="order-item__thumb" src="assets/product-3.png" alt="">
+            <div class="order-item__info">
+              <div class="order-item__name">Sản phẩm C</div>
+              <div class="order-item__sub">x1 • 259.000đ</div>
+            </div>
+          </div>
+        </div>
+  
+        <footer class="order-card__foot">
+          <div class="order-card__summary">
+            <span class="order-card__label">Tổng tiền:</span>
+            <span class="order-card__total">259.000đ</span>
+          </div>
+          <div class="order-card__actions">
+            <button class="order-card__btn order-card__btn--primary">Theo dõi</button>
+          </div>
+        </footer>
+      </article>
+  
+      <!-- Card 3 -->
+      <article class="order-card" data-status="completed">
+        <header class="order-card__head">
+          <div>
+            <span class="order-card__code">Mã đơn: <strong>DH003</strong></span>
+            <span class="order-card__date">Ngày đặt: 01/10/2025</span>
+          </div>
+          <span class="order-card__badge order-card__badge--completed">Hoàn thành</span>
+        </header>
+  
+        <div class="order-card__body">
+          <div class="order-item">
+            <img class="order-item__thumb" src="assets/product-4.png" alt="">
+            <div class="order-item__info">
+              <div class="order-item__name">Sản phẩm D</div>
+              <div class="order-item__sub">x1 • 199.000đ</div>
+            </div>
+          </div>
+        </div>
+  
+        <footer class="order-card__foot">
+          <div class="order-card__summary">
+            <span class="order-card__label">Tổng tiền:</span>
+            <span class="order-card__total">199.000đ</span>
+          </div>
+          <div class="order-card__actions">
+            <button class="order-card__btn order-card__btn--primary">Mua lại</button>
+          </div>
+        </footer>
+      </article>
+  
+      <!-- Card 4 -->
+      <article class="order-card" data-status="cancelled">
+        <header class="order-card__head">
+          <div>
+            <span class="order-card__code">Mã đơn: <strong>DH004</strong></span>
+            <span class="order-card__date">Ngày đặt: 10/10/2025</span>
+          </div>
+          <span class="order-card__badge order-card__badge--cancelled">Đã hủy</span>
+        </header>
+  
+        <div class="order-card__body">
+          <div class="order-item">
+            <img class="order-item__thumb" src="assets/product-5.png" alt="">
+            <div class="order-item__info">
+              <div class="order-item__name">Sản phẩm E</div>
+              <div class="order-item__sub">x1 • 492.000đ</div>
+            </div>
+          </div>
+        </div>
+  
+        <footer class="order-card__foot">
+          <div class="order-card__summary">
+            <span class="order-card__label">Tổng tiền:</span>
+            <span class="order-card__total">492.000đ</span>
+          </div>
+          <div class="order-card__actions">
+            <button class="order-card__btn order-card__btn--ghost">Đã hủy</button>
+          </div>
+        </footer>
+      </article>
+    </div>
+  
+    <!-- Pagination -->
+    <nav class="orders__pagination">
+      <button class="orders__page-btn orders__page-btn--disabled">Trước</button>
+      <button class="orders__page-btn orders__page-btn--active">1</button>
+      <button class="orders__page-btn">2</button>
+      <button class="orders__page-btn">Sau</button>
+    </nav>
+  </section>
+  
+  <script>
+    // JS filter tab
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabs = document.querySelectorAll(".orders__tab");
+      const orders = document.querySelectorAll(".order-card");
+  
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          tabs.forEach(t => t.classList.remove("orders__tab--active"));
+          tab.classList.add("orders__tab--active");
+          const status = tab.dataset.status;
+  
+          orders.forEach(order => {
+            if (status === "all" || order.dataset.status === status) {
+              order.style.display = "flex";
+            } else {
+              order.style.display = "none";
+            }
+          });
+        });
+      });
+    });
+  </script>
+  

@@ -1,0 +1,107 @@
+{
+  "users": [
+    {
+      "_id": "650000000000000000000001",
+      "phone": "0905123456",
+      "createdAt": "2025-10-09T03:58:53.572Z",
+      "status": "active",
+      "profile": {
+        "fullName": "Nguyễn Văn A",
+        "gender": "male",
+        "dob": "1998-05-12"
+      },
+      "addresses": [
+        {
+          "_id": "650000000000000000000011",
+          "label": "Nhà riêng",
+          "fullName": "Nguyễn Văn A",
+          "phone": "0905123456",
+          "line1": "12 Nguyễn Huệ",
+          "ward": "Bến Nghé",
+          "district": "Quận 1",
+          "province": "TP.HCM",
+          "isDefault": true
+        }
+      ],
+      "roles": ["customer"],
+      "mail": ["nguyenvana@example.com"]
+    },
+    {
+      "_id": "650000000000000000000002",
+      "phone": "0912345678",
+      "createdAt": "2025-10-10T09:21:33.421Z",
+      "status": "active",
+      "profile": {
+        "fullName": "Trần Thị B",
+        "gender": "female",
+        "dob": "2000-10-01"
+      },
+      "addresses": [
+        {
+          "_id": "650000000000000000000012",
+          "label": "Cơ quan",
+          "fullName": "Trần Thị B",
+          "phone": "0912345678",
+          "line1": "45 Nguyễn Đình Chiểu",
+          "ward": "Đa Kao",
+          "district": "Quận 1",
+          "province": "TP.HCM",
+          "isDefault": true
+        }
+      ],
+      "roles": ["customer"],
+      "mail": ["tranthib@example.com"]
+    },
+    {
+      "_id": "650000000000000000000003",
+      "phone": "0933111222",
+      "createdAt": "2025-09-27T11:15:44.122Z",
+      "status": "blocked",
+      "profile": {
+        "fullName": "Phạm Văn C",
+        "gender": "male",
+        "dob": "1995-03-22"
+      },
+      "addresses": [],
+      "roles": ["customer"],
+      "mail": ["phamvanc@example.com"]
+    },
+    {
+      "_id": "650000000000000000000004",
+      "phone": "0999888777",
+      "createdAt": "2025-10-01T08:42:02.952Z",
+      "status": "active",
+      "profile": {
+        "fullName": "Admin Account",
+        "gender": "other",
+        "dob": "1988-12-25"
+      },
+      "addresses": [],
+      "roles": ["admin"],
+      "mail": ["admin@system.local"]
+    }
+  ],
+  "auth_otps": [
+    {
+      "_id": "660000000000000000000001",
+      "phone": "0905123456",
+      "otp": "348921",
+      "expireAt": "2025-10-15T12:30:00.000Z",
+      "used": false
+    },
+    {
+      "_id": "660000000000000000000002",
+      "phone": "0912345678",
+      "otp": "882314",
+      "expireAt": "2025-10-15T12:32:00.000Z",
+      "used": false
+    },
+    {
+      "_id": "660000000000000000000003",
+      "phone": "0933111222",
+      "otp": "119027",
+      "expireAt": "2025-10-15T12:35:00.000Z",
+      "used": true
+    }
+  ]
+}
