@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh sách sản phẩm - Nhà Thuốc MediCare</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/listproduct.css">
+  <link rel="icon" type="image/png" href="../../assets/images/logo_tròn.png">
+</head>
+<body>
+  <div id="header"></div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <span class="breadcrumb-item">Trang chủ</span>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-item">Thực phẩm chức năng</span>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-item current">Sinh lý - Nội tiết tố</span>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="category-tabs">
+    <div class="category-tab">
+      <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/sinh_ly_nam_level_3_f76dc0b6c6.png" alt="Sinh lý nam" width="43" height="43">
+      <div class="category-info">
+        <div class="category-name">Sinh lý nam</div>
+        <div class="category-count">15 sản phẩm</div>
+      </div>
+    </div>
+    <div class="category-tab">
+      <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/suc_khoe_tinh_duc_level_3_55026c8887.png" alt="Sức khỏe tình dục" width="43" height="43">
+      <div class="category-info">
+        <div class="category-name">Sức khỏe tình dục</div>
+        <div class="category-count">2 sản phẩm</div>
+      </div>
+    </div>
+    <div class="category-tab">
+      <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/can_bang_noi_tiet_to_level_3_7fad40d671.png" alt="Cân bằng nội tiết tố" width="43" height="43">
+      <div class="category-info">
+        <div class="category-name">Cân bằng nội tiết tố</div>
+        <div class="category-count">10 sản phẩm</div>
+      </div>
+    </div>
+    <div class="category-tab">
+      <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/sinh_ly_nu_level_3_a1988dcde7.png" alt="Sinh lý nữ" width="43" height="43">
+      <div class="category-info">
+        <div class="category-name">Sinh lý nữ</div>
+        <div class="category-count">3 sản phẩm</div>
+      </div>
+    </div>
+    <div class="category-tab">
+      <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/ho_tro_man_kinh_level_3_273d1706e6.png" alt="Hỗ trợ mãn kinh" width="43" height="43">
+      <div class="category-info">
+        <div class="category-name">Hỗ trợ mãn kinh</div>
+        <div class="category-count">3 sản phẩm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Sidebar Filter -->
+    <div class="sidebar-filter">
+      <div class="filter-header">
+        <img src="../../assets/images/filter.png" alt="Filter" width="40" height="40">
+        <h3>Bộ lọc nâng cao</h3>
+      </div>
+      
+      <div class="filter-section">
+        <h4>Giá bán</h4>
+        <div class="price-options">
+          <label class="price-option">
+            <input type="radio" name="price" value="under-100k">
+            <span>Dưới 100.000đ</span>
+          </label>
+          <label class="price-option">
+            <input type="radio" name="price" value="100k-300k">
+            <span>100.000đ đến 300.000đ</span>
+          </label>
+          <label class="price-option">
+            <input type="radio" name="price" value="300k-500k">
+            <span>300.000đ đến 500.000đ</span>
+          </label>
+          <label class="price-option">
+            <input type="radio" name="price" value="over-500k">
+            <span>Trên 500.000đ</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h4>Nước sản xuất</h4>
+        <div class="country-options">
+          <label class="country-option"><input type="checkbox" name="country" value="all" checked><span>Tất cả</span></label>
+          <label class="country-option"><input type="checkbox" name="country" value="vietnam"><span>Việt Nam</span></label>
+          <label class="country-option"><input type="checkbox" name="country" value="usa"><span>Hoa Kỳ</span></label>
+          <label class="country-option"><input type="checkbox" name="country" value="japan"><span>Nhật Bản</span></label>
+          <label class="country-option"><input type="checkbox" name="country" value="australia"><span>Úc</span></label>
+          <label class="country-option"><input type="checkbox" name="country" value="france"><span>Pháp</span></label>
+          <label class="country-option"><input type="checkbox" name="country" value="germany"><span>Đức</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product List -->
+    <div class="product-list-container">
+      <div class="product-list-header">
+        <h2>Danh sách sản phẩm</h2>
+        <div class="sort-options">
+          <span>Sắp xếp theo:</span>
+          <button class="sort-btn active" data-sort="price-low">Giá thấp</button>
+          <button class="sort-btn" data-sort="price-high">Giá cao</button>
+        </div>
+      </div>
+      
+      <div class="product-note">
+        Lưu ý: Thuốc kê đơn và một số sản phẩm sẽ cần tư vấn từ dược sĩ
+      </div>
+      
+      <div class="product-grid" id="product-list">
+        <!-- JS render ở đây -->
+      </div>
+
+      <div class="load-more">
+        <button class="load-more-btn">Xem thêm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recently Viewed -->
+  <div class="recently-viewed">
+    <h2>Sản phẩm vừa xem</h2>
+    <div class="recently-viewed-grid" id="recentlyViewedGrid"></div>
+  </div>
+
+  <!-- ✅ JS -->
+  <script>
+    async function loadProducts() {
+      const container = document.getElementById("product-list");
+      container.innerHTML = "<p>Đang tải dữ liệu...</p>";
+    
+      try {
+        // Lấy tham số category từ URL
+        const params = new URLSearchParams(window.location.search);
+        const categoryId = params.get("category");
+
+        if (categoryId) {
+        const resCat = await fetch(`http://localhost:5000/api/categories/${categoryId}`);
+        const cat = await resCat.json();
+          document.querySelector(".breadcrumb-item.current").textContent = cat.data.name;
+        }
+        if (!categoryId) {
+          document.querySelector(".breadcrumb-item.current").textContent = "Danh sách sản phẩm";
+        }
+
+        let apiUrl = "http://localhost:5000/api/products";
+        if (categoryId) {
+          apiUrl += `?category=${categoryId}`;
+        }
+
+        const response = await fetch(apiUrl);
+        const result = await response.json();
+    
+        if (!result.success) {
+          container.innerHTML = "<p>Không thể tải dữ liệu sản phẩm!</p>";
+          return;
+        }
+    
+        const products = result.data.products;
+    
+        if (!products || products.length === 0) {
+          container.innerHTML = "<p>Không có sản phẩm nào!</p>";
+          return;
+        }
+    
+        // ✅ Render danh sách sản phẩm
+        container.innerHTML = products
+          .map((p) => {
+            const price = p.price ? p.price.toLocaleString("vi-VN") + "₫" : "Liên hệ";
+            const image = p.image || "../assets/images/default-drug.jpg";
+            const discount = p.discount ? p.discount.toLocaleString("vi-VN") + "₫" : null;
+    
+            return `
+            <div class="product-card">
+              <div class="product-image">
+                <img src="${image}" alt="${p.name}" loading="lazy">
+                ${discount && p.discount > 0 ? `<div class="discount-badge">-${discount}</div>` : ""}
+              </div>
+              <div class="product-info">
+                <h3 class="product-name">${p.name}</h3>
+                <p class="product-brand">${p.brand || ""}</p>
+                <p class="product-country">${p.country || ""}</p>
+                <div class="product-price">
+                  <span class="current-price">${price}</span>
+                  ${p.unit ? `<span class="unit">/ ${p.unit}</span>` : ""}
+                </div>
+                <button class="product-btn" onclick="addToCart('${p._id}')">Chọn mua</button>
+              </div>
+            </div>`;
+          })
+          .join("");
+    
+      } catch (error) {
+        console.error("❌ Lỗi khi tải sản phẩm:", error);
+        container.innerHTML = "<p>Lỗi khi tải dữ liệu!</p>";
+      }
+    }
+    
+    // Demo xử lý khi nhấn nút “Chọn mua”
+    function addToCart(id) {
+      alert(`Đã thêm sản phẩm ${id} vào giỏ hàng (demo).`);
+    }
+    
+    // Khi trang được tải thì gọi hàm
+    document.addEventListener("DOMContentLoaded", loadProducts);
+    </script>
+
+  <div id="footer"></div>
+  <script src="../js/loadComponents.js" defer></script>
+</body>
+</html>

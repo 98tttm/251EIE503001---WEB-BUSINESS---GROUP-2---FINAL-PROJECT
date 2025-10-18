@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhà Thuốc MediCare - Nhà thuốc số 1 Việt Nam</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/png" href="../../assets/images/logo_tròn.png">
+</head>
+<body>
+    <!-- Header -->
+     <div>
+    <div id="header"></div>
+    <div class="hero-slider-container" id="heroContainer">
+        <!-- Hero Slider -->
+        <div class="hero-slider" id="heroSlider">
+            <button class="slider-btn prev" id="heroPrev" aria-label="Previous slide">‹</button>
+            <button class="slider-btn next" id="heroNext" aria-label="Next slide">›</button>
+
+            <!-- dots sẽ được JS render tự động -->
+            <div class="slider-dots" id="heroDots"></div>
+        </div>
+        <div class="hero-fade-layer"></div>
+        <!-- Feature Images -->
+        <div class="feature-images">
+            <div class="feature-large"></div>
+            <div class="feature-small-1"></div>
+            <div class="feature-small-2"></div>
+        </div>
+    </div>
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <div class="action-card">
+            <div class="action-icon"><img src="../../assets/images/canmuathuoc.png" height="100" alt="Cart Icon"></div>
+            <div class="action-text">Cần mua thuốc</div>
+        </div>
+        <div class="action-card">
+            <div class="action-icon"><img src="../../assets/images/bacsi.png" height="100" alt="Cart Icon"></div>
+            <div class="action-text">Tư vấn với<br>Dược Sĩ</div>
+        </div>
+        <div class="action-card">
+            <div class="action-icon"><img src="../../assets/images/my_order.png" height="100" alt="Cart Icon"></div>
+            <div class="action-text">Đơn của tôi</div>
+        </div>
+        <div class="action-card">
+            <div class="action-icon"><img src="../../assets/images/tracuuthuoc.png" height="100" alt="Cart Icon"></div>
+            <div class="action-text">Tra cứu thuốc</div>
+        </div>
+    </div>
+
+    <!-- Deal Section -->
+    <div class="deal-section">
+        <div class="deal-robot">
+            <img src="../../assets/images/MECA_fly.PNG" alt="Flying Robot">
+        </div>
+        <div class="deal-container">
+            <div class="deal-header">DEAL XỊN QUÀ XINH</div>
+            <div class="deal-content">
+                <div class="deal-card">
+                    <div class="deal-image" align ="center"><img src="../../assets/images/DSC_09244_a9c9371532.jpg" height="300" alt="Deal Image"></div>
+                    <div class="deal-title">Sữa bột Ensure Gold StrengthPro Abbott hương vani tăng cường ...</div>
+                    <div class="deal-price">261.000đ/Hộp</div>
+                    <div class="deal-old-price">435.000đ/Hộp</div>
+                    <button class="deal-btn">Xem chi tiết</button>
+                </div>
+                <div class="deal-card">
+                    <div class="deal-image" align ="center"><img src="../../assets/images/DSC_04296_5a6bfce13c.webp" height="300" alt="Deal Image"></div>
+                    <div class="deal-title">Thực phẩm bảo vệ sức khỏe B-TEEN Kenko hỗ trợ phát triển cho bé trai...</div>
+                    <div class="deal-price">930.000đ/Hộp</div>
+                    <div class="deal-old-price">1.550.000đ/Hộp</div>
+                    <button class="deal-btn">Xem chi tiết</button>
+                </div>
+                <div class="deal-card">
+                    <div class="deal-image" align ="center"><img src="../../assets/images/DSC_09456_07e138ad93.png" height="300"
+                         alt="Deal Image"></div>
+                    <div class="deal-title">Viên uống Premium Omexxel Memory Health hỗ trợ tốt cho não bộ (60 viên)</div>
+                    <div class="deal-price">323.000đ/Hộp</div>
+                    <div class="deal-old-price">539.000đ/Hộp</div>
+                    <button class="deal-btn">Xem chi tiết</button>
+                </div>
+            </div>
+        </div>
+        <div class="deal-badge">
+            <div class="deal-badge-small">Giảm đến</div>
+            <div class="deal-badge-large">40%</div>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="section-title">
+        <div class="title-icon"><img src="../../assets/images/danhmucnoibat.png" height="65" alt="Cart Icon"></div>
+        <div class="title-text">Danh mục nổi bật</div>
+    </div>
+    <div class="category-grid">
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/ThanKinhNao.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">Thần kinh não</div>
+        </div>
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/Vitamin.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">Vitamin & Khoáng chất</div>
+        </div>
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/Tim.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">Sức khỏe tim mạch</div>
+        </div>
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/DeKhang.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">Tăng sức đề kháng,<br>miễn dịch</div>
+        </div>
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/Tieuhoa.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">Hỗ trợ tiêu hóa</div>
+        </div>
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/SinhLy.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">
+                <a href="./html/ListProduct.html?category=67003532e414df60b1b9e695">
+                Sinh lý - Nội tiết tố
+                </a>
+            </div>
+        </div>
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/DinhDuong.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">Dinh dưỡng</div>
+        </div>
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/giaiphaplanda.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">Giải pháp làn da</div>
+        </div>
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/chamsocdamat.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">Chăm sóc da mặt</div>
+        </div>
+        <div class="category-card">
+            <div class="category-icon" align ="center"><img src="../../assets/images/lamdep.png" height="88" alt="Brain Icon"/></div>
+            <div class="category-name">Hỗ trợ làm đẹp</div>
+        </div>
+    </div>
+
+    <!-- Brands -->
+    <div class="section-title">
+        <div class="title-icon"><img src="../../assets/images/thuonghieuyeuthich.png" height="65" alt="Cart Icon"></div>
+        <div class="title-text">Thương hiệu yêu thích</div>
+    </div>
+    <div class="brand-grid">
+        <div class="brand-card">
+            <div class="brand-image"><img src="../../assets/images/00503274_vien_uong_chong_lao_hoa_lam_dep_da_nmn_premium_21600_60v_1865_63e4_large_5bf0c423ec.webp" height="200" alt="Brand Image"/></div>
+            <div class="brand-logo" align ="center"><img src="../../assets/images/Jpanwell.webp" height="60" alt="Brand Logo"/></div>
+        </div>
+        <div class="brand-card">
+            <div class="brand-image"><img src="../../assets/images/DSC_09206_c0047d3e7d.webp" height="200" alt="Brand Image"/></div>
+            <div class="brand-logo" align ="center"><img src="../../assets/images/VKENKO.webp" height="60" alt="Brand Logo"/></div>
+        </div>
+        <div class="brand-card">
+            <div class="brand-image"><img src="../../assets/images/DSC_01916_d9fd6ed671.webp" height="200" alt="Brand Image"/></div>
+            <div class="brand-logo" align ="center"><img src="../../assets/images/brauer.webp" height="60" alt="Brand Logo"/></div>
+        </div>
+        <div class="brand-card">
+            <div class="brand-image"><img src="../../assets/images/00033383_vien_uong_ho_tro_tim_mach_omega_plus_10_vitamins_for_life_60v_1049_620b_large_51c80bec0e.webp" height="200" alt="Brand Image"/></div>
+            <div class="brand-logo" align ="center"><img src="../../assets/images/Vitamins_For_Life.webp" height="60" alt="Brand Logo"/></div>
+        </div>
+        <div class="slider-nav">›</div>
+    </div>
+
+    <!-- Products -->
+    <div class="section-title">
+        <div class="title-icon"><img src="../../assets/images/sanphamnoibat.png" height="65" alt="Cart Icon"></div>
+        <div class="title-text">Sản phẩm nổi bật hôm nay</div>
+    </div>
+    <div class="product-grid">
+        <div class="product-card">
+            <div class="product-image" align ="center"><img src="../../assets/images/00032918_glucosamine_and_chondroitin_jpanwell_120v_9745_61a5_large_41ffa86dc1.jpg" height="200" alt="Product Image"/></div>
+            <div class="product-title">Viên uống Glucosamine And Chondroitin Jpanwell...</div>
+            <div class="product-price">960.000đ / Hộp</div>
+            <button class="product-btn">Chọn mua</button>
+        </div>
+        <div class="product-card">
+            <div class="product-image" align ="center"><img src="../../assets/images/DSC_00167_7b53af64ca.png" height="200" alt="Product Image"/></div>
+            <div class="product-title">Dung dịch LineaBon K2+D3 ErgoPharm hỗ trợ bổ sung Vitamin...</div>
+            <div class="product-price">295.000đ / Hộp</div>
+            <button class="product-btn">Chọn mua</button>
+        </div>
+        <div class="product-card">
+            <div class="product-image" align ="center"><img src="../../assets/images/DSC_09275_85d45ab994.jpg" height="200" alt="Product Image"/></div>
+            <div class="product-title">Sữa bột Glucerna Abbott bổ sung dinh dưỡng đặc biệt cho...</div>
+            <div class="product-price">844.000đ / Hộp</div>
+            <button class="product-btn">Chọn mua</button>
+        </div>
+        <div class="product-card">
+            <div class="product-image" align ="center"><img src="../../assets/images/00020850_biogaia_5ml_3956_5e97_large_8c469f6c9a.jpg" height="200" alt="Product Image"/></div>
+            <div class="product-title">Men vi sinh BioGaia Protectis Baby Drops bổ sung lợi khuẩn...</div>
+            <div class="product-price">460.000đ / Hộp</div>
+            <button class="product-btn">Chọn mua</button>
+        </div>
+        <div class="product-card">
+            <div class="product-image" align ="center"><img src="../../assets/images/DSC_09160_f0ac0588b5.jpg" height="200" alt="Product Image"/></div>
+            <div class="product-title">Viên nén Orihiro Glucosamine 900 hỗ trợ làm trơn ổ khớp,...</div>
+            <div class="product-price">575.000đ / Hộp</div>
+            <button class="product-btn">Chọn mua</button>
+        </div>
+        <div class="slider-nav">›</div>
+    </div>
+
+    <!-- Blog -->
+    <div class="section-title">
+        <div class="title-icon"><img src="../../assets/images/Gocsuckhoe.png" height="65" alt="Cart Icon"></div>
+        <div class="title-text">Góc sức khỏe</div>
+    </div>
+    <div class="blog-section">
+        <div class="blog-featured">
+            <div class="blog-badge">Truyền thông</div>
+        </div>  
+        <div class="blog-list">
+            <div class="blog-item">
+                <div class="blog-thumbnail"><img src="../../assets/images/gocsuckhoe1.webp" alt="Product Image"/></div>
+                <div class="blog-info">
+                    <div class="blog-item-badge">Truyền thông</div>
+                    <div class="blog-item-title">MediCare hợp tác Pfizer xây dựng lá chắn y tế,...</div>
+                </div>
+            </div>
+            <div class="blog-item">
+                <div class="blog-thumbnail"><img src="../../assets/images/gocsuckhoe2.webp" alt="Product Image"/></div>
+                <div class="blog-info">
+                    <div class="blog-item-badge">Truyền thông</div>
+                    <div class="blog-item-title">Chuỗi nhà thuốc và tiêm chủng Long Châu vinh...</div>
+                </div>
+            </div>
+            <div class="blog-item">
+                <div class="blog-thumbnail"><img src="../../assets/images/gocsuckhoe3.webp" alt="Product Image"/></div>
+                <div class="blog-info">
+                    <div class="blog-item-badge">Truyền thông</div>
+                    <div class="blog-item-title">Vì một Việt Nam khỏe mạnh hơn, MediCare...</div>
+                </div>
+            </div>
+            <div class="blog-item">
+                <div class="blog-thumbnail"><img src="../../assets/images/gocsuckhoe4.webp" alt="Product Image"/></div>
+                <div class="blog-info">
+                    <div class="blog-item-badge">Truyền thông</div>
+                    <div class="blog-item-title">MediCare và Novo Nordisk bắt tay đưa...</div>
+                </div>
+            </div>
+            <div class="blog-item">
+                <div class="blog-thumbnail"><img src="../../assets/images/gocsuckhoe5.webp" alt="Product Image"/></div>
+                <div class="blog-info">
+                    <div class="blog-item-badge">Truyền thông</div>
+                    <div class="blog-item-title">MediCare và OMRON Nhật Bản ra mắt trọn...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot">
+        <div class="chatbot-message">MediCare chatbot sẵn sàng hỗ trợ bạn!</div>
+        <div class="chatbot-bubble">
+            <div class="chatbot-btn" onclick="toggleChatbotPopup()"><img src="../../assets/images/MECA_headxoa.png" height="100" alt="Chatbot Icon"></div>
+            <div class="chatbot-badge"></div>
+        </div>
+    </div>
+
+    <!-- Chatbot Popup -->
+    <div class="chatbot-popup" id="chatbotPopup">
+        <div class="chatbot-popup-header">
+            <div class="chatbot-popup-logo">
+                <div class="chatbot-logo-circle">
+                    <span class="chatbot-logo-text">MediCare</span>
+                    <span class="chatbot-logo-cross">+</span>
+                </div>
+            </div>
+            <div class="chatbot-popup-title">Chat với MeCa!</div>
+            <div class="chatbot-popup-close" onclick="toggleChatbotPopup()">×</div>
+        </div>
+        
+        <div class="chatbot-popup-content">
+            <div class="chatbot-message-container">
+                <div class="chatbot-avatar">
+                    <img src="../../assets/images/MECA_headxoa.png" alt="MeCa Avatar">
+                </div>
+                <div class="chatbot-message-bubble">
+                    <div class="chatbot-message-text">Xin chào, tôi là trợ lý y tế của bạn, rất hân hạnh được làm quen!</div>
+                    <div class="chatbot-message-text">Hôm nay của bạn thế nào? Nói với MeCa nhé!</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chatbot-popup-input">
+            <input type="text" placeholder="Viết gì đó với MeCa..." class="chatbot-input-field">
+            <button class="chatbot-send-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript for Chatbot Popup -->
+    <script>
+        function toggleChatbotPopup() {
+            const popup = document.getElementById('chatbotPopup');
+            popup.classList.toggle('is-open');
+        }
+    </script>
+    <script>
+        (() => {
+        // 1) Cấu hình slide: mỗi slide có theme + banner
+        const slides = [
+            {
+            theme: "../../assets/images/Dephiendai/Theme_HeroBanner1.webp",
+            banner:"../../assets/images/Dephiendai/HeroBanner1.webp"
+            },
+            {
+            theme: "../../assets/images/Dephiendai/Theme_HeroBanner3.webp",
+            banner:"../../assets/images/Dephiendai/HeroBanner3.webp"
+            }
+        ];
+        
+        const container = document.getElementById("heroContainer");
+        const slider    = document.getElementById("heroSlider");
+        const dotsWrap  = document.getElementById("heroDots");
+        const btnPrev   = document.getElementById("heroPrev");
+        const btnNext   = document.getElementById("heroNext");
+        
+        // 2) Render dots
+        slides.forEach((_,i) => {
+            const dot = document.createElement("div");
+            dot.className = "dot" + (i===0 ? " active" : "");
+            dot.dataset.index = i;
+            dotsWrap.appendChild(dot);
+        });
+        
+        let current = 0;
+        let timer   = null;
+        const INTERVAL = 5000; // 5s tự chạy
+        
+        function setDots(idx){
+            [...dotsWrap.children].forEach((d,i)=>{
+            d.classList.toggle("active", i===idx);
+            });
+        }
+        
+        // Fade helper: chuyển từ slide hiện tại sang slide kế tiếp
+        function fadeTo(nextIndex){
+            if(nextIndex === current) return;
+        
+            const next = slides[nextIndex];
+        
+            // Chuẩn bị ảnh overlay
+            container.style.setProperty("--next-theme", `url('${next.theme}')`);
+            slider.style.setProperty("--next-banner", `url('${next.banner}')`);
+        
+            // Bật lớp fading để overlay mờ dần hiện ra
+            container.classList.add("fading");
+            slider.classList.add("fading");
+        
+            // Kết thúc hiệu ứng rồi “commit” ảnh mới
+            setTimeout(() => {
+            container.style.setProperty("--theme", `url('${next.theme}')`);
+            slider.style.setProperty("--banner", `url('${next.banner}')`);
+        
+            // Tắt overlay
+            container.classList.remove("fading");
+            slider.classList.remove("fading");
+        
+            // Cleanup overlay source
+            container.style.setProperty("--next-theme", `none`);
+            slider.style.setProperty("--next-banner", `none`);
+        
+            current = nextIndex;
+            setDots(current);
+            }, 600); // bằng với CSS transition .6s
+        }
+        
+        function go(step){
+            const next = (current + step + slides.length) % slides.length;
+            fadeTo(next);
+        }
+        
+        // 3) Auto play
+        function start(){
+            stop();
+            timer = setInterval(() => go(1), INTERVAL);
+        }
+        function stop(){
+            if(timer) clearInterval(timer);
+            timer = null;
+        }
+        
+        // 4) Events
+        btnPrev.addEventListener("click", () => { go(-1); start(); });
+        btnNext.addEventListener("click", () => { go(1);  start(); });
+        dotsWrap.addEventListener("click", (e) => {
+            const dot = e.target.closest(".dot");
+            if(!dot) return;
+            fadeTo(+dot.dataset.index);
+            start();
+        });
+        
+        // Tạm dừng khi hover cho UX tốt hơn
+        slider.addEventListener("mouseenter", stop);
+        slider.addEventListener("mouseleave", start);
+        
+        // 5) Khởi động
+        // set trạng thái cho slide đầu (đã set qua CSS var), chỉ cần chạy auto
+        start();
+        })();
+    </script>
+    
+    <script>
+        // Add interactivity here if needed
+        document.addEventListener('DOMContentLoaded', function() {
+            // Slider functionality
+            const sliderBtns = document.querySelectorAll('.slider-btn');
+            sliderBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('Slider clicked');
+                });
+            });
+
+            // Chatbot
+            const chatbotBtn = document.querySelector('.chatbot-btn');
+            chatbotBtn.addEventListener('click', function() {
+                // alert('Chào bạn! Tôi là MediCare chatbot. Tôi có thể giúp gì cho bạn?');
+            });
+
+            // Product cards
+            const productBtns = document.querySelectorAll('.product-btn');
+            productBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Đã thêm sản phẩm vào giỏ hàng!');
+                });
+            });
+        });
+        </script>
+        <div id="footer"></div>
+        <div id="loginPopup"></div>
+        <script src="../js/loadComponents.js" defer></script>
+        <script type="module" src="../js/api.js"></script>
+        <script type="module" src="../js/auth.js"></script>
+        <script type="module" src="../js/cart.js"></script>
+    </body>
+</html>
