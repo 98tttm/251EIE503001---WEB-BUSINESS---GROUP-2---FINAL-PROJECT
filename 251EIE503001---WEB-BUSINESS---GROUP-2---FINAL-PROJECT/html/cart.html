@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giỏ hàng | MediCare</title>
+  <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/layout.css">
@@ -724,7 +725,12 @@
           <span>Thành tiền</span>
           <span class="final-price">492.000₫</span>
         </div>
-        <button id="checkout-btn" class="btn-primary btn-checkout btn-pill">Mua hàng</button>
+        <button id="checkout-btn" class="btn-primary btn-checkout btn-pill" >Mua hàng</button>
+        <script>
+        document.getElementById("checkout-btn").addEventListener("click", function() {
+            window.location.href = "payment.html"; //chuyển sang trang payment.html
+        });
+        </script>
         <p class="cart-note">
           Bằng việc tiến hành đặt mua hàng, bạn đồng ý với
           <a href="#">Điều khoản dịch vụ</a> và

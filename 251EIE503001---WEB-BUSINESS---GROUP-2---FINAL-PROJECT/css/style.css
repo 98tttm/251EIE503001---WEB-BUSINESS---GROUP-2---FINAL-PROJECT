@@ -2372,3 +2372,224 @@ body {
                 width: 200px;
             }
         }
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f2f6ff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+}
+
+.back-link {
+    display: inline-block;
+    color: #00429E;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.payment-section {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Cột sản phẩm */
+.product-list {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.product-img {
+    width: 80px;
+    border-radius: 6px;
+}
+
+.product-info p {
+    margin: 0;
+}
+
+.product-price {
+    color: #00429E;
+    font-weight: 600;
+    margin-top: 6px;
+}
+
+.summary p {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+.summary .total {
+    font-weight: 700;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.btn-complete {
+    width: 100%;
+    background-color: #00429E;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+}
+.btn-complete:hover {
+    background-color: #003b8f;
+}
+
+/* Cột thông tin người nhận */
+.receiver-info {
+    flex: 1.5;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form-section {
+    margin-bottom: 20px;
+}
+
+.form-section h4 {
+    margin-bottom: 10px;
+    color: #00429E;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.note {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.payment-methods label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.payment-methods input {
+    margin-right: 10px;
+}
+
+/* Sản phẩm vừa xem */
+.recent-products {
+    margin-top: 40px;
+}
+
+.recent-products h3 {
+    color: #00429E;
+    margin-bottom: 15px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 10px;
+    text-align: center;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 0.95em;
+    margin: 5px 0 10px;
+}
+
+.card button {
+    background-color: #00429E;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.card button:hover {
+    background-color: #003b8f;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .payment-section {
+        flex-direction: column;
+    }
+}
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payment-methods label {
+  display: grid;
+  grid-template-columns: 1fr auto; /* nội dung bên trái, radio bên phải */
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-methods label:hover {
+  border-color: #00429E;
+  background-color: #f9faff;
+}
+
+.payment-methods img {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.payment-methods input[type="radio"] {
+  transform: scale(1.2);
+  margin-left: 0;
+  justify-self: end; /* căn phải tuyệt đối trong cột phải */
+}
+
+/* để text + icon nằm cùng dòng */
+.payment-methods label span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
