@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCare Admin Homepage</title>
+  <script src="../js/admin_homepage.js"></script>
+  <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin_homepage.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <!--HEADER DÀNH RIÊNG CHO ADMIN -->
+  <header class="admin-header">
+    <div class="admin-header-left">
+      <button class="hamburger" aria-label="Mở menu sidebar">☰</button>
+      <img src="../assets/images/LOGO Vàng MediCare.png" alt="MediCare Logo" class="admin-logo">
+      <h1 class="admin-title">MediCare Admin Portal</h1>
+    </div>
+
+    <div class="admin-header-center">
+      <input type="text" placeholder="Tìm kiếm đơn hàng, sản phẩm..." class="admin-search" aria-label="Tìm kiếm">
+    </div>
+
+    <div class="admin-header-right">
+    <div class="admin-icon notif">
+        <button class="notif-bell has-unread" id="notifBtn" aria-label="Thông báo">
+        <!-- Bell SVG màu trắng -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2a5 5 0 00-5 5v2.09c0 .53-.21 1.04-.59 1.41L4.7 12.62A1 1 0 005 14h14a1 1 0 00.83-1.57l-1.71-2.12a2 2 0 01-.45-1.28V7a5 5 0 00-5-5zm0 20a3 3 0 01-2.82-2h5.64A3 3 0 0112 22z"/>
+        </svg>
+      </button>
+      <!-- Dropdown thông báo -->
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-head">Thông báo</div>
+        <ul>
+          <li> 3 đơn hàng mới hôm nay</li>
+          <li> 2 sản phẩm sắp hết HSD</li>
+          <li> 1 yêu cầu hoàn tiền cần xử lý</li>
+        </ul>
+        <a href="#" class="notif-viewall">Xem tất cả</a>
+      </div>
+    </div>
+      <div class="admin-user">
+        <img src="../assets/images/avatar_15657781.png" alt="Admin Avatar" class="admin-avatar">
+        <span class="admin-name">Admin</span>
+        <button class="logout-btn" aria-label="Đăng xuất">Đăng xuất</button>
+      </div>
+    </div>
+  </header>
+
+  <!--  LAYOUT CHÍNH  -->
+  <div class="admin-layout">
+    <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <h3>Danh mục quản trị</h3>
+    <a href="#" class="active" data-label="Dashboard">
+      <img src="../assets/images/dashboard.png" alt="" class="menu-icon">
+      <span class="menu-text">Dashboard</span>
+    </a>
+    <a href="#" data-label="Order Management">
+      <img src="../assets/images/order1.png" alt="" class="menu-icon">
+      <span class="menu-text">Order Management</span>
+    </a>
+    <a href="#" data-label="Product Management">
+      <img src="../assets/images/drug.png" alt="" class="menu-icon">
+      <span class="menu-text">Product Management</span>
+    </a>
+    <a href="#" data-label="Customer Management">
+      <img src="../assets/images/customer.png" alt="" class="menu-icon">
+      <span class="menu-text">Customer Management</span>
+    </a>
+    <a href="#" data-label="Marketing Management">
+      <img src="../assets/images/marketing.png" alt="" class="menu-icon">
+      <span class="menu-text">Marketing Management</span>
+    </a>
+    <a href="#" data-label="Consultation & Support">
+      <img src="../assets/images/consultation.png" alt="" class="menu-icon">
+      <span class="menu-text">Consultation & Support</span>
+    </a>
+    <a href="#" data-label="Payment Integration">
+      <img src="../assets/images/payment.png" alt="" class="menu-icon">
+      <span class="menu-text">Payment Integration</span>
+    </a>
+  </aside>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard-content">
+      <h2>📊 Tổng quan hoạt động</h2>
+      <p>Chào mừng Admin! Dưới đây là các chỉ số hiệu suất thời gian thực.</p>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-value">152</div>
+          <div class="kpi-label">Đơn hàng hôm nay</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">45.3M₫</div>
+          <div class="kpi-label">Doanh thu hôm nay</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">8</div>
+          <div class="kpi-label">Yêu cầu hoàn tiền</div>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <div class="chart-box">
+          <h3>Biểu đồ doanh thu theo tháng</h3>
+          <canvas id="chartRevenue"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Top sản phẩm bán chạy</h3>
+          <canvas id="chartTopProducts"></canvas>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!--  FOOTER  -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>VỀ MEDICARE</h3>
+        <a href="#">Giới thiệu</a>
+        <a href="#">Chính sách quản lý dữ liệu</a>
+        <a href="#">Liên hệ hỗ trợ kỹ thuật</a>
+      </div>
+      <div class="footer-section">
+        <h3>LIÊN HỆ</h3>
+        <div>Tổng đài hỗ trợ: <strong>1900 0908</strong></div>
+        <div>Email: <a href="mailto:support@medicare.vn">support@medicare.vn</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © MediCare 2025 – Admin Control Panel
+    </div>
+  </footer>
+
+  <!--  CHARTS -->
+  <script>
+    // Toggle sidebar cho mobile
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+
+    // Charts
+    const ctx1 = document.getElementById('chartRevenue');
+    new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: ['T1','T2','T3','T4','T5','T6'],
+        datasets: [{
+          label: 'Doanh thu (triệu đồng)',
+          data: [12, 19, 15, 25, 30, 28],
+          borderColor: '#004aad',
+          tension: 0.3
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    const ctx2 = document.getElementById('chartTopProducts');
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Panadol', 'Ensure Gold', 'BioGaia', 'Vitamin C', 'Glucerna'],
+        datasets: [{
+          label: 'Số lượng bán',
+          data: [120, 90, 80, 70, 60],
+          backgroundColor: '#007bff'
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  </script>
+</body>
+</html>
