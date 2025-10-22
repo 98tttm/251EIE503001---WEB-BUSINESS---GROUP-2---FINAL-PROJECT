@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết Blog</title>
+    <link rel="stylesheet" href="../css/blogs.css">
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhà Thuốc MediCare - Nhà thuốc số 1 Việt Nam</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
+</head>
+<body>
+    <div id="header"></div>
+    <div>
+        <a class='back' href="../html/blogs.html">Quay lại danh sách</a>
+        <h1 id="blog-title"></h1>
+        <div id="blog-meta"></div> <!-- Tác giả và ngày -->
+    </div>
+    <main id="blog-content">
+        <!-- Nội dung chi tiết sẽ được load bởi JS -->
+        <p>Đang tải dữ liệu...</p>
+    </main>
+    <script src="../js/blogs.js"></script>
+    <div id="footer"></div>
+    <script src="../js/loadComponents.js" defer></script>
+
+    <script>
+        // Add interactivity here if needed
+        document.addEventListener('DOMContentLoaded', function() {
+            // Slider functionality
+            const sliderBtns = document.querySelectorAll('.slider-btn');
+            sliderBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('Slider clicked');
+                });
+            });
+
+            // Chatbot
+            const chatbotBtn = document.querySelector('.chatbot-btn');
+            chatbotBtn.addEventListener('click', function() {
+                // alert('Chào bạn! Tôi là MediCare chatbot. Tôi có thể giúp gì cho bạn?');
+            });
+
+            // Product cards
+            const productBtns = document.querySelectorAll('.product-btn');
+            productBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Đã thêm sản phẩm vào giỏ hàng!');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

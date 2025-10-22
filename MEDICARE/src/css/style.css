@@ -339,6 +339,9 @@ body {
             }
         }
 
+        .category-card-link {
+            text-decoration: none;
+        }
         .deal-robot {
             position: absolute;
             top: -20px;

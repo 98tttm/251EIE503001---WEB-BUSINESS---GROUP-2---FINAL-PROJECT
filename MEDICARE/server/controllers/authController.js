@@ -1,176 +1,99 @@
-const User = require('../models/User');
-const { generateToken } = require('../middlewares/auth');
-const { asyncHandler } = require('../middlewares/errorHandler');
+// ===============================
+// 🧠 AUTH CONTROLLER – MediCare
+// ===============================
+const bcrypt = require("bcrypt");
+const User = require("../models/user");
 
-// @desc    Register user
-// @route   POST /api/auth/register
-// @access  Public
-const register = asyncHandler(async (req, res) => {
-  const { email, password, profile } = req.body;
+// ===============================
+// Đăng ký người dùng mới
+// ===============================
+exports.register = async (req, res) => {
+  try {
+    const { firstName, lastName, email, phone, password } = req.body;
 
-  // Check if user already exists
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({
-      success: false,
-      message: 'User already exists with this email'
-    });
-  }
-
-  // Create user
-  const user = await User.create({
-    email,
-    password,
-    profile
-  });
-
-  // Generate token
-  const token = generateToken(user._id);
-
-  res.status(201).json({
-    success: true,
-    message: 'User registered successfully',
-    data: {
-      user,
-      token
+    // Kiểm tra đầu vào
+    if (!firstName || !lastName || !email || !phone || !password) {
+      return res.status(400).json({ message: "Vui lòng điền đầy đủ thông tin." });
     }
-  });
-});
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
-const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-
-  // Check if user exists
-  const user = await User.findOne({ email }).select('+password');
-  if (!user) {
-    return res.status(401).json({
-      success: false,
-      message: 'Invalid email or password'
-    });
-  }
-
-  // Check if user is active
-  if (!user.isActive) {
-    return res.status(401).json({
-      success: false,
-      message: 'Account is deactivated'
-    });
-  }
-
-  // Check password
-  const isPasswordValid = await user.comparePassword(password);
-  if (!isPasswordValid) {
-    return res.status(401).json({
-      success: false,
-      message: 'Invalid email or password'
-    });
-  }
-
-  // Update last login
-  user.lastLogin = new Date();
-  await user.save();
-
-  // Generate token
-  const token = generateToken(user._id);
-
-  res.json({
-    success: true,
-    message: 'Login successful',
-    data: {
-      user,
-      token
+    // Kiểm tra trùng email hoặc phone
+    const existingUser = await User.findOne({ $or: [{ phone }, { "mail": email }] });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email hoặc số điện thoại đã tồn tại!" });
     }
-  });
-});
 
-// @desc    Get current user
-// @route   GET /api/auth/me
-// @access  Private
-const getMe = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+    // Mã hóa mật khẩu
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  res.json({
-    success: true,
-    data: { user }
-  });
-});
-
-// @desc    Update user profile
-// @route   PUT /api/auth/profile
-// @access  Private
-const updateProfile = asyncHandler(async (req, res) => {
-  const { profile, addresses, preferences } = req.body;
-
-  const user = await User.findById(req.user._id);
-
-  if (profile) {
-    user.profile = { ...user.profile, ...profile };
-  }
-
-  if (addresses) {
-    user.addresses = addresses;
-  }
-
-  if (preferences) {
-    user.preferences = { ...user.preferences, ...preferences };
-  }
-
-  await user.save();
-
-  res.json({
-    success: true,
-    message: 'Profile updated successfully',
-    data: { user }
-  });
-});
-
-// @desc    Change password
-// @route   PUT /api/auth/change-password
-// @access  Private
-const changePassword = asyncHandler(async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
-
-  const user = await User.findById(req.user._id).select('+password');
-
-  // Check current password
-  const isCurrentPasswordValid = await user.comparePassword(currentPassword);
-  if (!isCurrentPasswordValid) {
-    return res.status(400).json({
-      success: false,
-      message: 'Current password is incorrect'
+    // Tạo người dùng mới
+    const newUser = new User({
+      phone,
+      mail: [email],
+      profile: { fullName: `${firstName} ${lastName}` },
+      otp: null,
+      otpExpires: null,
     });
+
+    // Thêm mật khẩu như 1 trường tạm (tùy mô hình)
+    newUser.password = hashedPassword;
+
+    // Lưu vào database
+    await newUser.save();
+
+    res.status(201).json({
+      message: "Đăng ký thành công!",
+      user: {
+        id: newUser._id,
+        fullName: newUser.profile.fullName,
+        email,
+        phone
+      }
+    });
+  } catch (error) {
+    console.error("❌ Lỗi đăng ký:", error);
+    res.status(500).json({ message: "Lỗi máy chủ khi đăng ký." });
   }
+};
 
-  // Update password
-  user.password = newPassword;
-  await user.save();
+// ===============================
+// Đăng nhập người dùng
+// ===============================
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  res.json({
-    success: true,
-    message: 'Password changed successfully'
-  });
-});
+    // Tìm user theo email
+    const user = await User.findOne({ mail: email });
+    if (!user) return res.status(404).json({ message: "Không tìm thấy người dùng!" });
 
-// @desc    Logout user
-// @route   POST /api/auth/logout
-// @access  Private
-const logout = asyncHandler(async (req, res) => {
-  // In a real application, you might want to blacklist the token
-  // For now, we'll just send a success response
-  res.json({
-    success: true,
-    message: 'Logout successful'
-  });
-});
+    // Kiểm tra mật khẩu
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Sai mật khẩu!" });
 
-module.exports = {
-  register,
-  login,
-  getMe,
-  updateProfile,
-  changePassword,
-  logout
+    res.status(200).json({
+      message: "Đăng nhập thành công!",
+      user: {
+        id: user._id,
+        fullName: user.profile.fullName,
+        email: user.mail[0],
+        phone: user.phone,
+      }
+    });
+  } catch (error) {
+    console.error("❌ Lỗi đăng nhập:", error);
+    res.status(500).json({ message: "Lỗi máy chủ khi đăng nhập." });
+  }
+};
+
+// ===============================
+// Thông tin người dùng hiện tại
+// ===============================
+exports.getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) return res.status(404).json({ message: "Không tìm thấy người dùng!" });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Lỗi máy chủ." });
+  }
 };

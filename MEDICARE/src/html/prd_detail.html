@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhà Thuốc MediCare - Nhà thuốc số 1 Việt Nam</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/prd_detail.css">
+    <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
+</head>
+<body>
+    <div id="header"></div>
+    <a href="products.html">Quay lại Danh sách sản phẩm</a>
+    <main>
+            <!-- Section 1a: Thông tin sản phẩm -->
+            <section id="product-info" class="product-section">
+                <div class="product-main">
+                    <div class="product-images">
+                        <div id="main-image" class="main-image">
+                            <!-- Ảnh chính sẽ load ở đây -->
+                        </div>
+                        <div id="gallery-thumbs" class="gallery-thumbs">
+                            <!-- Thumbnails sẽ load ở đây -->
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <h1 id="product-name"></h1>
+                        <p id="product-brand"></p>
+                        <div class="price-section">
+                            <span id="product-price" class="price"></span>
+                            <span id="product-discount" class="discount"></span>
+                        </div>
+                        <div id="product-stock" class="stock"></div>
+                        <div class="cta-section">
+                            <button id="add-to-cart" class="add-to-cart">Thêm vào giỏ hàng</button>
+                            <button id="buy-now" class="buy-now">Mua ngay</button>
+                        </div>
+                        <div id="product-ingredients" class="ingredients"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 1b: Đánh giá sản phẩm -->
+            <section id="product-reviews" class="product-section">
+                <h2>Đánh giá sản phẩm</h2>
+                <p>Chưa có đánh giá từ người dùng.</p>
+                <!-- Tương lai: Load từ API hoặc local -->
+            </section>
+
+            <!-- Section 2a: Sản phẩm liên quan -->
+            <section id="related-products" class="product-section">
+                <h2>Các sản phẩm liên quan</h2>
+                <div id="related-list" class="product-grid">
+                    <!-- Sản phẩm liên quan sẽ load ở đây -->
+                </div>
+            </section>
+
+            <!-- Section 2b: Sản phẩm đã xem -->
+            <section id="viewed-products" class="product-section">
+                <h2>Các sản phẩm đã xem</h2>
+                <div id="viewed-list" class="product-grid">
+                    <!-- Sản phẩm đã xem sẽ load ở đây -->
+                </div>
+            </section>
+        </main>
+        <script src="../js/prd_detail.js"></script>
+        <div id="footer"></div>
+        <script src="../js/loadComponents.js" defer></script>
+
+    <script>
+        // Add interactivity here if needed
+        document.addEventListener('DOMContentLoaded', function() {
+            // Slider functionality
+            const sliderBtns = document.querySelectorAll('.slider-btn');
+            sliderBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('Slider clicked');
+                });
+            });
+
+            // Chatbot
+            const chatbotBtn = document.querySelector('.chatbot-btn');
+            chatbotBtn.addEventListener('click', function() {
+                // alert('Chào bạn! Tôi là MediCare chatbot. Tôi có thể giúp gì cho bạn?');
+            });
+
+            // Product cards
+            const productBtns = document.querySelectorAll('.product-btn');
+            productBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Đã thêm sản phẩm vào giỏ hàng!');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

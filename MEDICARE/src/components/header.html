@@ -1,4 +1,9 @@
-   <link rel="stylesheet" href="../css/header.css">
+<head>
+    <!-- GOOGLE LOGIN SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="stylesheet" href="../css/header.css">
+  </head>
+   <body>
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="top-bar-content">
@@ -18,7 +23,7 @@
     <div class="header">
         <div class="header-content">
             <div class="logo">
-                <img src="../../assets/images/LOGO Vàng MediCare.PNG" height="200" width="auto" alt="MediCare Logo">
+                <a href="../html/index.html" target="_self"><img src="../../assets/images/LOGO Vàng MediCare.PNG" height="200" width="auto" alt="MediCare Logo"></a>
             </div>
             
             <div class="search-bar">
@@ -28,8 +33,9 @@
                     <div class="icon-btn"><img src="../../assets/images/camera.png" height="30" width="30" alt="Camera Icon"></div>
                 </div>
             </div>
-
-            <div class="personal-info">
+             <!-- User / Login -->
+            <div class="personal-info" id="personal-section"></div>
+            <!-- <div class="personal-info">
                 <div class="phone-icon"><img src="../../assets/images/avt.png" height="50" width="50" alt="Avatar Icon"></div>
                 <div class="phone-number">0987654321</div>
                 <div class="personal-popup">    
@@ -50,11 +56,14 @@
                         <span>Đăng xuất</span>
                     </div>
                 </div>
-            </div>
-
+            </div> -->
+            <div class="header__right">
+                <button id="openLoginPopup" class="login-btn">
+                  <i class="fas fa-user"></i> Đăng nhập
+                </button>
+              </div>
             <div class="cart-container">
                 <div class="cart-btn"><img src="../../assets/images/cart.png" height="40" width="40" alt="Cart Icon"></div>
-                <div class="cart-badge">1</div>
                 <div class="cart-popup">
                     <div class="cart-popup-header">
                         <h3>Giỏ hàng</h3>
@@ -97,10 +106,12 @@
                                 <div class="nav-popup-icon"><img src="https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Vitamin_and_Khoang_chat_a92b3b1672.png"/></div>
                                 <span>Vitamin & Khoáng chất</span>
                             </div>
-                            <div class="nav-popup-item" data-subcategory-id="9bed0236c5b87c043200fb11" data-subcategory-name="Sinh lý - Nội tiết tố">
-                                <div class="nav-popup-icon"><img src="https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Sinh_li_Noi_tiet_to_f9d4faa138.png"/></div>
-                                <span>Sinh lý - Nội tiết tố</span>
-                            </div>
+                            <a href="ListProduct.html" target="_self" class="category-card-link">
+                                <div class="nav-popup-item" data-subcategory-id="9bed0236c5b87c043200fb11" data-subcategory-name="Sinh lý - Nội tiết tố">
+                                    <div class="nav-popup-icon"><img src="https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Sinh_li_Noi_tiet_to_f9d4faa138.png"/></div>
+                                    <span>Sinh lý - Nội tiết tố</span>
+                                </div>
+                            </a>
                             <div class="nav-popup-item">
                                 <div class="nav-popup-icon"><img src="https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Cai_thien_tang_cuong_chuc_nang_47fdfb569a.png"/></div>
                                 <span>Cải thiện tăng cường chức năng</span>
@@ -463,27 +474,35 @@
             </div>
             
             <!-- Bệnh & Góc sức khỏe -->
-            <div class="nav-item">
-                <span>Bệnh & Góc sức khỏe</span>
-                <span class="nav-arrow">▼</span>
-                <div class="nav-popup">
-                    <div class="nav-popup-content">
-                        <div class="nav-popup-sidebar">
-                            <div class="nav-popup-item">
-                                <div class="nav-popup-icon"><img src="https://cdn.nhathuoclongchau.com.vn/unsafe/48x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/icon_Menu_c5fc94ebc9.png"/></div>
-                                <span>Góc sức khỏe</span>
-                            </div>
-                            <div class="nav-popup-item">
-                                <div class="nav-popup-icon"><img src="https://cdn.nhathuoclongchau.com.vn/unsafe/48x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/icon_Menu_c5fc94ebc9.png"/></div>
-                                <span>Chuyên trang ung thư</span>
-                            </div>
-                            <div class="nav-popup-item">
-                                <div class="nav-popup-icon"><img src="https://cdn.nhathuoclongchau.com.vn/unsafe/48x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Chuyen_trang_9f4523a8b6.png"/></div>
-                                <span>Bệnh thường gặp</span>
-                            </div>
-                        </div>
-                    </div>
+<div class="nav-item nav-item-health">
+    <span>Bệnh & Góc sức khỏe</span>
+    <span class="nav-arrow">▼</span>
+    <div class="nav-popup nav-popup-health">
+        <div class="nav-popup-content">
+            <div class="nav-popup-list">
+                <div class="nav-popup-list-item">
+                    <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/48x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/icon_Menu_c5fc94ebc9.png" alt="">
+                    <span>Góc sức khỏe</span>
+                </div>
+                <div class="nav-popup-list-item">
+                    <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/48x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/icon_Menu_c5fc94ebc9.png" alt="">
+                    <span>Chuyên trang ung thư</span>
+                </div>
+                <div class="nav-popup-list-item">
+                    <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/48x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Chuyen_trang_9f4523a8b6.png" alt="">
+                    <span>Bệnh thường gặp</span>
+                </div>
+                <div class="nav-popup-list-item">
+                    <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/48x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/icon_Menu_c5fc94ebc9.png" alt="">
+                    <span>Tin khuyến mãi</span>
+                </div>
+                <div class="nav-popup-list-item">
+                    <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/48x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/icon_Menu_c5fc94ebc9.png" alt="">
+                    <span>Truyền thông</span>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div id="authModalContainer"></div>
+</body>

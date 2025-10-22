@@ -11,10 +11,9 @@ async function loadHTML(selector, filePath) {
 		if (!response.ok) throw new Error(`Không tìm thấy: ${filePath}`);
 		const html = await response.text();
 		container.innerHTML = html;
-		// Hiệu ứng xuất hiện mượt mà
 		requestAnimationFrame(() => container.classList.add("loaded"));
 	} catch (err) {
-		console.error("Lỗi load component:", err);
+		console.error("❌ Lỗi load component:", err);
 	}
 }
 
@@ -24,12 +23,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 	await loadHTML("#header", "../components/header.html");
 	await loadHTML("#footer", "../components/footer.html");
 
-	// Tải thêm popup đăng nhập (nếu có)
+	// Load popup đăng nhập (auth-modal)
 	await loadHTML("#loginPopup", "../components/auth-modal.html");
+	import("../js/authModal.js").then(mod => mod.initAuthModal());
 
-	// Sau khi header load xong, kích hoạt tương tác
+	// Sau khi header load xong
 	initHeaderInteractions();
 	initFooterYear();
+	initAuthModal(); // Kích hoạt popup đăng nhập
 });
 
 // ==============================
@@ -66,6 +67,43 @@ function initHeaderInteractions() {
 		document.addEventListener("click", e => {
 			if (!cartBtn.contains(e.target)) cartBtn.classList.remove("open");
 		});
+	}
+}
+
+// ==============================
+// Popup đăng nhập / đăng ký (Auth Modal)
+// ==============================
+function initAuthModal() {
+	const openBtn = document.getElementById("openLoginPopup");
+	const modal = document.getElementById("authModal");
+	const closeBtn = modal?.querySelector(".auth-modal-close");
+
+	if (!openBtn || !modal) return;
+
+	// Hiển thị popup
+	openBtn.addEventListener("click", () => {
+		modal.style.display = "flex";
+		document.body.style.overflow = "hidden"; // chặn cuộn nền
+	});
+
+	// Đóng popup khi nhấn nút ×
+	if (closeBtn) {
+		closeBtn.addEventListener("click", () => closeAuthModal());
+	}
+
+	// Đóng popup khi click ra ngoài
+	window.addEventListener("click", (e) => {
+		if (e.target === modal) closeAuthModal();
+	});
+
+	// Cho phép gọi từ JS khác
+	window.authUI = {
+		closeAuthModal: closeAuthModal,
+	};
+
+	function closeAuthModal() {
+		modal.style.display = "none";
+		document.body.style.overflow = "auto";
 	}
 }
 
