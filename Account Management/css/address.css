@@ -1,0 +1,256 @@
+.address {
+  padding: 20px 30px;
+  background-color: #e5ecf5;
+  min-height: 100%;
+  font-family: "Inter", sans-serif;
+  border-radius: 12px;
+  color: #1a1a1a;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Header */
+.address__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.address__title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.address__add-btn {
+  background-color: #004aad;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+.address__add-btn:hover {
+  background-color: #003b8e;
+}
+
+/* Address List */
+.address__list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Address Card */
+.address-card {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.address-card__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.address-card__name {
+  font-weight: 700;
+  color: #000;
+}
+
+.address-card__phone {
+  color: #8c8c8c;
+}
+
+.address-card__body {
+  color: #000;
+  font-size: 14px;
+}
+
+.address-card__old {
+  color: #999;
+  font-size: 13px;
+}
+
+.address-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.address-card__badge {
+  background-color: #a8c9fa;
+  color: #003b8e;
+  font-size: 14px;
+  border-radius: 25px;
+  padding: 6px 20px;
+  font-weight: 500;
+  border: none;
+}
+
+.address-card__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.address-card__btn {
+  background: none;
+  border: none;
+  color: #004aad;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.address-card__btn:hover {
+  text-decoration: underline;
+}
+.address-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1200;
+}
+
+.address-modal.active {
+  display: flex;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.address-modal__content {
+  background: #ffffff;
+  padding: 28px 32px;
+  border-radius: 12px;
+  width: 550px;
+  max-width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border-top: 5px solid #004aad;
+  font-family: "Inter", sans-serif;
+}
+
+.address-modal__title {
+  font-size: 20px;
+  color: #004aad;
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #004aad;
+  box-shadow: 0 0 0 2px rgba(0, 74, 173, 0.15);
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-primary {
+  background: #004aad;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #003480;
+}
+
+.btn-secondary {
+  background: #f2f2f2;
+  border: 1px solid #ccc;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #e6e6e6;
+}
+
+/* Accessibility focus states */
+.form-group input:focus,
+.form-group select:focus,
+.btn-primary:focus,
+.btn-secondary:focus {
+  outline: 2px solid #004aad;
+  outline-offset: 2px;
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .address-modal.active {
+    animation: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -4,12 +4,15 @@
 ========================= */
 
 .orders {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    background: #f1f5f9;
-    border-radius: 16px;
-    padding: 24px;
+  padding: 20px 30px;
+  background-color: #e5ecf5;
+  min-height: 100%;
+  font-family: "Inter", sans-serif;
+  border-radius: 12px;
+  color: #1a1a1a;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   }
   
   /* Header */
@@ -34,7 +37,7 @@
   }
   
   .orders__search-input {
-    height: 40px;
+    height: 35px;
     width: 260px;
     padding: 0 12px;
     border: 1px solid #e5e7eb;

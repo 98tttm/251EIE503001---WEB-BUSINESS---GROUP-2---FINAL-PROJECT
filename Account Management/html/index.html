@@ -5,44 +5,649 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quản lý tài khoản</title>
+  <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/account.css" />
   <link rel="stylesheet" href="../css/order.css" />
-  <link rel="stylesheet" href="../css/account.css" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/address.css" />
 </head>
 
 <body>
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="topbar__left"><span>Hotline:</span> 0123 456 789</div>
-    <div class="topbar__right">Hỗ trợ 24/7</div>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-content">
+      <div class="top-bar-left">
+        <span><img src="../assets/images/search-13-24.png" height="20" width="20" alt="Search Icon"></span>
+        <span>Tìm hiểu về chúng tôi</span>
+        <span>MediCare</span>
+      </div>
+      <div class="top-bar-right">
+        <span><img src="../assets/images/phone-call-white-icon.png" height="20" width="20" alt="Call Icon"></span>
+        <span>Tư vấn ngay: 1900 0908</span>
+      </div>
+    </div>
   </div>
 
-  <!-- HEADER -->
-  <header class="header">
-    <img src="assets/logo.png" alt="Logo" class="header__logo" />
-    <div class="header__search">
-      <img src="assets/search.png" alt="Search" class="header__search-icon" />
-      <input type="text" placeholder="Tìm kiếm sản phẩm..." />
-    </div>
-    <div class="header__user">
-      <img src="assets/user.png" alt="User" class="header__user-icon" />
-      <span>Tài khoản</span>
-    </div>
-    <div class="header__cart">
-      <img src="assets/cart.png" alt="Cart" class="header__cart-icon" />
-    </div>
-  </header>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <div class="logo">
+        <img src="../assets/images/LOGO Vàng MediCare.PNG" height="200" width="auto" alt="MediCare Logo">
+      </div>
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <ul class="navbar__list">
-      <li class="navbar__item">Trang chủ</li>
-      <li class="navbar__item">Sản phẩm</li>
-      <li class="navbar__item">Liên hệ</li>
-      <li class="navbar__item">Giới thiệu</li>
-    </ul>
-  </nav>
+      <div class="search-bar">
+        <input type="text" placeholder="Tìm tên thuốc, bệnh lý,...">
+        <div class="search-icons">
+          <div class="icon-btn"><img src="../assets/images/microphone_17695410.png" height="30" width="30"
+              alt="Microphone Icon"></div>
+          <div class="icon-btn"><img src="../assets/images/photo_15307179.png" height="30" width="30" alt="Camera Icon">
+          </div>
+        </div>
+      </div>
+
+      <div class="personal-info">
+        <div class="phone-icon"><img src="../assets/images/avatar_15657781.png" height="50" width="50"
+            alt="Avatar Icon"></div>
+        <div class="phone-number">0987654321</div>
+        <div class="personal-popup">
+          <div class="popup-item">
+            <div class="popup-icon"><img src="../assets/images/8324223_ui_essential_app_avatar_profile_icon.png"
+                height="20" width="20" alt="Avatar Icon"></div>
+            <span>Thông tin cá nhân</span>
+          </div>
+          <div class="popup-item">
+            <div class="popup-icon"><img src="../assets/images/9025861_package_box_icon.png" height="20" width="20"
+                alt="Amazon Icon"></div>
+            <span>Đơn hàng của tôi</span>
+          </div>
+          <div class="popup-item">
+            <div class="popup-icon"><img src="../assets/images/2849827_pointer_map_location_place_multimedia_icon.png"
+                height="20" width="20" alt="Map Icon"></div>
+            <span>Quản lý sổ địa chỉ</span>
+          </div>
+          <div class="popup-item">
+            <div class="popup-icon"><img src="../assets/images/9104136_logout_sign out_exit_dooe_out_icon.png"
+                height="20" width="20" alt="Sign Out Icon"></div>
+            <span>Đăng xuất</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-container">
+        <div class="cart-btn">
+          <img src="../assets/images/shopping-cart_6387626.png" height="50" width="50" alt="Cart Icon">
+        </div>
+        <div class="cart-badge">1</div>
+
+        <div class="cart-popup">
+          <div class="cart-popup-header">
+            <h3>Giỏ hàng</h3>
+          </div>
+
+          <div class="cart-items">
+            <div class="cart-item">
+              <div class="cart-item-image">
+                <img src="../assets/images/vaseline-rosy-lotus.jpg" alt="Vaseline Rosy Lotus" width="60" height="60">
+              </div>
+              <div class="cart-item-details">
+                <div class="cart-item-name">Sáp dưỡng ẩm Vaseline Rosy Lotus Fobelife làm mềm da,...</div>
+                <div class="cart-item-price">35.000₫</div>
+                <div class="cart-item-quantity">x1 Hũ</div>
+              </div>
+              <div class="cart-item-delete">
+                <img src="../assets/images/delete-icon.png" alt="Delete" width="16" height="16">
+              </div>
+            </div>
+          </div>
+
+          <div class="cart-popup-footer">
+            <div class="cart-summary">1 sản phẩm</div>
+            <button class="view-cart-btn">Xem giỏ hàng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav">
+    <div class="nav-content">
+      <!-- Thực phẩm chức năng -->
+      <div class="nav-item">
+        <span>Thực phẩm chức năng</span>
+        <span class="nav-arrow">▼</span>
+        <div class="nav-popup">
+          <div class="nav-popup-content">
+            <div class="nav-popup-sidebar">
+              <div class="nav-popup-item active">
+                <div class="nav-popup-icon">💊</div>
+                <span>Vitamin & Khoáng chất</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🧬</div>
+                <span>Sinh lý - Nội tiết tố</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">⚡</div>
+                <span>Cải thiện tăng cường chức năng</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🏥</div>
+                <span>Hỗ trợ điều trị</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🍽️</div>
+                <span>Hỗ trợ tiêu hóa</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🧠</div>
+                <span>Thần kinh não</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">💄</div>
+                <span>Hỗ trợ làm đẹp</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">❤️</div>
+                <span>Sức khoẻ tim mạch</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🥗</div>
+                <span>Dinh dưỡng</span>
+              </div>
+            </div>
+            <div class="nav-popup-main">
+              <div class="nav-popup-grid">
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🦴</div>
+                  <span>Bổ sung Canxi & Vitamin D</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">💊</div>
+                  <span>Vitamin tổng hợp</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🐟</div>
+                  <span>Dầu cá, Omega 3, DHA</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🍊</div>
+                  <span>Vitamin C các loại</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🩸</div>
+                  <span>Bổ sung Sắt & Axit Folic</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">⋯</div>
+                  <span>Xem thêm</span>
+                </div>
+              </div>
+              <div class="nav-popup-bestsellers">
+                <div class="nav-popup-bestsellers-header">
+                  <h3>Bán chạy nhất</h3>
+                  <a href="#" class="nav-popup-view-all">Xem tất cả →</a>
+                </div>
+                <div class="nav-popup-bestsellers-list">
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/product1.jpg" alt="Product 1" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Viên uống NutriGrow Nutrimed bổ sung canxi,...</div>
+                      <div class="nav-popup-product-price">480.000₫ / Hộp</div>
+                    </div>
+                  </div>
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/product2.jpg" alt="Product 2" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Viên uống Immuvita Easylife bổ sung vitamin và khoáng...</div>
+                      <div class="nav-popup-product-price">320.000₫ / Hộp</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dược mỹ phẩm -->
+      <div class="nav-item">
+        <span>Dược mỹ phẩm</span>
+        <span class="nav-arrow">▼</span>
+        <div class="nav-popup">
+          <div class="nav-popup-content">
+            <div class="nav-popup-sidebar">
+              <div class="nav-popup-item active">
+                <div class="nav-popup-icon">🧴</div>
+                <span>Chăm sóc da mặt</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🛀</div>
+                <span>Chăm sóc cơ thể</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">✨</div>
+                <span>Giải pháp làn da</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">💇‍♀️</div>
+                <span>Chăm sóc tóc - da đầu</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">💄</div>
+                <span>Mỹ phẩm trang điểm</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">👁️</div>
+                <span>Chăm sóc da vùng mắt</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🍃</div>
+                <span>Sản phẩm từ thiên nhiên</span>
+              </div>
+            </div>
+            <div class="nav-popup-main">
+              <div class="nav-popup-grid">
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🧴</div>
+                  <span>Sữa rửa mặt (Kem, gel, sữa)</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">☀️</div>
+                  <span>Kem chống nắng da mặt</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">💧</div>
+                  <span>Dưỡng da mặt</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🎭</div>
+                  <span>Mặt nạ</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🧪</div>
+                  <span>Serum, Essence hoặc Ampoule</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">⋯</div>
+                  <span>Xem thêm</span>
+                </div>
+              </div>
+              <div class="nav-popup-bestsellers">
+                <div class="nav-popup-bestsellers-header">
+                  <h3>Bán chạy nhất</h3>
+                  <a href="#" class="nav-popup-view-all">Xem tất cả →</a>
+                </div>
+                <div class="nav-popup-bestsellers-list">
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/skincare-sac-ngoc-khang.jpg" alt="Sữa rửa mặt Sắc Ngọc Khang" width="80"
+                      height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Sữa rửa mặt thảo dược Sắc Ngọc Khang giúp sáng...</div>
+                      <div class="nav-popup-product-price">69.000₫ / Tuýp</div>
+                    </div>
+                  </div>
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/skincare-on-the-body.jpg" alt="Sữa rửa mặt On: The Body" width="80"
+                      height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Sữa rửa mặt On: The Body Rice Therapy Rice...</div>
+                      <div class="nav-popup-product-price">165.000₫ / Tuýp</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thuốc -->
+      <div class="nav-item">
+        <span>Thuốc</span>
+        <span class="nav-arrow">▼</span>
+        <div class="nav-popup">
+          <div class="nav-popup-content">
+            <div class="nav-popup-sidebar">
+              <div class="nav-popup-item active">
+                <div class="nav-popup-icon">🔍</div>
+                <span>Tra cứu thuốc</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🧪</div>
+                <span>Tra cứu dược chất</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🌿</div>
+                <span>Tra cứu dược liệu</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">💊</div>
+                <span>Thuốc kê đơn</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🩹</div>
+                <span>Thuốc không kê đơn</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">💉</div>
+                <span>Vắc xin</span>
+              </div>
+            </div>
+            <div class="nav-popup-main">
+              <div class="nav-popup-grid">
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🦠</div>
+                  <span>Thuốc kháng sinh, kháng nấm</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🎗️</div>
+                  <span>Thuốc điều trị ung thư</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">❤️</div>
+                  <span>Thuốc tim mạch & máu</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🧠</div>
+                  <span>Thuốc thần kinh</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🍎</div>
+                  <span>Thuốc tiêu hoá & gan mật</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">⋯</div>
+                  <span>Xem thêm</span>
+                </div>
+              </div>
+              <div class="nav-popup-bestsellers">
+                <div class="nav-popup-bestsellers-header">
+                  <h3>Sản phẩm nổi bật</h3>
+                  <a href="#" class="nav-popup-view-all">Xem tất cả →</a>
+                </div>
+                <div class="nav-popup-bestsellers-list">
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/medicine1.jpg" alt="Medicine 1" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Gel bôi da Klenzit MS điều trị mụ...</div>
+                      <div class="nav-popup-product-price">120.000₫ / Tuýp</div>
+                    </div>
+                  </div>
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/medicine2.jpg" alt="Medicine 2" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Viên sủi Efferalgan 500mg UPSA...</div>
+                      <div class="nav-popup-product-price">85.000₫ / Hộp</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chăm sóc cá nhân -->
+      <div class="nav-item">
+        <span>Chăm sóc cá nhân</span>
+        <span class="nav-arrow">▼</span>
+        <div class="nav-popup">
+          <div class="nav-popup-content">
+            <div class="nav-popup-sidebar">
+              <div class="nav-popup-item active">
+                <div class="nav-popup-icon">🦷</div>
+                <span>Chăm sóc răng miệng</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🚿</div>
+                <span>Chăm sóc cơ thể</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🧴</div>
+                <span>Chăm sóc tóc</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">👶</div>
+                <span>Chăm sóc trẻ em</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">👴</div>
+                <span>Chăm sóc người cao tuổi</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">👩</div>
+                <span>Chăm sóc phụ nữ</span>
+              </div>
+            </div>
+            <div class="nav-popup-main">
+              <div class="nav-popup-grid">
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🪥</div>
+                  <span>Kem đánh răng</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">👄</div>
+                  <span>Nước súc miệng</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🧼</div>
+                  <span>Sữa tắm</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🧴</div>
+                  <span>Dầu gội</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🧽</div>
+                  <span>Khăn tắm</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">⋯</div>
+                  <span>Xem thêm</span>
+                </div>
+              </div>
+              <div class="nav-popup-bestsellers">
+                <div class="nav-popup-bestsellers-header">
+                  <h3>Bán chạy nhất</h3>
+                  <a href="#" class="nav-popup-view-all">Xem tất cả →</a>
+                </div>
+                <div class="nav-popup-bestsellers-list">
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/personal-care1.jpg" alt="Personal Care 1" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Dầu gội trị gàu Nazorel Shampoo...</div>
+                      <div class="nav-popup-product-price">98.000₫ / Hộp</div>
+                    </div>
+                  </div>
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/personal-care2.jpg" alt="Personal Care 2" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Xịt thơm miệng Aro Mouth 10ml...</div>
+                      <div class="nav-popup-product-price">60.000₫ / Hộp</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thiết bị y tế -->
+      <div class="nav-item">
+        <span>Thiết bị y tế</span>
+        <span class="nav-arrow">▼</span>
+        <div class="nav-popup">
+          <div class="nav-popup-content">
+            <div class="nav-popup-sidebar">
+              <div class="nav-popup-item active">
+                <div class="nav-popup-icon">📊</div>
+                <span>Dụng cụ theo dõi</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🩹</div>
+                <span>Dụng cụ sơ cứu</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">😷</div>
+                <span>Khẩu trang</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🩺</div>
+                <span>Thiết bị đo</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">♿</div>
+                <span>Hỗ trợ di chuyển</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🏠</div>
+                <span>Thiết bị tại nhà</span>
+              </div>
+            </div>
+            <div class="nav-popup-main">
+              <div class="nav-popup-grid">
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🩸</div>
+                  <span>Máy đo huyết áp</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🌡️</div>
+                  <span>Nhiệt kế</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">😷</div>
+                  <span>Khẩu trang</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">💉</div>
+                  <span>Kim các loại</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🫁</div>
+                  <span>Dụng cụ vệ sinh mũi</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">⋯</div>
+                  <span>Xem thêm</span>
+                </div>
+              </div>
+              <div class="nav-popup-bestsellers">
+                <div class="nav-popup-bestsellers-header">
+                  <h3>Bán chạy nhất</h3>
+                  <a href="#" class="nav-popup-view-all">Xem tất cả →</a>
+                </div>
+                <div class="nav-popup-bestsellers-list">
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/medical-device1.jpg" alt="Medical Device 1" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Xịt mũi Otosan Nasal Spray Baby...</div>
+                      <div class="nav-popup-product-price">295.000₫ / Hộp</div>
+                    </div>
+                  </div>
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/medical-device2.jpg" alt="Medical Device 2" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Gel Voltogel Mass giảm đau cơ...</div>
+                      <div class="nav-popup-product-price">110.000₫ / Hộp</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bệnh & Góc sức khỏe -->
+      <div class="nav-item">
+        <span>Bệnh & Góc sức khỏe</span>
+        <span class="nav-arrow">▼</span>
+        <div class="nav-popup">
+          <div class="nav-popup-content">
+            <div class="nav-popup-sidebar">
+              <div class="nav-popup-item active">
+                <div class="nav-popup-icon">📍</div>
+                <span>Góc sức khỏe</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">🎗️</div>
+                <span>Chuyên trang ung thư</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">⭐</div>
+                <span>Bệnh thường gặp</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">✨</div>
+                <span>Tin khuyến mại</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">📺</div>
+                <span>Truyền thông</span>
+              </div>
+              <div class="nav-popup-item">
+                <div class="nav-popup-icon">❓</div>
+                <span>Hỏi đáp bác sĩ</span>
+              </div>
+            </div>
+            <div class="nav-popup-main">
+              <div class="nav-popup-grid">
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">❤️</div>
+                  <span>Bệnh tim mạch</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🧠</div>
+                  <span>Bệnh thần kinh</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🍎</div>
+                  <span>Bệnh tiêu hóa</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🫁</div>
+                  <span>Bệnh hô hấp</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">🦴</div>
+                  <span>Bệnh xương khớp</span>
+                </div>
+                <div class="nav-popup-card">
+                  <div class="nav-popup-card-icon">⋯</div>
+                  <span>Xem thêm</span>
+                </div>
+              </div>
+              <div class="nav-popup-bestsellers">
+                <div class="nav-popup-bestsellers-header">
+                  <h3>Bài viết nổi bật</h3>
+                  <a href="#" class="nav-popup-view-all">Xem tất cả →</a>
+                </div>
+                <div class="nav-popup-bestsellers-list">
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/health-article1.jpg" alt="Health Article 1" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">10 cách phòng ngừa bệnh tim mạch</div>
+                      <div class="nav-popup-product-price">Đọc ngay</div>
+                    </div>
+                  </div>
+                  <div class="nav-popup-product">
+                    <img src="../assets/images/health-article2.jpg" alt="Health Article 2" width="80" height="80">
+                    <div class="nav-popup-product-info">
+                      <div class="nav-popup-product-name">Dinh dưỡng cho người cao tuổi</div>
+                      <div class="nav-popup-product-price">Đọc ngay</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- BREADCRUMB -->
   <div class="breadcrumb">
@@ -55,7 +660,7 @@
     <!-- LEFT -->
     <div class="account__left">
       <div class="account__avatar-card">
-        <img src="assets/avatar.png" alt="Avatar" class="account__avatar-icon" />
+        <img src="../assets/images/avatar_15657781.png" alt="Avatar" class="account__avatar-icon" />
         <span class="account__avatar-name">—</span>
         <span class="account__avatar-phone">—</span>
       </div>
@@ -84,29 +689,55 @@
     <div class="account__info-card" id="right-side"></div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer__content">
-      <div class="footer__column">
-        <div class="footer__column-title">VỀ CHÚNG TÔI</div>
-        <a href="#" class="footer__link">Giới thiệu</a>
-        <a href="#" class="footer__link">Chính sách bảo mật</a>
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>VỀ CHÚNG TÔI</h3>
+        <a href="#">Giới thiệu</a>
+        <a href="#">Chính sách đặt cọc</a>
+        <a href="#">Chính sách nội dung</a>
+        <a href="#">Chính sách đổi trả thuốc</a>
+        <a href="#">Chính sách giao hàng</a>
+        <a href="#">Chính sách bảo mật dữ liệu cá nhân khách hàng</a>
+        <a href="#">Chính sách thanh toán</a>
+        <a href="#">Kiểm tra hóa đơn điện tử</a>
+        <a href="#">Chính sách thu thập và xử lý dữ liệu cá nhân</a>
       </div>
-      <div class="footer__column">
-        <div class="footer__column-title">HỖ TRỢ KHÁCH HÀNG</div>
-        <a href="#" class="footer__link">Hướng dẫn mua hàng</a>
-        <a href="#" class="footer__link">Chính sách đổi trả</a>
+      <div class="footer-section">
+        <h3>DANH MỤC</h3>
+        <a href="#">Thực phẩm chức năng</a>
+        <a href="#">Dược mỹ phẩm</a>
+        <a href="#">Thuốc</a>
+        <a href="#">Chăm sóc cá nhân</a>
+        <a href="#">Trang thiết bị y tế</a>
+        <a href="#">Đặt thuốc online</a>
       </div>
-      <div class="footer__column">
-        <div class="footer__column-title">LIÊN HỆ</div>
-        <div class="footer__contact-icons">
-          <img src="assets/facebook.png" />
-          <img src="assets/instagram.png" />
+      <div class="footer-section">
+        <h3>TÌM HIỂU THÊM</h3>
+        <a href="#">Góc sức khoẻ</a>
+        <a href="#">Tra cứu thuốc</a>
+        <a href="#">Tra cứu dược chất</a>
+        <a href="#">Tra cứu dược liệu</a>
+        <a href="#">Bệnh thường gặp</a>
+      </div>
+      <div class="footer-section">
+        <h3>TỔNG ĐÀI (8:00-22:00)</h3>
+        <div>Tư vấn mua hàng</div>
+        <div class="footer-phone">1900 0908</div>
+        <div style="margin-top: 15px;">Góp ý, khiếu nại và tiếp nhận cảnh báo thông tin vi phạm</div>
+        <div class="footer-phone">1900 0908</div>
+        <h3 style="margin-top: 30px;">KẾT NỐI VỚI CHÚNG TÔI</h3>
+        <div class="social-icons">
+          <div class="social-icon"><img src="../assets/images/Facebook_Logo_(2019).png" alt="Facebook Icon"></div>
+          <div class="social-icon"><img src="../assets/images/icon-zalo.png" alt="Zalo Icon"></div>
         </div>
       </div>
     </div>
-    <div class="footer__bottom">© 2025 Huỳnh Tấn Phát. All rights reserved.</div>
-  </footer>
+    <div class="footer-bottom">
+      © MediCare 2025 – Safe & Smart Healthcare Online.
+    </div>
+  </div>
 
   <!-- SCRIPT -->
   <script>
@@ -115,7 +746,7 @@
     ========================= */
     const STORAGE_DB = "db.users.v1";
     const STORAGE_UID = "currentUserId";
-    
+
     /* ==== Helper chuyển đổi ==== */
     function dobIsoToVi(iso) {
       if (!iso) return "";
@@ -139,14 +770,14 @@
       if (g === "Nữ") return "female";
       return "other";
     }
-    
+
     /* =========================
        DATABASE LOCAL
     ========================= */
     async function getDB() {
       const cached = localStorage.getItem(STORAGE_DB);
       if (cached) {
-        try { return { users: JSON.parse(cached) }; } catch {}
+        try { return { users: JSON.parse(cached) }; } catch { }
       }
       const res = await fetch("../database/database.json", { cache: "no-store" });
       const data = await res.json();
@@ -154,19 +785,19 @@
       localStorage.setItem(STORAGE_DB, JSON.stringify(users));
       return { users };
     }
-    
+
     function getUserById(db, id) {
       if (!db?.users?.length) return null;
       return db.users.find(u => u._id === id) || db.users[0];
     }
-    
+
     /* ==== Cập nhật DB khi người dùng chỉnh sửa ==== */
     function updateUserInDB(db, updatedUser) {
       const users = Array.isArray(db.users) ? [...db.users] : [];
       const idx = users.findIndex(u => u._id === updatedUser._id);
       if (idx !== -1) users[idx] = updatedUser;
       else users.push(updatedUser);
-    
+
       // Làm sạch dữ liệu null
       users.forEach(u => {
         if (u.profile) {
@@ -175,18 +806,18 @@
           if (u.profile.dob === null) u.profile.dob = "";
         }
       });
-    
+
       localStorage.setItem(STORAGE_DB, JSON.stringify(users));
       return { users };
     }
-    
+
     async function ensureCurrentUserId(db) {
       if (!localStorage.getItem(STORAGE_UID) && db.users?.length) {
         localStorage.setItem(STORAGE_UID, db.users[0]._id);
       }
       return localStorage.getItem(STORAGE_UID);
     }
-    
+
     /* =========================
        RENDER + MODEL
     ========================= */
@@ -220,7 +851,7 @@
         span.textContent = vm[span.dataset.field] || "";
       });
     }
-    
+
     /* =========================
        LOAD CONTENT (MAIN)
     ========================= */
@@ -228,7 +859,7 @@
       const container = document.getElementById("right-side");
       const html = await fetch(page).then(r => r.text());
       container.innerHTML = html;
-    
+
       // Xử lý từng loại trang
       if (page.includes("account.html")) {
         const db = await getDB();
@@ -241,16 +872,16 @@
           initAccountEdit(vm, user, db);
         }
       }
-    
+
       if (page.includes("order.html")) {
         initOrderFilter();
       }
-    
+
       if (page.includes("address.html")) {
-        console.log("address.html sẽ xử lý ở bước sau");
+        initAddressPage();
       }
     }
-    
+
     /* =========================
        ACCOUNT EDIT (CHỈNH SỬA & LƯU)
     ========================= */
@@ -261,16 +892,16 @@
       if (editBtn.dataset.bound === "true") return;
       editBtn.dataset.bound = "true";
       let isEditing = false;
-    
+
       editBtn.addEventListener("click", () => {
         if (isEditing) return;
         isEditing = true;
-    
+
         userInfo.querySelectorAll(".account__info-value").forEach(span => {
           const field = span.dataset.field;
           const val = span.textContent.trim();
           if (field === "phone") return;
-    
+
           if (field === "birthday") {
             const input = document.createElement("input");
             input.type = "date";
@@ -281,24 +912,29 @@
             span.replaceWith(input);
             return;
           }
-    
+
           if (field === "gender") {
             const wrap = document.createElement("div");
             wrap.className = "account__gender-options";
-            ["Nam", "Nữ", "Khác"].forEach(g => {
+            ["Nam", "Nữ", "Khác"].forEach((g, i) => {
               const radio = document.createElement("input");
+              const id = `gender-${i}`;
               radio.type = "radio";
               radio.name = "gender";
               radio.value = g;
+              radio.id = id;
               if (g === val) radio.checked = true;
+
               const label = document.createElement("label");
               label.textContent = g;
+              label.setAttribute("for", id);
+
               wrap.append(radio, label);
             });
             span.replaceWith(wrap);
             return;
           }
-    
+
           const input = document.createElement("input");
           input.type = "text";
           input.value = val;
@@ -306,7 +942,7 @@
           input.dataset.field = field;
           span.replaceWith(input);
         });
-    
+
         const btnWrap = userInfo.querySelector(".account__info-buttons");
         btnWrap.innerHTML = "";
         const cancelBtn = document.createElement("button");
@@ -316,12 +952,12 @@
         saveBtn.textContent = "Lưu";
         saveBtn.className = "account__info-button";
         btnWrap.append(cancelBtn, saveBtn);
-    
+
         cancelBtn.onclick = () => {
           isEditing = false;
           loadContent("account.html");
         };
-    
+
         saveBtn.onclick = async () => {
           const updatedVM = { ...vm };
           userInfo.querySelectorAll(".account__info-input, .account__gender-options").forEach(el => {
@@ -335,14 +971,14 @@
               updatedVM[el.dataset.field] = el.value.trim() || vm[el.dataset.field];
             }
           });
-    
+
           // Cập nhật dữ liệu
           const newUser = toDataModel(updatedVM, user);
           updateUserInDB(db, newUser);
-    
+
           // Cập nhật hiển thị avatar
           renderAvatar(updatedVM);
-    
+
           // === FIX: chuyển toàn bộ input về span (view mode) ===
           userInfo.querySelectorAll(".account__info-input, .account__gender-options").forEach(el => {
             const span = document.createElement("span");
@@ -352,17 +988,17 @@
             span.textContent = updatedVM[field] || "";
             el.replaceWith(span);
           });
-    
+
           // Trả lại nút "Chỉnh sửa thông tin"
           btnWrap.innerHTML = "";
           btnWrap.append(editBtn);
           isEditing = false;
-    
+
           console.log("✅ Saved:", newUser._id);
         };
       });
     }
-    
+
     /* =========================
        ORDER FILTER + PAGINATION (5/SP)
     ========================= */
@@ -370,43 +1006,72 @@
       const tabs = document.querySelectorAll(".orders__tab");
       const orders = Array.from(document.querySelectorAll(".order-card"));
       const pagination = document.querySelector(".orders__pagination");
+      const searchInput = document.getElementById("orders-search-input");
       if (!tabs.length || !orders.length || !pagination) {
         console.warn("initOrderFilter(): DOM chưa đủ phần tử");
         return;
       }
-    
-      const PER_PAGE = 5;
+
+      const DEBOUNCE_MS = 200;
       let currentStatus = "all";
       let currentPage = 1;
-    
+      let currentQuery = ""; // lowercase
+
+      function debounce(fn, wait) {
+        let t;
+        return function (...args) {
+          clearTimeout(t);
+          t = setTimeout(() => fn.apply(this, args), wait);
+        };
+      }
+
+      function orderMatchesQuery(o) {
+        if (!currentQuery) return true;
+        // Try data attributes first
+        const code = (o.dataset.code || "").toLowerCase();
+        const name = (o.dataset.name || o.dataset.title || "").toLowerCase();
+        if (code.includes(currentQuery) || name.includes(currentQuery)) return true;
+        // Fallback: scan common fields or the whole text
+        const codeEl = o.querySelector('.order-card__code');
+        const nameEl = o.querySelector('.order-card__name, .order-card__title, .order-card__product');
+        const haystack = [codeEl?.textContent, nameEl?.textContent, o.textContent]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        return haystack.includes(currentQuery);
+      }
+
+      const PER_PAGE = 5;
+
       function getFilteredOrders() {
-        return orders.filter(
-          o => currentStatus === "all" || o.dataset.status === currentStatus
+        return orders.filter(o =>
+          (currentStatus === "all" || o.dataset.status === currentStatus) &&
+          orderMatchesQuery(o)
         );
       }
-    
+
       function renderPage() {
         const filtered = getFilteredOrders();
         const totalPages = Math.ceil(filtered.length / PER_PAGE);
         if (currentPage > totalPages) currentPage = totalPages || 1;
-    
+
         orders.forEach(o => (o.style.display = "none"));
         const start = (currentPage - 1) * PER_PAGE;
         const end = start + PER_PAGE;
         filtered.slice(start, end).forEach(o => (o.style.display = "flex"));
-    
+
         renderPagination(totalPages);
       }
-    
+
       function renderPagination(totalPages) {
         pagination.innerHTML = "";
-    
+
         const prev = document.createElement("button");
         prev.textContent = "Trước";
         prev.className = "orders__page-btn";
         if (currentPage === 1) prev.classList.add("orders__page-btn--disabled");
         pagination.appendChild(prev);
-    
+
         for (let i = 1; i <= totalPages; i++) {
           const btn = document.createElement("button");
           btn.textContent = i;
@@ -414,14 +1079,14 @@
           if (i === currentPage) btn.classList.add("orders__page-btn--active");
           pagination.appendChild(btn);
         }
-    
+
         const next = document.createElement("button");
         next.textContent = "Sau";
         next.className = "orders__page-btn";
         if (currentPage === totalPages || totalPages === 0)
           next.classList.add("orders__page-btn--disabled");
         pagination.appendChild(next);
-    
+
         pagination.querySelectorAll(".orders__page-btn").forEach(btn => {
           btn.addEventListener("click", () => {
             const text = btn.textContent.trim();
@@ -432,7 +1097,7 @@
           });
         });
       }
-    
+
       tabs.forEach(tab => {
         tab.addEventListener("click", () => {
           tabs.forEach(t => t.classList.remove("orders__tab--active"));
@@ -442,11 +1107,19 @@
           renderPage();
         });
       });
-    
+
+      if (searchInput) {
+        searchInput.addEventListener('input', debounce(() => {
+          currentQuery = searchInput.value.trim().toLowerCase();
+          currentPage = 1;
+          renderPage();
+        }, DEBOUNCE_MS));
+      }
+
       renderPage();
       console.log("✅ initOrderFilter(): filter + pagination ready");
     }
-    
+
     /* =========================
        MENU + LOGOUT
     ========================= */
@@ -461,14 +1134,430 @@
         loadContent(item.dataset.page);
       });
     });
-    
+
     document.getElementById("cancel-logout").onclick = () =>
       document.getElementById("logout-modal").classList.remove("active");
     document.getElementById("confirm-logout").onclick = () => {
       document.getElementById("logout-modal").classList.remove("active");
-      window.location.href = "../homepage.html";
+      window.location.href = "../html/homepage.html";
     };
-    
+
+    /* =========================
+       ADDRESS MANAGEMENT
+    ========================= */
+    function initAddressPage() {
+      const STORAGE_ADDRESS = "db.addresses.v1";
+      const list = document.getElementById("address-list");
+      const addBtn = document.getElementById("add-address-btn");
+
+      // Pending delete index for custom confirm
+      let pendingDeleteIndex = null;
+
+      // Ensure custom delete confirm modal exists (reuse logout modal styles)
+      function ensureDeleteModal() {
+        if (document.getElementById('address-delete-modal')) return;
+        const modal = document.createElement('div');
+        modal.id = 'address-delete-modal';
+        modal.className = 'logout-modal';
+        modal.innerHTML = `
+          <div class="logout-modal__content">
+            <p>Bạn có chắc muốn xóa địa chỉ này không?</p>
+            <div class="logout-modal__buttons">
+              <button id="confirm-address-delete" class="logout-btn confirm">Xóa</button>
+              <button id="cancel-address-delete" class="logout-btn cancel">Hủy</button>
+            </div>
+          </div>`;
+        document.body.appendChild(modal);
+
+        const cancelBtn = modal.querySelector('#cancel-address-delete');
+        const confirmBtn = modal.querySelector('#confirm-address-delete');
+        cancelBtn.addEventListener('click', () => {
+          pendingDeleteIndex = null;
+          modal.classList.remove('active');
+        });
+        confirmBtn.addEventListener('click', () => {
+          if (pendingDeleteIndex === null || pendingDeleteIndex === undefined) {
+            modal.classList.remove('active');
+            return;
+          }
+          const addresses = loadAddresses();
+          addresses.splice(pendingDeleteIndex, 1);
+          saveAddresses(addresses);
+          pendingDeleteIndex = null;
+          modal.classList.remove('active');
+          renderAddresses();
+        });
+      }
+
+      function openDeleteModal(index) {
+        ensureDeleteModal();
+        pendingDeleteIndex = index;
+        const modal = document.getElementById('address-delete-modal');
+        modal.classList.add('active');
+      }
+
+      // Utils for localStorage
+      const loadAddresses = () => {
+        const cached = localStorage.getItem(STORAGE_ADDRESS);
+        return cached ? JSON.parse(cached) : [];
+      };
+      const saveAddresses = (data) => {
+        localStorage.setItem(STORAGE_ADDRESS, JSON.stringify(data));
+      };
+
+      // Build a safe, full address string (street, ward, district, province)
+      function formatAddress(addr) {
+        const ward = addr.wardName || addr.ward || "";
+        const district = addr.districtName || addr.district || "";
+        const province = addr.provinceName || addr.province || "";
+        const parts = [addr.street, ward, district, province]
+          .filter(Boolean)
+          .map(escapeHtml);
+        return parts.join(", ");
+      }
+
+      // Render list
+      const renderAddresses = () => {
+        list.innerHTML = "";
+        const addresses = loadAddresses();
+
+        addresses.forEach((a, index) => {
+          const card = document.createElement("article");
+          card.className = "address-card";
+          card.dataset.index = index;
+          card.innerHTML = `
+        <header class="address-card__head">
+          <h3 class="address-card__name">${escapeHtml(a.name)}</h3>
+          <span class="address-card__phone">${escapeHtml(a.phone)}</span>
+        </header>
+        <p class="address-card__body">${formatAddress(a)}</p>
+        <footer class="address-card__foot">
+          <div class="address-card__actions">
+            <button class="address-card__btn address-card__btn--edit">Sửa</button>
+            <button class="address-card__btn address-card__btn--delete">Xóa</button>
+          </div>
+        </footer>
+      `;
+          list.appendChild(card);
+        });
+
+        if (!addresses.length) {
+          list.innerHTML = `<p style="text-align:center; color:#666;">Chưa có địa chỉ nào.</p>`;
+        }
+      };
+
+      // Basic html escape to avoid injection from prompt values
+      function escapeHtml(str) {
+        if (!str && str !== 0) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      // Create modal DOM if not present
+      function ensureModal() {
+        if (document.getElementById('address-modal')) return;
+        const modal = document.createElement('div');
+        modal.id = 'address-modal';
+        modal.className = 'address-modal';
+        modal.innerHTML = `
+      <div class="address-modal__content" role="dialog" aria-modal="true">
+        <h2 class="address-modal__title">Thêm / Sửa địa chỉ</h2>
+        <form id="address-form">
+          <div class="form-group">
+            <label for="addr-name">Họ và tên</label>
+            <input id="addr-name" name="name" type="text" required />
+          </div>
+          <div class="form-group">
+            <label for="addr-phone">Số điện thoại</label>
+            <input id="addr-phone" name="phone" type="tel" required />
+          </div>
+          <hr />
+          <div class="form-group">
+            <label for="addr-street">Tên đường, tòa nhà, số nhà</label>
+            <input id="addr-street" name="street" type="text" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="flex:1; min-width:120px;">
+              <label for="addr-province">Tỉnh</label>
+              <select id="addr-province" required><option value="">Đang tải...</option></select>
+            </div>
+            <div class="form-group" style="flex:1; min-width:120px;">
+              <label for="addr-district">Quận / Huyện</label>
+              <select id="addr-district" required><option value="">Chọn tỉnh trước</option></select>
+            </div>
+            <div class="form-group" style="flex:1; min-width:120px;">
+              <label for="addr-ward">Phường / Xã</label>
+              <select id="addr-ward" required><option value="">Chọn quận trước</option></select>
+            </div>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="btn-primary">Lưu</button>
+            <button type="button" id="cancel-modal" class="btn-secondary">Hủy</button>
+          </div>
+        </form>
+      </div>
+    `;
+        document.body.appendChild(modal);
+
+        // Modal element references
+        const provinceEl = modal.querySelector('#addr-province');
+        const districtEl = modal.querySelector('#addr-district');
+        const wardEl = modal.querySelector('#addr-ward');
+
+        // Load provinces once
+        fetchProvinces().then(provs => {
+          provinceEl.innerHTML = '<option value="">-- Chọn tỉnh --</option>';
+          provs.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p.code;
+            opt.textContent = p.full_name || p.name || p.province_name;
+            opt.dataset.raw = JSON.stringify(p);
+            provinceEl.appendChild(opt);
+          });
+        }).catch(err => {
+          provinceEl.innerHTML = '<option value="">Không thể tải tỉnh</option>';
+          console.error('Load provinces failed', err);
+        });
+
+        provinceEl.addEventListener('change', async (e) => {
+          const code = e.target.value;
+          districtEl.innerHTML = '<option value="">Đang tải...</option>';
+          wardEl.innerHTML = '<option value="">Chọn quận trước</option>';
+          if (!code) { districtEl.innerHTML = '<option value="">Chọn tỉnh trước</option>'; return; }
+          try {
+            const districts = await fetchDistricts(code);
+            districtEl.innerHTML = '<option value="">-- Chọn quận/huyện --</option>';
+            districts.forEach(d => {
+              const opt = document.createElement('option');
+              opt.value = d.code;
+              opt.textContent = d.full_name || d.name || d.district_name;
+              opt.dataset.raw = JSON.stringify(d);
+              districtEl.appendChild(opt);
+            });
+          } catch (err) {
+            districtEl.innerHTML = '<option value="">Không thể tải quận</option>';
+            console.error(err);
+          }
+        });
+
+        districtEl.addEventListener('change', async (e) => {
+          const code = e.target.value;
+          wardEl.innerHTML = '<option value="">Đang tải...</option>';
+          if (!code) { wardEl.innerHTML = '<option value="">Chọn quận trước</option>'; return; }
+          try {
+            // Chỉ hiển thị phường thuộc đúng quận/huyện của tỉnh đã chọn
+            const wards = await fetchWards(code);
+            wardEl.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+            wards.forEach(w => {
+              const opt = document.createElement('option');
+              opt.value = w.code;
+              opt.textContent = w.full_name || w.name || w.ward_name;
+              opt.dataset.raw = JSON.stringify(w);
+              wardEl.appendChild(opt);
+            });
+          } catch (err) {
+            wardEl.innerHTML = '<option value="">Không thể tải phường</option>';
+            console.error(err);
+          }
+        });
+
+        // Cancel button
+        modal.querySelector('#cancel-modal').addEventListener('click', () => closeModal());
+
+        // Submit handler (delegated below when opening modal - to allow prefill)
+      }
+
+      // ====== API mới: provinces.open-api.vn ======
+      async function fetchFullAddressData() {
+        const url = "https://provinces.open-api.vn/api/v1/?depth=3";
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Không thể tải dữ liệu hành chính Việt Nam");
+        const data = await res.json();
+        return data; // Mảng gồm các tỉnh/thành, mỗi phần tử chứa districts và wards
+      }
+
+      let fullAddressData = [];
+
+      async function fetchProvinces() {
+        if (fullAddressData.length === 0) {
+          fullAddressData = await fetchFullAddressData();
+        }
+        return fullAddressData.map(p => ({ code: p.code, name: p.name }));
+      }
+
+      async function fetchDistricts(provinceCode) {
+        if (fullAddressData.length === 0) {
+          fullAddressData = await fetchFullAddressData();
+        }
+        const province = fullAddressData.find(p => String(p.code) === String(provinceCode));
+        if (!province || !province.districts) return [];
+        return province.districts.map(d => ({ code: d.code, name: d.name }));
+      }
+
+      async function fetchWards(districtCode) {
+        if (fullAddressData.length === 0) {
+          fullAddressData = await fetchFullAddressData();
+        }
+        for (const p of fullAddressData) {
+          const district = p.districts?.find(d => String(d.code) === String(districtCode));
+          if (district && district.wards) {
+            return district.wards.map(w => ({ code: w.code, name: w.name }));
+          }
+        }
+        return [];
+      }
+
+      // helpers to open/close modal and prefill form
+      function openModal(prefill) {
+        ensureModal();
+        const modal = document.getElementById('address-modal');
+        const form = modal.querySelector('#address-form');
+        const nameEl = modal.querySelector('#addr-name');
+        const phoneEl = modal.querySelector('#addr-phone');
+        const streetEl = modal.querySelector('#addr-street');
+        const provinceEl = modal.querySelector('#addr-province');
+        const districtEl = modal.querySelector('#addr-district');
+        const wardEl = modal.querySelector('#addr-ward');
+
+        // reset
+        form.reset();
+        districtEl.innerHTML = '<option value="">Chọn tỉnh trước</option>';
+        wardEl.innerHTML = '<option value="">Chọn quận trước</option>';
+
+        // if prefill provided (for edit), set values and load dependent selects
+        if (prefill && typeof prefill === 'object') {
+          nameEl.value = prefill.name || '';
+          phoneEl.value = prefill.phone || '';
+          streetEl.value = prefill.street || '';
+
+          // set province after provinces loaded (options may be available)
+          (async () => {
+            try {
+              // ensure provinces loaded in DOM
+              const waitForProvs = () => new Promise(res => {
+                const check = () => {
+                  const p = document.querySelectorAll('#addr-province option');
+                  if (p && p.length > 0) return res();
+                  setTimeout(check, 50);
+                };
+                check();
+              });
+              await waitForProvs();
+              if (prefill.provinceId) {
+                provinceEl.value = prefill.provinceId;
+                // trigger change to load districts
+                provinceEl.dispatchEvent(new Event('change'));
+                // wait small time then set district
+                const waitForDistricts = () => new Promise(res => {
+                  const check = () => {
+                    if (districtEl.options && districtEl.options.length > 1) return res();
+                    setTimeout(check, 50);
+                  }; check();
+                });
+                await waitForDistricts();
+                if (prefill.districtId) {
+                  districtEl.value = prefill.districtId;
+                  districtEl.dispatchEvent(new Event('change'));
+                }
+                const waitForWards = () => new Promise(res => {
+                  const check = () => {
+                    if (wardEl.options && wardEl.options.length > 1) return res();
+                    setTimeout(check, 50);
+                  }; check();
+                });
+                await waitForWards();
+                if (prefill.wardId) {
+                  wardEl.value = prefill.wardId;
+                }
+              }
+            } catch (e) { console.error('prefill error', e) }
+          })();
+
+          // store index if editing
+          form.dataset.editIndex = (typeof prefill._idx === 'number') ? prefill._idx : '';
+        } else {
+          form.dataset.editIndex = '';
+        }
+
+        modal.classList.add('active');
+
+        // attach submit handler once
+        form.onsubmit = (evt) => {
+          evt.preventDefault();
+          const name = nameEl.value.trim();
+          const phone = phoneEl.value.trim();
+          const street = streetEl.value.trim();
+          const provinceId = provinceEl.value;
+          const districtId = districtEl.value;
+          const wardId = wardEl.value;
+          const provinceName = provinceEl.options[provinceEl.selectedIndex]?.text || '';
+          const districtName = districtEl.options[districtEl.selectedIndex]?.text || '';
+          const wardName = wardEl.options[wardEl.selectedIndex]?.text || '';
+
+          if (!name || !phone || !street || !provinceId || !districtId || !wardId) {
+            alert('Vui lòng nhập đầy đủ thông tin.');
+            return;
+          }
+
+          const addresses = loadAddresses();
+          const editIndex = form.dataset.editIndex;
+          const newAddr = {
+            name, phone, street,
+            provinceId, provinceName,
+            districtId, districtName,
+            wardId, wardName
+          };
+
+          if (editIndex !== '') {
+            const idxNum = Number(editIndex);
+            const merged = Object.assign({}, addresses[idxNum], newAddr);
+            delete merged.isDefault;
+            addresses[idxNum] = merged;
+          } else {
+            // ensure no default flag is set on newly added items
+            delete newAddr.isDefault;
+            addresses.push(newAddr);
+          }
+          saveAddresses(addresses);
+          renderAddresses();
+          closeModal();
+        };
+      }
+
+      function closeModal() {
+        const modal = document.getElementById('address-modal');
+        if (modal) modal.classList.remove('active');
+      }
+
+      // click handlers: edit / delete
+      list.addEventListener('click', (e) => {
+        if (e.target.classList.contains('address-card__btn--edit')) {
+          const card = e.target.closest('.address-card');
+          const idx = Number(card.dataset.index);
+          const addresses = loadAddresses();
+          const item = addresses[idx];
+          if (!item) return;
+          // open modal prefilled
+          openModal(Object.assign({}, item, { _idx: idx }));
+        }
+        if (e.target.classList.contains('address-card__btn--delete')) {
+          const card = e.target.closest('.address-card');
+          const idx = Number(card.dataset.index);
+          openDeleteModal(idx);
+        }
+      });
+
+      // add new
+      addBtn.addEventListener('click', () => openModal());
+
+      // initial render
+      renderAddresses();
+    }
+
     /* =========================
        INIT
     ========================= */
@@ -478,8 +1567,31 @@
       loadContent("account.html");
       const user = getUserById(db, localStorage.getItem(STORAGE_UID));
       if (user) renderAvatar(toViewModel(user));
+
+      // === Cart popup toggle (click + hover) ===
+      (function initCartPopup() {
+        const cartContainer = document.querySelector('.cart-container');
+        if (!cartContainer) return;
+        const cartBtn = cartContainer.querySelector('.cart-btn');
+        const cartPopup = cartContainer.querySelector('.cart-popup');
+        if (!cartBtn || !cartPopup) return;
+
+        // Open/close on click of the cart button
+        cartBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          cartContainer.classList.toggle('open');
+        });
+
+        // Optional: support hover to open
+        cartContainer.addEventListener('mouseenter', () => {
+          cartContainer.classList.add('open');
+        });
+        cartContainer.addEventListener('mouseleave', () => {
+          cartContainer.classList.remove('open');
+        });
+      })();
     });
-    </script>        
+  </script>
 </body>
 
 </html>

@@ -123,6 +123,38 @@ html, body {
   height: 48px;
   object-fit: cover;
 }
+.cart-container {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cart-btn {
+  width: 70px;
+  height: 70px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.cart-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 23px;
+  height: 23px;
+  background: #FF8644;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+}
 
 /* ========== NAVBAR ========== */
 .navbar {
@@ -341,4 +373,75 @@ html, body {
 
 .logout-btn:hover {
   opacity: 0.9;
+}
+.header {
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+}
+
+/* Ngăn nav-popup tự bật lại khi di chuột ra ngoài */
+.nav-popup {
+  display: none;
+  pointer-events: none;
+}
+
+/* Hiển thị khi hover trực tiếp vào mục nav-item */
+.nav-item:hover > .nav-popup {
+  display: block;
+  pointer-events: auto;
+}
+
+/* Khi di chuột vào phần popup, vẫn giữ popup mở */
+.nav-item:hover > .nav-popup,
+.nav-popup:hover {
+  display: block;
+  pointer-events: auto;
+}
+
+/* Ngăn xung đột giữa form input (account) và hover nav */
+.account:focus-within ~ .nav .nav-popup,
+.account:hover ~ .nav .nav-popup {
+  display: none !important;
+}
+
+/* Fix cho popup header (tài khoản và giỏ hàng) */
+.personal-info { position: relative; }
+.personal-info::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 10px; /* tạo cầu nối hover để không bị mất khi di chuột xuống */
+}
+
+.personal-info:hover .personal-popup,
+.personal-popup:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.personal-popup {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 1000;
+  /* Luôn chiếm chỗ để không bị flicker do display:none */
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity .15s ease, transform .15s ease, visibility 0s linear .15s;
+}
+
+.personal-popup:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
 }

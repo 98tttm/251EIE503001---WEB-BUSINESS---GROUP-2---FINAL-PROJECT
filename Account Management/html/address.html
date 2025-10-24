@@ -1,0 +1,27 @@
+<section class="address" id="address">
+  <div class="address__header">
+    <h2 class="address__title">Quản lý sổ địa chỉ</h2>
+    <button class="address__add-btn" id="add-address-btn">+ Thêm địa chỉ mới</button>
+  </div>
+  <div class="address__list" id="address-list">
+    <article class="address-card address-card--default">
+      <header class="address-card__head">
+        <h3 class="address-card__name">Thịnh Trần</h3>
+        <span class="address-card__phone">0987655755</span>
+      </header>
+      <p class="address-card__body">Phường Sài Gòn, Quận 1, Hồ Chí Minh</p>
+      <footer class="address-card__foot">
+        <span class="address-card__badge">Mặc định</span>
+        <div class="address-card__actions">
+          <button class="address-card__btn address-card__btn--edit">Sửa</button>
+          <button class="address-card__btn address-card__btn--delete">Xóa</button>
+        </div>
+      </footer>
+    </article>
+  </div>
+</section>
+<script>
+  document.getElementById("add-address-btn").addEventListener("click", () => {
+    alert("Chức năng thêm địa chỉ mới đang được phát triển.");
+  });
+</script>
