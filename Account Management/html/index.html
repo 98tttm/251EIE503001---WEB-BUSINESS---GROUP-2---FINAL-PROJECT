@@ -685,6 +685,17 @@
       </div>
     </div>
 
+    <!-- ORDER CANCEL MODAL -->
+    <div id="order-cancel-modal" class="logout-modal">
+      <div class="logout-modal__content">
+        <p>Bạn có chắc chắn muốn hủy đơn <strong id="cancel-order-code">—</strong> không?</p>
+        <div class="logout-modal__buttons">
+          <button id="confirm-order-cancel" class="logout-btn confirm">Xác nhận</button>
+          <button id="cancel-order-cancel" class="logout-btn cancel">Hủy</button>
+        </div>
+      </div>
+    </div>
+
     <!-- RIGHT -->
     <div class="account__info-card" id="right-side"></div>
   </section>
@@ -874,6 +885,9 @@
       }
 
       if (page.includes("order.html")) {
+        // Khi nhúng order.html bằng fetch, script bên trong fragment sẽ không tự chạy
+        // => chủ động load Orders.xml rồi mới bật bộ lọc/pagination
+        await initOrdersFromXML();
         initOrderFilter();
       }
 
@@ -1000,6 +1014,203 @@
     }
 
     /* =========================
+       ORDERS XML LOADER (render vào #orders-list khi nhúng qua loadContent)
+    ========================= */
+    async function initOrdersFromXML() {
+      const listEl = document.getElementById('orders-list');
+      if (!listEl) {
+        console.warn('initOrdersFromXML(): #orders-list not found.');
+        return;
+      }
+
+      // Thử nhiều đường dẫn để phù hợp vị trí index.html
+      const CANDIDATE_PATHS = [
+        '../database/Orders.xml',
+        './database/Orders.xml',
+        '/database/Orders.xml',
+        'database/Orders.xml'
+      ];
+
+      function fetchText(paths, i = 0) {
+        if (i >= paths.length) return Promise.reject(new Error('Orders.xml not found'));
+        return fetch(paths[i], { cache: 'no-store' })
+          .then(r => {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.text();
+          })
+          .catch(() => fetchText(paths, i + 1));
+      }
+
+      function ymdToVi(ymd) {
+        if (!ymd || !/\d{4}-\d{2}-\d{2}/.test(ymd)) return ymd || '';
+        const [y, m, d] = ymd.split('-');
+        return `${d}/${m}/${y}`;
+      }
+      const VND = n => new Intl.NumberFormat('vi-VN').format(Number(n || 0)) + 'đ';
+
+      // Map hiển thị tiếng Việt cho status
+      const statusText = {
+        processing: 'Chờ xử lý',
+        shipping: 'Đang giao',
+        completed: 'Hoàn thành',
+        cancelled: 'Đã hủy'
+      };
+      // Chuẩn hóa status về key chuẩn
+      function normalizeStatus(s) {
+        const v = (s || '').toString().trim().toLowerCase();
+        switch (v) {
+          case 'processing':
+          case 'chờ xử lý':
+          case 'cho xu ly':
+          case 'đang xử lý':
+            return 'processing';
+          case 'shipping':
+          case 'đang giao':
+          case 'đang giao hàng':
+            return 'shipping';
+          case 'completed':
+          case 'hoàn thành':
+            return 'completed';
+          case 'cancelled':
+          case 'canceled':
+          case 'đã hủy':
+          case 'da huy':
+            return 'cancelled';
+          default:
+            return v || 'processing';
+        }
+      }
+
+      function parseOrders(xmlDoc) {
+        const list = [];
+        const nodes = xmlDoc.getElementsByTagName('order');
+        for (let i = 0; i < nodes.length; i++) {
+          const el = nodes[i];
+          const id = el.getAttribute('id') || '';
+          const date = el.getAttribute('date') || '';
+          const status = normalizeStatus(el.getAttribute('status'));
+          const items = [];
+          const itemsEl = el.getElementsByTagName('items')[0];
+          if (itemsEl) {
+            const itemEls = itemsEl.getElementsByTagName('item');
+            for (let j = 0; j < itemEls.length; j++) {
+              const it = itemEls[j];
+              items.push({
+                name: (it.getElementsByTagName('name')[0]?.textContent || '').trim(),
+                quantity: Number((it.getElementsByTagName('quantity')[0]?.textContent || '1').trim()),
+                price: Number((it.getElementsByTagName('price')[0]?.textContent || '0').trim()),
+                image: (it.getElementsByTagName('image')[0]?.textContent || '').trim()
+              });
+            }
+          }
+          const totalText = (el.getElementsByTagName('total')[0]?.textContent || '').trim();
+          list.push({
+            id,
+            date,
+            dateDisplay: ymdToVi(date),
+            status,
+            total: Number(totalText || 0),
+            items
+          });
+        }
+        return list;
+      }
+
+      function toCardHTML(o) {
+        const itemsHTML = o.items.map(it => `
+          <div class="order-item">
+            <img class="order-item__thumb" src="${it.image}" alt="">
+            <div class="order-item__info">
+              <div class="order-item__name">${it.name}</div>
+              <div class="order-item__sub">x${it.quantity} • ${VND(it.price)}</div>
+            </div>
+          </div>`).join('');
+
+        // Nút hành động theo trạng thái
+        let actions = '<button class="order-card__btn order-card__btn--primary">Xem chi tiết</button>';
+        if (o.status === 'processing') {
+          actions += ' <button class="order-card__btn order-card__btn--ghost">Hủy đơn</button>';
+        } else if (o.status === 'shipping') {
+          actions += ' <button class="order-card__btn order-card__btn--ghost">Theo dõi</button>';
+        } else if (o.status === 'completed') {
+          actions = '<button class="order-card__btn order-card__btn--primary">Mua lại</button>';
+        } else if (o.status === 'cancelled') {
+          actions = '<button class="order-card__btn order-card__btn--ghost" disabled>Đã hủy</button>';
+        }
+
+        return `
+        <article class="order-card" data-status="${o.status}" data-code="${o.id}">
+          <header class="order-card__head">
+            <div>
+              <span class="order-card__code">Mã đơn: <strong>${o.id}</strong></span>
+              <span class="order-card__date">Ngày đặt: ${o.dateDisplay}</span>
+            </div>
+            <span class="order-card__badge order-card__badge--${o.status}">${statusText[o.status] || o.status}</span>
+          </header>
+          <div class="order-card__body">${itemsHTML}</div>
+          <footer class="order-card__foot">
+            <div class="order-card__summary">
+              <span class="order-card__label">Tổng tiền:</span>
+              <span class="order-card__total">${VND(o.total)}</span>
+            </div>
+            <div class="order-card__actions">${actions}</div>
+          </footer>
+        </article>`;
+      }
+
+      try {
+        const text = await fetchText(CANDIDATE_PATHS);
+        const xml = new DOMParser().parseFromString(text, 'text/xml');
+        const orders = parseOrders(xml);
+
+        // Render
+        listEl.innerHTML = orders.map(toCardHTML).join('') || '&lt;p&gt;Không có đơn hàng.&lt;/p&gt;';
+
+        // Đảm bảo khu vực pagination tồn tại (nếu fragment có sẵn thì bỏ qua)
+        const pag = document.querySelector('.orders__pagination');
+        if (!pag) {
+          const pagDiv = document.createElement('div');
+          pagDiv.className = 'orders__pagination';
+          listEl.insertAdjacentElement('afterend', pagDiv);
+        }
+
+        // === Bind cancel-order popup (front-end only) ===
+        (function bindOrderCancelPopup(){
+          const modal = document.getElementById('order-cancel-modal');
+          const codeEl = document.getElementById('cancel-order-code');
+          const closeBtn = document.getElementById('cancel-order-cancel');
+          const confirmBtn = document.getElementById('confirm-order-cancel');
+          if (!modal || !codeEl) return;
+
+          // Open modal on "Hủy đơn" click
+          listEl.addEventListener('click', (e) => {
+            const btn = e.target.closest('.order-card__btn');
+            if (!btn) return;
+            if (btn.textContent.trim() !== 'Hủy đơn') return;
+            const card = btn.closest('.order-card');
+            const code = card?.dataset.code || '';
+            codeEl.textContent = code || '—';
+            modal.classList.add('active');
+          });
+
+          // Close modal on "Hủy"
+          if (closeBtn) closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+          });
+
+          // (Front-end only) Optionally close on confirm for now
+          if (confirmBtn) confirmBtn.addEventListener('click', () => {
+            // TODO: thực hiện cập nhật trạng thái/hủy đơn thật sự
+            modal.classList.remove('active');
+          });
+        })();
+      } catch (err) {
+        console.error('Load Orders.xml failed:', err);
+        listEl.innerHTML = '&lt;p&gt;Không tải được danh sách đơn hàng.&lt;/p&gt;';
+      }
+    }
+
+    /* =========================
        ORDER FILTER + PAGINATION (5/SP)
     ========================= */
     function initOrderFilter() {
@@ -1119,6 +1330,7 @@
       renderPage();
       console.log("✅ initOrderFilter(): filter + pagination ready");
     }
+    
 
     /* =========================
        MENU + LOGOUT

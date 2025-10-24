@@ -1,0 +1,287 @@
+<Order>
+    <order id="DH001" date="2025-10-01" status="processing">
+        <customer>Nguyễn Văn A</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>329000</total>
+    </order>
+    <order id="DH002" date="2025-10-02" status="shipping">
+        <customer>Nguyễn Văn B</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>415000</total>
+    </order>
+    <order id="DH003" date="2025-10-03" status="completed">
+        <customer>Nguyễn Văn C</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>287000</total>
+    </order>
+    <order id="DH004" date="2025-10-04" status="cancelled">
+        <customer>Nguyễn Văn D</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>512000</total>
+    </order>
+    <order id="DH005" date="2025-10-05" status="processing">
+        <customer>Nguyễn Văn E</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>279000</total>
+    </order>
+    <order id="DH006" date="2025-10-06" status="shipping">
+        <customer>Nguyễn Văn F</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>620000</total>
+    </order>
+    <order id="DH007" date="2025-10-07" status="completed">
+        <customer>Nguyễn Văn G</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>453000</total>
+    </order>
+    <order id="DH008" date="2025-10-08" status="cancelled">
+        <customer>Nguyễn Văn H</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>391000</total>
+    </order>
+    <order id="DH009" date="2025-10-09" status="processing">
+        <customer>Nguyễn Văn I</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>267000</total>
+    </order>
+    <order id="DH010" date="2025-10-10" status="shipping">
+        <customer>Nguyễn Văn J</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>510000</total>
+    </order>
+    <order id="DH011" date="2025-10-11" status="completed">
+        <customer>Nguyễn Văn K</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>337000</total>
+    </order>
+    <order id="DH012" date="2025-10-12" status="cancelled">
+        <customer>Nguyễn Văn L</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>421000</total>
+    </order>
+    <order id="DH013" date="2025-10-13" status="processing">
+        <customer>Nguyễn Văn M</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>375000</total>
+    </order>
+    <order id="DH014" date="2025-10-14" status="shipping">
+        <customer>Nguyễn Văn N</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>688000</total>
+    </order>
+    <order id="DH015" date="2025-10-15" status="completed">
+        <customer>Nguyễn Văn O</customer>
+        <address>123 Nguyễn Trãi, Quận 5, TP.HCM</address>
+        <items>
+            <item>
+                <name>Sản phẩm A</name>
+                <quantity>2</quantity>
+                <price>120000</price>
+                <image>assets/product-1.png</image>
+            </item>
+            <item>
+                <name>Sản phẩm B</name>
+                <quantity>1</quantity>
+                <price>89000</price>
+                <image>assets/product-2.png</image>
+            </item>
+        </items>
+        <total>239000</total>
+    </order>
+</bookstore>
