@@ -728,7 +728,12 @@
         <button id="checkout-btn" class="btn-primary btn-checkout btn-pill" >Mua hàng</button>
         <script>
         document.getElementById("checkout-btn").addEventListener("click", function() {
-            window.location.href = "payment.html"; //chuyển sang trang payment.html
+            // Lưu dữ liệu giỏ hàng vào sessionStorage
+            const cartData = updateCartDisplay();
+            sessionStorage.setItem('cartData', JSON.stringify(cartData));
+            
+            // Chuyển sang trang payment
+            window.location.href = "payment.html";
         });
         </script>
         <p class="cart-note">
@@ -810,28 +815,11 @@
     </div>
   </div>
 
-  <script src="../js/features/cart.js"></script>
+  <script src="../js/utils.js"></script>
   <script>
-    // Helpers
-    function formatVnd(n) {
-      return (n || 0).toLocaleString('vi-VN') + '₫';
-    }
-
+    // Sử dụng hàm từ utils.js
     function recalcTotals() {
-      const rows = Array.from(document.querySelectorAll('.cart-row'));
-      let subtotal = 0;
-      rows.forEach(row => {
-        const checked = row.querySelector('.item-check')?.checked;
-        const unit = Number(row.querySelector('.price')?.getAttribute('data-price') || 0);
-        const qty = Math.max(1, Number(row.querySelector('.qty-input')?.value || 1));
-        const line = unit * qty;
-        row.querySelector('.line-total').textContent = formatVnd(line);
-        if (checked) subtotal += line;
-      });
-      document.querySelector('.subtotal').textContent = formatVnd(subtotal);
-      const discountText = document.querySelector('.discount').textContent.replace(/[^0-9]/g, '');
-      const discount = Number(discountText || 0);
-      document.querySelector('.final-price').textContent = formatVnd(Math.max(0, subtotal - discount));
+      updateCartDisplay();
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -873,14 +861,16 @@
         recalcTotals();
       });
 
-      // Voucher (demo only)
+      // Voucher functionality
       document.getElementById('apply-voucher')?.addEventListener('click', () => {
-        const code = document.getElementById('voucher-code').value.trim().toUpperCase();
-        let discount = 0;
-        if (code === 'MEDI10') discount = 10000;
-        if (code === 'MEDI50') discount = 50000;
-        document.querySelector('.discount').textContent = formatVnd(discount);
-        recalcTotals();
+        const code = document.getElementById('voucher-code').value.trim();
+        const success = applyVoucherDiscount(code);
+        
+        if (success) {
+          showNotification('Áp dụng mã giảm giá thành công!', 'success');
+        } else {
+          showNotification('Mã giảm giá không hợp lệ!', 'error');
+        }
       });
 
       recalcTotals();

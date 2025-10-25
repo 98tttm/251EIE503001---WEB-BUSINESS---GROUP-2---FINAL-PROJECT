@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đơn hàng của tôi | MediCare</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="top-bar-left">
+                <span><img src="../assets/images/search-13-24.png" height="20" width="20" alt="Search Icon"></span>
+                <span>Tìm hiểu về chúng tôi</span>
+                <span>MediCare</span>
+            </div>
+            <div class="top-bar-right">
+                <span><img src="../assets/images/phone-call-white-icon.png" height="20" width="20" alt="Call Icon"></span>
+                <span>Tư vấn ngay: 1900 0908</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="../assets/images/LOGO Vàng MediCare.PNG" height="200" width="auto" alt="MediCare Logo">
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Tìm tên thuốc, bệnh lý, ...">
+                <div class="search-icons">
+                    <div class="icon-btn"><img src="../assets/images/microphone_17695410.png" height="30" width="30" alt="Microphone Icon"></div>
+                    <div class="icon-btn"><img src="../assets/images/photo_15307179.png" height="30" width="30" alt="Camera Icon"></div>
+                </div>
+            </div>
+            <div class="personal-info">
+                <div class="phone-icon"><img src="../assets/images/avatar_15657781.png" height="50" width="50" alt="Avatar Icon"></div>
+                <div class="phone-number">0987654321</div>
+                <div class="personal-popup">    
+                    <div class="popup-item">
+                        <div class="popup-icon"><img src="../assets/images/8324223_ui_essential_app_avatar_profile_icon.png" height="20" width="20" alt="Avatar Icon"></div>
+                        <span>Thông tin cá nhân</span>
+                    </div>
+                    <div class="popup-item">
+                        <div class="popup-icon"><img src="../assets/images/9025861_package_box_icon.png" height="20" width="20" alt="Amazon Icon"></div>
+                        <span>Đơn hàng của tôi</span>
+                    </div>
+                    <div class="popup-item">
+                        <div class="popup-icon"><img src="../assets/images/2849827_pointer_map_location_place_multimedia_icon.png" height="20" width="20" alt="Map Icon"></div>
+                        <span>Quản lý sổ địa chỉ</span>
+                    </div>
+                    <div class="popup-item">
+                        <div class="popup-icon"><img src="../assets/images/9104136_logout_sign out_exit_dooe_out_icon.png" height="20" width="20" alt="Sign Out Icon"></div>
+                        <span>Đăng xuất</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-container">
+                <div class="cart-btn"><img src="../assets/images/shopping-cart_6387626.png" height="50" width="50" alt="Cart Icon"></div>
+                <div class="cart-badge">1</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <div class="nav-content">
+            <div class="nav-item"><span>Thực phẩm chức năng</span><span class="nav-arrow">▼</span></div>
+            <div class="nav-item"><span>Dược mỹ phẩm</span><span class="nav-arrow">▼</span></div>
+            <div class="nav-item"><span>Thuốc</span><span class="nav-arrow">▼</span></div>
+            <div class="nav-item"><span>Chăm sóc cá nhân</span><span class="nav-arrow">▼</span></div>
+            <div class="nav-item"><span>Thiết bị y tế</span><span class="nav-arrow">▼</span></div>
+            <div class="nav-item"><span>Góc sức khỏe</span><span class="nav-arrow">▼</span></div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>Đơn hàng của tôi</h1>
+            <p>Quản lý và theo dõi đơn hàng của bạn</p>
+        </div>
+
+        <!-- Order Status Tabs -->
+        <div class="order-tabs">
+            <button class="tab-btn active" data-status="all">Tất cả</button>
+            <button class="tab-btn" data-status="pending">Chờ xử lý</button>
+            <button class="tab-btn" data-status="processing">Đang xử lý</button>
+            <button class="tab-btn" data-status="shipped">Đang giao</button>
+            <button class="tab-btn" data-status="delivered">Đã giao</button>
+            <button class="tab-btn" data-status="cancelled">Đã hủy</button>
+        </div>
+
+        <!-- Order List -->
+        <div class="order-list" id="order-list">
+            <!-- Demo orders -->
+            <div class="order-item" data-status="processing">
+                <div class="order-header">
+                    <div class="order-info">
+                        <h3>Đơn hàng #MC1703123456</h3>
+                        <p class="order-date">Đặt ngày: 15/01/2025</p>
+                    </div>
+                    <div class="order-status">
+                        <span class="status-badge processing">Đang xử lý</span>
+                    </div>
+                </div>
+                
+                <div class="order-products">
+                    <div class="product-item">
+                        <img src="../assets/images/pikolin.jpg" alt="Pikolin" width="60" height="60">
+                        <div class="product-info">
+                            <h4>Viên uống Pikolin Ocawill hỗ trợ tăng tuần hoàn máu não</h4>
+                            <p>SKU: PKL-60V | Số lượng: 1</p>
+                        </div>
+                        <div class="product-price">492.000₫</div>
+                    </div>
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Tạm tính:</span>
+                        <span>492.000₫</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Giảm giá:</span>
+                        <span>-123.000₫</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Phí vận chuyển:</span>
+                        <span>0₫</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Thành tiền:</span>
+                        <span>369.000₫</span>
+                    </div>
+                </div>
+                
+                <div class="order-actions">
+                    <button class="btn-outline">Hủy đơn hàng</button>
+                    <button class="btn-primary">Xem chi tiết</button>
+                </div>
+            </div>
+
+            <div class="order-item" data-status="delivered">
+                <div class="order-header">
+                    <div class="order-info">
+                        <h3>Đơn hàng #MC1703123455</h3>
+                        <p class="order-date">Đặt ngày: 10/01/2025</p>
+                    </div>
+                    <div class="order-status">
+                        <span class="status-badge delivered">Đã giao</span>
+                    </div>
+                </div>
+                
+                <div class="order-products">
+                    <div class="product-item">
+                        <img src="../assets/images/product1.jpg" alt="Glucosamine" width="60" height="60">
+                        <div class="product-info">
+                            <h4>Viên uống Glucosamine</h4>
+                            <p>SKU: GLU-30V | Số lượng: 2</p>
+                        </div>
+                        <div class="product-price">1.920.000₫</div>
+                    </div>
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row total">
+                        <span>Thành tiền:</span>
+                        <span>1.920.000₫</span>
+                    </div>
+                </div>
+                
+                <div class="order-actions">
+                    <button class="btn-outline">Mua lại</button>
+                    <button class="btn-primary">Đánh giá</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state" style="display: none;">
+            <img src="../assets/images/empty-orders.png" alt="Không có đơn hàng" width="120" height="120">
+            <h3>Chưa có đơn hàng nào</h3>
+            <p>Bạn chưa có đơn hàng nào. Hãy bắt đầu mua sắm ngay!</p>
+            <a href="../index.html" class="btn-primary">Bắt đầu mua sắm</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>VỀ CHÚNG TÔI</h3>
+                <a href="#">Giới thiệu</a>
+                <a href="#">Chính sách đặt cọc</a>
+                <a href="#">Chính sách đổi trả thuốc</a>
+                <a href="#">Chính sách giao hàng</a>
+                <a href="#">Chính sách thanh toán</a>
+            </div>
+            <div class="footer-section">
+                <h3>DANH MỤC</h3>
+                <a href="#">Thực phẩm chức năng</a>
+                <a href="#">Dược mỹ phẩm</a>
+                <a href="#">Thuốc</a>
+                <a href="#">Chăm sóc cá nhân</a>
+                <a href="#">Trang thiết bị y tế</a>
+            </div>
+            <div class="footer-section">
+                <h3>TÌM HIỂU THÊM</h3>
+                <a href="#">Góc sức khoẻ</a>
+                <a href="#">Tra cứu thuốc</a>
+                <a href="#">Bệnh thường gặp</a>
+            </div>
+            <div class="footer-section">
+                <h3>TỔNG ĐÀI (8:00-22:00)</h3>
+                <div>Tư vấn mua hàng</div>
+                <div class="footer-phone">1900 0908</div>
+                <div style="margin-top: 15px;">Góp ý, khiếu nại và tiếp nhận cảnh báo thông tin vi phạm</div>
+                <div class="footer-phone">1900 0908</div>
+                <h3 style="margin-top: 30px;">KẾT NỐI VỚI CHÚNG TÔI</h3>
+                <div class="social-icons">
+                    <div class="social-icon"><img src="../assets/images/Facebook_Logo_(2019).png"  alt="Facebook Icon"></div>
+                    <div class="social-icon"><img src="../assets/images/icon-zalo.png"  alt="Zalo Icon"></div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © MediCare 2025 – Safe & Smart Healthcare Online.
+        </div>
+    </div>
+
+    <script>
+        // Order management functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const orderItems = document.querySelectorAll('.order-item');
+            const emptyState = document.getElementById('empty-state');
+            const orderList = document.getElementById('order-list');
+
+            // Tab switching
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    tabButtons.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    btn.classList.add('active');
+                    
+                    // Filter orders
+                    const status = btn.getAttribute('data-status');
+                    filterOrders(status);
+                });
+            });
+
+            // Filter orders by status
+            function filterOrders(status) {
+                let visibleCount = 0;
+                
+                orderItems.forEach(item => {
+                    const itemStatus = item.getAttribute('data-status');
+                    
+                    if (status === 'all' || itemStatus === status) {
+                        item.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide empty state
+                if (visibleCount === 0) {
+                    orderList.style.display = 'none';
+                    emptyState.style.display = 'block';
+                } else {
+                    orderList.style.display = 'block';
+                    emptyState.style.display = 'none';
+                }
+            }
+
+            // Initialize with all orders
+            filterOrders('all');
+        });
+    </script>
+
+    <style>
+        /* Order page styles */
+        .page-header {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .page-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .order-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #666;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .tab-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .tab-btn.active:hover {
+            background-color: #1976D2;
+        }
+
+        .order-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .order-info h3 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+
+        .order-date {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.processing {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.delivered {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .order-products {
+            margin-bottom: 15px;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .product-item img {
+            border-radius: 4px;
+        }
+
+        .product-info h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .product-info p {
+            margin: 0;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .order-summary {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .summary-row.total {
+            font-weight: 600;
+            color: #333;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state h3 {
+            color: #333;
+            margin: 20px 0 10px 0;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+    </style>
+</body>
+</html>
