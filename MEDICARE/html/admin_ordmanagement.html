@@ -1,0 +1,450 @@
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCare Admin - Order Management </title>
+  <meta name="description" content="Quản lý đơn hàng MediCare - Xem, chỉnh sửa, hủy, hoàn tiền, theo dõi vận chuyển">
+  <link rel="preload" href="../assets/images/LOGO Vàng MediCare.png" as="image">
+  <link rel="preload" href="../assets/images/logo_tròn.png" as="image">
+  <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
+  <link rel="stylesheet" href="../css/admin_homepage.css">
+  <link rel="stylesheet" href="../css/admin_ordmanagement.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="../js/admin_ordmanagement.js" defer></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="admin-header" role="banner">
+    <div class="admin-header-left">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Mở/đóng menu sidebar" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <img src="../assets/images/LOGO Vàng MediCare.png" alt="Logo MediCare" class="admin-logo" loading="eager">
+      <h1 class="admin-title">MediCare Admin Portal</h1>
+    </div>
+
+    <div class="admin-header-center">
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="search" placeholder="Tìm kiếm đơn hàng, sản phẩm..." class="admin-search" 
+               aria-label="Tìm kiếm" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="admin-header-right">
+      <div class="admin-icon notif" role="button" tabindex="0" aria-label="Thông báo (3 chưa đọc)">
+        <button class="notif-bell has-unread" id="notifBtn" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M12 2a5 5 0 00-5 5v2.09c0 .53-.21 1.04-.59 1.41L4.7 12.62A1 1 0 005 14h14a1 1 0 00.83-1.57l-1.71-2.12a2 2 0 01-.45-1.28V7a5 5 0 00-5-5zm0 20a3 3 0 01-2.82-2h5.64A3 3 0 0112 22z"/>
+          </svg>
+          <span class="notif-badge" aria-hidden="true">3</span>
+        </button>
+        <!-- Notification Dropdown -->
+        <div class="notif-dropdown" id="notifDropdown" role="menu" aria-labelledby="notifBtn">
+          <div class="notif-head">
+            <span>Thông báo</span>
+            <span class="notif-count">3 chưa đọc</span>
+          </div>
+          <ul role="menu" aria-label="Danh sách thông báo">
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-shopping-cart"></i>
+                <div>3 đơn hàng mới hôm nay</div>
+                <span class="notif-time">2 phút trước</span>
+              </div>
+            </li>
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-exclamation-triangle"></i>
+                <div>2 sản phẩm sắp hết HSD</div>
+                <span class="notif-time">1 giờ trước</span>
+              </div>
+            </li>
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-undo"></i>
+                <div>1 yêu cầu hoàn tiền cần xử lý</div>
+                <span class="notif-time">Hôm nay</span>
+              </div>
+            </li>
+          </ul>
+          <a href="#" class="notif-viewall" role="menuitem">Xem tất cả thông báo</a>
+        </div>
+      </div>
+      
+      <div class="admin-user">
+        <img src="../assets/images/avatar_15657781.png" alt="Ảnh đại diện Admin" class="admin-avatar" loading="lazy">
+        <div class="admin-user-info">
+          <span class="admin-name" aria-label="Admin"> Admin </span>
+          <span class="admin-role">Quản trị viên</span>
+        </div>
+        <button class="logout-btn" aria-label="Đăng xuất" title="Đăng xuất">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+  <!-- MAIN LAYOUT -->
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Menu điều hướng chính" role="navigation">
+      <h3>Danh mục quản trị</h3>
+      <nav>
+        <a href="admin_homepage.html" class="sidebar-link" data-label="Dashboard" data-page="dashboard">
+          <img src="../assets/images/dashboard.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Dashboard</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_ordmanagement.html" class="sidebar-link active" data-label="Order Management" data-page="orders">
+          <img src="../assets/images/order1.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý đơn hàng</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_promanagement.html" class="sidebar-link" data-label="Product Management" data-page="products">
+          <img src="../assets/images/drug.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý sản phẩm</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_cusmanagement.html" class="sidebar-link" data-label="Customer Management" data-page="customers">
+          <img src="../assets/images/customer.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý khách hàng</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_blogmanagement.html" class="sidebar-link" data-label="Marketing Management" data-page="marketing">
+          <img src="../assets/images/marketing.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý Blogs</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_faqmanagement.html" class="sidebar-link" data-label="Consultation & Support" data-page="support">
+          <img src="../assets/images/consultation.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Tư vấn & Hỗ trợ</span>
+          <i class="menu-indicator"></i>
+        </a>
+      </nav>
+    </aside>
+    <!-- Main Content -->
+    <main class="dashboard-content" id="main-content" tabindex="-1">
+      <header class="page-header">
+        <h2>Quản lý đơn hàng</h2>
+        <p>Theo dõi và xử lý toàn bộ đơn hàng của khách.</p>
+        <div class="page-actions">
+          <button class="btn-refresh" id="refreshBtn"><i class="fas fa-sync-alt"></i> Làm mới</button>
+          <button class="btn-export" id="exportBtn"><i class="fas fa-download"></i> Xuất báo cáo</button>
+          <button class="btn-create" id="createOrderBtn">
+            <i class="fas fa-plus-circle"></i> Tạo đơn hàng mới
+          </button>
+        </div>
+      </header>
+      <!-- FILTER BAR -->
+      <section class="filter-bar">
+        <div class="filter-group">
+          <label for="statusFilter">Trạng thái</label>
+          <select id="statusFilter" class="filter-select">
+            <option value="">Tất cả</option>
+            <option value="new">Mới</option>
+            <option value="processing">Đang xử lý</option>
+            <option value="shipped">Đã giao</option>
+            <option value="completed">Hoàn thành</option>
+            <option value="cancelled">Đã hủy</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="dateRange">Ngày</label>
+          <input type="date" id="dateFrom" class="filter-input">
+          <input type="date" id="dateTo" class="filter-input">
+        </div>
+        <div class="filter-group">
+          <label for="customerSearch">Khách hàng</label>
+          <input type="text" id="customerSearch" placeholder="Tên / SĐT" class="filter-input">
+        </div>
+        <button class="btn-apply" id="applyFilter"><i class="fas fa-filter"></i> Áp dụng</button>
+      </section>
+      <!-- ORDER TABLE -->
+      <section class="order-table-container">
+        <table class="order-table" id="orderTable">
+          <thead>
+            <tr>
+              <th>Mã đơn</th>
+              <th>Khách hàng</th>
+              <th>Ngày đặt</th>
+              <th>Tổng tiền</th>
+              <th>Trạng thái</th>
+              <th>Vận chuyển</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- rows sẽ được JS render -->
+          </tbody>
+        </table>
+        <div class="pagination" id="pagination"></div>
+      </section>
+      <!-- ORDER DETAIL MODAL -->
+      <div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+          <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+          <h3 id="modalTitle">Chi tiết đơn hàng #ORD-00123</h3>
+          <div class="modal-body">
+            <!-- Tabs -->
+            <div class="tab-nav">
+              <button class="tab-btn active" data-tab="info">Thông tin</button>
+              <button class="tab-btn" data-tab="products">Sản phẩm</button>
+              <button class="tab-btn" data-tab="shipping">Vận chuyển</button>
+              <button class="tab-btn" data-tab="refund">Hoàn tiền</button>
+            </div>
+
+            <div class="tab-content" id="tab-info">
+                <div class="info-grid">
+                    <div class="info-card">
+                    <div class="info-item">
+                        <span class="info-label">Khách</span>
+                        <span class="info-value" id="custName"></span>
+                    </div>
+                    </div>
+                    <div class="info-card">
+                    <div class="info-item">
+                        <span class="info-label">SĐT</span>
+                        <span class="info-value" id="custPhone"></span>
+                    </div>
+                    </div>
+                    <div class="info-card">
+                    <div class="info-item">
+                        <span class="info-label">Địa chỉ</span>
+                        <input type="text" id="custAddr" class="info-value editable">
+                    </div>
+                    </div>
+                    <div class="info-card">
+                    <div class="info-item">
+                        <span class="info-label">Phương thức thanh toán</span>
+                        <span class="info-value" id="paymentMethod"></span>
+                    </div>
+                    </div>
+                    <div class="info-card">
+                    <div class="info-item">
+                        <span class="info-label">Trạng thái</span>
+                        <select class="status-select" id="statusSelect">
+                        <option value="new">Mới</option>
+                        <option value="processing">Đang xử lý</option>
+                        <option value="shipped">Đã giao</option>
+                        <option value="completed">Hoàn tất</option>
+                        <option value="cancelled">Đã hủy</option>
+                        </select>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content hidden" id="tab-products">
+              <table class="product-table">
+                <thead><tr><th>Sản phẩm</th><th>SL</th><th>Giá</th><th>Thành tiền</th></tr></thead>
+                <tbody id="productRows"></tbody>
+              </table>
+            </div>
+            <div class="tab-content hidden" id="tab-shipping">
+                <div class="shipping-info">
+                    <div class="shipping-field">
+                        <span class="info-label">Mã vận đơn</span>
+                        <input type="text" class="tracking-display" id="trackingNo" placeholder="Nhập mã vận đơn...">
+                    </div>
+                    <div class="shipping-field">
+                        <span class="info-label">Đối tác</span>
+                        <select class="partner-select" id="partnerSelect">
+                        <option value="GHN">GHN</option>
+                        <option value="GHTK">GHTK</option>
+                    </select>
+                    </div>
+                    <div class="shipping-action">
+                        <button class="btn-sync" id="syncShipping">Đồng bộ</button>
+                    </div>
+                </div>
+            </div>
+              <div class="tab-content hidden" id="tab-refund">
+                  <div class="refund-form">
+                      <div class="refund-checkbox-wrapper">
+                          <label class="refund-checkbox">
+                              <input type="checkbox" id="refundReq"> 
+                              <span>Yêu cầu hoàn tiền</span>
+                          </label>
+                      </div>
+                      <div class="refund-reasson">
+                          <label for="refundReason" class="refund-label">Lý do hoàn tiền</label>
+                          <br/>
+                          <textarea id="refundReason" placeholder="Nhập lý do hoàn tiền..." rows="4"></textarea>
+                      </div>
+                      <div class="refund-action">
+                          <button class="btn-refund" id="processRefund">Xử lý hoàn tiền</button>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-actions">
+                <button class="btn-save" id="saveOrder">Lưu</button>
+                <button class="btn-cancel-order" id="cancelOrder">Hủy đơn</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <!-- CREATE ORDER MODAL -->
+  <div class="modal" id="createOrderModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <button class="modal-close" id="createOrderClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 class="modal-title">
+        <i class="fas fa-cart-plus"></i> Tạo đơn hàng mới
+      </h3>
+      <div class="modal-body">
+        <div class="info-grid">
+          <!-- Tên khách hàng -->
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newCustomer">Tên khách hàng</label>
+              <input type="text" id="newCustomer" class="filter-input" placeholder="VD: Nguyễn Văn B" required>
+            </div>
+          </div>
+          <!-- Số điện thoại -->
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newPhone">Số điện thoại</label>
+              <input type="text" id="newPhone" class="filter-input" placeholder="VD: 0912345678" required>
+            </div>
+          </div>
+          <!-- Địa chỉ -->
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="newAddress">Địa chỉ</label>
+              <input type="text" id="newAddress" class="filter-input" placeholder="VD: 123 Đường ABC, Quận 1, TP.HCM" required>
+            </div>
+          </div>
+          <!-- Chọn sản phẩm -->
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label">Chọn sản phẩm & số lượng</label>
+              <div class="create-product-list">
+                <label class="product-item">
+                  <input type="checkbox" class="product-checkbox" data-name="Panadol Extra 10v" data-price="45000">
+                  <span>Panadol Extra 10v</span>
+                  <input type="number" class="product-qty" value="1" min="1" max="99">
+                  <span class="price">45.000₫</span>
+                </label>
+
+                <label class="product-item">
+                  <input type="checkbox" class="product-checkbox" data-name="Vitamin C 500mg" data-price="120000">
+                  <span>Vitamin C 500mg</span>
+                  <input type="number" class="product-qty" value="1" min="1" max="99">
+                  <span class="price">120.000₫</span>
+                </label>
+
+                <label class="product-item">
+                  <input type="checkbox" class="product-checkbox" data-name="Ensure Gold 900g" data-price="890000">
+                  <span>Ensure Gold 900g</span>
+                  <input type="number" class="product-qty" value="1" min="1" max="99">
+                  <span class="price">890.000₫</span>
+                </label>
+
+                <label class="product-item">
+                  <input type="checkbox" class="product-checkbox" data-name="BioGaia 10ml" data-price="350000">
+                  <span>BioGaia 10ml</span>
+                  <input type="number" class="product-qty" value="1" min="1" max="99">
+                  <span class="price">350.000₫</span>
+                </label>
+
+                <label class="product-item">
+                  <input type="checkbox" class="product-checkbox" data-name="Hapacol 80mg" data-price="65000">
+                  <span>Hapacol 80mg</span>
+                  <input type="number" class="product-qty" value="1" min="1" max="99">
+                  <span class="price">65.000₫</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- Tổng tiền -->
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newTotal">Tổng tiền (VNĐ)</label>
+              <input type="number" id="newTotal" class="filter-input" placeholder="VD: 350000" required>
+            </div>
+          </div>
+          <!-- Trạng thái -->
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newStatus">Trạng thái</label>
+              <select id="newStatus" class="status-select">
+                <option value="new">Mới</option>
+                <option value="processing">Đang xử lý</option>
+                <option value="shipped">Đã giao</option>
+                <option value="completed">Hoàn thành</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="modal-actions">
+        <button class="btn-save" id="saveNewOrder">
+          <i class="fas fa-save"></i> Lưu đơn hàng
+        </button>
+        <button class="btn-cancel-order" id="cancelNewOrder">
+          <i class="fas fa-times"></i> Hủy
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- DELETE CONFIRM MODAL -->
+  <div class="modal" id="deleteConfirmModal" role="dialog" aria-modal="true">
+    <div class="modal-content delete-modal">
+      <div class="delete-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="delete-title">Xác nhận xóa đơn hàng</h3>
+      <p class="delete-message">Bạn có chắc chắn muốn xóa đơn hàng này không?</p>
+      <div class="delete-actions">
+        <button class="btn-cancel-order" id="cancelDelete"><i class="fas fa-times"></i> Hủy</button>
+        <button class="btn-delete-confirm" id="confirmDelete"><i class="fas fa-trash-alt"></i> Xóa</button>
+      </div>
+    </div>
+  </div>
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><i class="fas fa-info-circle"></i> VỀ MEDICARE</h3>
+          <a href="#" aria-label="Giới thiệu MediCare">Giới thiệu</a>
+          <a href="#" aria-label="Chính sách bảo mật">Chính sách bảo mật</a>
+          <a href="#" aria-label="Hỗ trợ kỹ thuật">Hỗ trợ kỹ thuật</a>
+        </div>
+        
+        <div class="footer-section">
+          <h3><i class="fas fa-phone"></i> LIÊN HỆ</h3>
+          <div><i class="fas fa-headset"></i> 1900 0908</div>
+          <div><i class="fas fa-envelope"></i> <a href="mailto:support@medicare.vn">support@medicare.vn</a></div>
+        </div>
+        
+        <div class="footer-section">
+          <h3><i class="fas fa-cogs"></i> QUẢN TRỊ</h3>
+          <a href="#" aria-label="Cài đặt tài khoản">Cài đặt tài khoản</a>
+          <a href="#" aria-label="Quản lý người dùng">Quản lý người dùng</a>
+          <a href="#" aria-label="Báo cáo hệ thống">Báo cáo hệ thống</a>
+        </div>
+        
+        <div class="footer-section">
+          <h3><i class="fas fa-question-circle"></i> TRỢ GIÚP</h3>
+          <a href="#" aria-label="Hướng dẫn sử dụng">Hướng dẫn sử dụng</a>
+          <a href="#" aria-label="Câu hỏi thường gặp">FAQs</a>
+          <a href="#" aria-label="Liên hệ hỗ trợ">Liên hệ hỗ trợ</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2025 MediCare Admin Control Panel. All rights reserved.</span>
+        <span class="footer-version">v1.1.0</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

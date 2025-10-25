@@ -2,18 +2,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MediCare Admin Portal - Dashboard</title>
-  <meta name="description" content="Bảng điều khiển quản trị MediCare - Theo dõi đơn hàng, doanh thu, sản phẩm">
+  <title>MediCare Admin - Customer Management</title>
+  <meta name="description" content="Quản lý khách hàng MediCare - Xem, chỉnh sửa, xóa, theo dõi lịch sử đơn hàng">
   <link rel="preload" href="../assets/images/LOGO Vàng MediCare.png" as="image">
   <link rel="preload" href="../assets/images/logo_tròn.png" as="image">
   <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
   <link rel="stylesheet" href="../css/admin_homepage.css">
+  <link rel="stylesheet" href="../css/admin_cusmanagement.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
-  <script src="../js/admin_homepage.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="../js/admin_cusmanagement.js" defer></script>
 </head>
 <body>
   <!-- HEADER -->
@@ -29,7 +30,7 @@
     <div class="admin-header-center">
       <div class="search-container">
         <i class="fas fa-search search-icon"></i>
-        <input type="search" placeholder="Tìm kiếm đơn hàng, sản phẩm..." class="admin-search" 
+        <input type="search" placeholder="Tìm kiếm khách hàng, email..." class="admin-search" 
                aria-label="Tìm kiếm" autocomplete="off">
       </div>
     </div>
@@ -42,7 +43,6 @@
           </svg>
           <span class="notif-badge" aria-hidden="true">3</span>
         </button>
-        
         <!-- Notification Dropdown -->
         <div class="notif-dropdown" id="notifDropdown" role="menu" aria-labelledby="notifBtn">
           <div class="notif-head">
@@ -88,14 +88,13 @@
       </div>
     </div>
   </header>
-
   <!-- MAIN LAYOUT -->
   <div class="admin-layout">
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar" aria-label="Menu điều hướng chính" role="navigation">
       <h3>Danh mục quản trị</h3>
       <nav>
-        <a href="#" class="sidebar-link active" data-label="Dashboard" data-page="dashboard">
+        <a href="admin_homepage.html" class="sidebar-link" data-label="Dashboard" data-page="dashboard">
           <img src="../assets/images/dashboard.png" alt="" class="menu-icon" loading="lazy">
           <span class="menu-text">Dashboard</span>
           <i class="menu-indicator"></i>
@@ -110,7 +109,7 @@
           <span class="menu-text">Quản lý sản phẩm</span>
           <i class="menu-indicator"></i>
         </a>
-        <a href="admin_cusmanagement.html" class="sidebar-link" data-label="Customer Management" data-page="customers">
+        <a href="admin_cusmanagement.html" class="sidebar-link active" data-label="Customer Management" data-page="customers">
           <img src="../assets/images/customer.png" alt="" class="menu-icon" loading="lazy">
           <span class="menu-text">Quản lý khách hàng</span>
           <i class="menu-indicator"></i>
@@ -127,88 +126,187 @@
         </a>
       </nav>
     </aside>
-
     <!-- Main Content -->
     <main class="dashboard-content" id="main-content" tabindex="-1">
       <header class="page-header">
-        <h2>📊 Tổng quan hoạt động</h2>
-        <p>Chào mừng Admin! Dưới đây là các chỉ số hiệu suất thời gian thực.</p>
+        <h2>Quản lý khách hàng</h2>
+        <p>Theo dõi và quản lý thông tin khách hàng, lịch sử mua hàng.</p>
         <div class="page-actions">
-          <button class="btn-refresh" aria-label="Làm mới dữ liệu">
-            <i class="fas fa-sync-alt"></i> Làm mới
-          </button>
-          <button class="btn-export" aria-label="Xuất báo cáo">
-            <i class="fas fa-download"></i> Xuất báo cáo
+          <button class="btn-refresh" id="refreshBtn"><i class="fas fa-sync-alt"></i> Làm mới</button>
+          <button class="btn-export" id="exportBtn"><i class="fas fa-download"></i> Xuất báo cáo</button>
+          <button class="btn-create" id="createCustomerBtn">
+            <i class="fas fa-plus-circle"></i> Tạo khách hàng mới
           </button>
         </div>
       </header>
-
-      <!-- KPI Grid -->
-      <section class="kpi-grid" aria-label="Chỉ số hiệu suất chính">
-        <article class="kpi-card" role="group">
-          <div class="kpi-icon">
-            <i class="fas fa-shopping-cart"></i>
-          </div>
-          <div class="kpi-value" data-value="152" aria-label="152 đơn hàng hôm nay">152</div>
-          <div class="kpi-label">Đơn hàng hôm nay</div>
-          <div class="kpi-trend positive">
-            <i class="fas fa-arrow-up"></i> +12% so với hôm qua
-          </div>
-        </article>
-        
-        <article class="kpi-card" role="group">
-          <div class="kpi-icon">
-            <i class="fas fa-chart-line"></i>
-          </div>
-          <div class="kpi-value" data-value="45.3M₫" aria-label="45.3 triệu đồng doanh thu hôm nay">45.3M₫</div>
-          <div class="kpi-label">Doanh thu hôm nay</div>
-          <div class="kpi-trend positive">
-            <i class="fas fa-arrow-up"></i> +28% so với hôm qua
-          </div>
-        </article>
-        
-        <article class="kpi-card" role="group">
-          <div class="kpi-icon">
-            <i class="fas fa-undo"></i>
-          </div>
-          <div class="kpi-value" data-value="8" aria-label="8 yêu cầu hoàn tiền">8</div>
-          <div class="kpi-label">Yêu cầu hoàn tiền</div>
-          <div class="kpi-trend negative">
-            <i class="fas fa-arrow-down"></i> +2 so với hôm qua
-          </div>
-        </article>
-      </section>
-
-      <!-- Charts Section -->
-      <section class="chart-section" aria-label="Biểu đồ phân tích">
-        <div class="chart-box">
-          <div class="chart-header">
-            <h3>Biểu đồ doanh thu theo tháng</h3>
-            <div class="chart-actions">
-              <button class="chart-btn" aria-label="Xem dữ liệu 7 ngày">
-                <i class="fas fa-calendar-day"></i> 7 ngày
-              </button>
-              <button class="chart-btn active" aria-label="Xem dữ liệu 30 ngày">
-                <i class="fas fa-calendar-week"></i> 30 ngày
-              </button>
-              <button class="chart-btn" aria-label="Xem dữ liệu 12 tháng">
-                <i class="fas fa-calendar-alt"></i> 12 tháng
-              </button>
-            </div>
-          </div>
-          <canvas id="chartRevenue" aria-label="Biểu đồ đường doanh thu theo tháng"></canvas>
+      <!-- FILTER BAR -->
+      <section class="filter-bar">
+        <div class="filter-group">
+          <label for="nameFilter">Tên khách hàng</label>
+          <input type="text" id="nameFilter" class="filter-input" placeholder="Tìm tên...">
         </div>
-        
-        <div class="chart-box">
-          <div class="chart-header">
-            <h3>🏆 Top 5 sản phẩm bán chạy</h3>
-          </div>
-          <canvas id="chartTopProducts" aria-label="Biểu đồ cột top sản phẩm bán chạy"></canvas>
+        <div class="filter-group">
+          <label for="phoneFilter">Số điện thoại</label>
+          <input type="text" id="phoneFilter" class="filter-input" placeholder="Tìm số...">
         </div>
+        <div class="filter-group">
+          <label for="dateFrom">Từ ngày</label>
+          <input type="date" id="dateFrom" class="filter-input">
+        </div>
+        <div class="filter-group">
+          <label for="dateTo">Đến ngày</label>
+          <input type="date" id="dateTo" class="filter-input">
+        </div>
+        <button class="btn-apply" id="applyFilter">Áp dụng</button>
       </section>
+      <!-- TABLE -->
+      <div class="order-table-container">
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tên khách hàng</th>
+              <th>Số điện thoại</th>
+              <th>Địa chỉ</th>
+              <th>Tổng đơn hàng</th>
+              <th>Tổng chi tiêu</th>
+              <th>Đơn hàng cuối</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="customerTableBody"></tbody>
+        </table>
+      </div>
+      <!-- PAGINATION -->
+      <div class="pagination" id="pagination"></div>
     </main>
   </div>
-
+  <!-- CUSTOMER DETAIL MODAL -->
+  <div class="modal" id="customerModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title"><i class="fas fa-user-edit"></i> Chi tiết khách hàng</h2>
+        <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">ID</span>
+              <span class="info-value" id="cusId"></span>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Tên</span>
+              <input type="text" id="cusName" class="info-value editable">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Số điện thoại</span>
+              <input type="text" id="cusPhone" class="info-value editable">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Địa chỉ</span>
+              <input type="text" id="cusAddress" class="info-value editable">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Tổng đơn hàng</span>
+              <span class="info-value" id="cusOrders"></span>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Tổng chi tiêu</span>
+              <span class="info-value" id="cusSpent"></span>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Đơn hàng cuối</span>
+              <span class="info-value" id="cusLastOrder"></span>
+            </div>
+          </div>
+        </div>
+        <!-- ORDER HISTORY -->
+        <div class="order-history">
+          <h4>Lịch sử đơn hàng</h4>
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>ID Đơn</th>
+                <th>Ngày</th>
+                <th>Tổng tiền</th>
+                <th> Trạng thái đơn hàng</th>
+              </tr>
+            </thead>
+            <tbody id="orderHistoryBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- CREATE CUSTOMER MODAL -->
+  <div class="modal" id="createCustomerModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <button class="modal-close" id="createCustomerClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 class="modal-title">
+        <i class="fas fa-user-plus"></i> Tạo khách hàng mới
+      </h3>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newCusName">Tên khách hàng</label>
+              <input type="text" id="newCusName" class="filter-input" placeholder="VD: Nguyễn Văn A" required>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newCusPhone">Số điện thoại</label>
+              <input type="text" id="newCusPhone" class="filter-input" placeholder="VD: 0912345678" required>
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="newCusAddress">Địa chỉ</label>
+              <input type="text" id="newCusAddress" class="filter-input" placeholder="VD: 123 Đường ABC, Quận 1, TP.HCM" required>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ACTION BUTTONS -->
+      <div class="modal-actions">
+        <button class="btn-save" id="saveNewCustomer">
+          <i class="fas fa-save"></i> Lưu khách hàng
+        </button>
+        <button class="btn-cancel-order" id="cancelNewCustomer">
+          <i class="fas fa-times"></i> Hủy
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- DELETE CONFIRM MODAL -->
+  <div class="modal" id="deleteConfirmModal" role="dialog" aria-modal="true">
+    <div class="modal-content delete-modal">
+      <div class="delete-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="delete-title">Xác nhận xóa khách hàng</h3>
+      <p class="delete-message">Bạn có chắc chắn muốn xóa khách hàng này không?</p>
+      <div class="delete-actions">
+        <button class="btn-cancel-order" id="cancelDelete"><i class="fas fa-times"></i> Hủy</button>
+        <button class="btn-delete-confirm" id="confirmDelete"><i class="fas fa-trash-alt"></i> Xóa</button>
+      </div>
+    </div>
+  </div>
   <!-- FOOTER -->
   <footer class="footer" role="contentinfo">
     <div class="footer-inner">

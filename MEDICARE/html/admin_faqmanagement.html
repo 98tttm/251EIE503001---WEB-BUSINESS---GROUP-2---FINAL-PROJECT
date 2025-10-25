@@ -2,18 +2,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MediCare Admin Portal - Dashboard</title>
-  <meta name="description" content="Bảng điều khiển quản trị MediCare - Theo dõi đơn hàng, doanh thu, sản phẩm">
+  <title>MediCare Admin - FAQ Management</title>
+  <meta name="description" content="Quản lý FAQ MediCare - Xem, chỉnh sửa, xóa, thêm câu hỏi thường gặp">
   <link rel="preload" href="../assets/images/LOGO Vàng MediCare.png" as="image">
   <link rel="preload" href="../assets/images/logo_tròn.png" as="image">
   <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
   <link rel="stylesheet" href="../css/admin_homepage.css">
+  <link rel="stylesheet" href="../css/admin_faqmanagement.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
-  <script src="../js/admin_homepage.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="../js/admin_faqmanagement.js" defer></script>
 </head>
 <body>
   <!-- HEADER -->
@@ -29,7 +30,7 @@
     <div class="admin-header-center">
       <div class="search-container">
         <i class="fas fa-search search-icon"></i>
-        <input type="search" placeholder="Tìm kiếm đơn hàng, sản phẩm..." class="admin-search" 
+        <input type="search" placeholder="Tìm kiếm FAQ, câu hỏi..." class="admin-search" 
                aria-label="Tìm kiếm" autocomplete="off">
       </div>
     </div>
@@ -42,7 +43,6 @@
           </svg>
           <span class="notif-badge" aria-hidden="true">3</span>
         </button>
-        
         <!-- Notification Dropdown -->
         <div class="notif-dropdown" id="notifDropdown" role="menu" aria-labelledby="notifBtn">
           <div class="notif-head">
@@ -88,14 +88,13 @@
       </div>
     </div>
   </header>
-
   <!-- MAIN LAYOUT -->
   <div class="admin-layout">
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar" aria-label="Menu điều hướng chính" role="navigation">
       <h3>Danh mục quản trị</h3>
       <nav>
-        <a href="#" class="sidebar-link active" data-label="Dashboard" data-page="dashboard">
+        <a href="admin_homepage.html" class="sidebar-link" data-label="Dashboard" data-page="dashboard">
           <img src="../assets/images/dashboard.png" alt="" class="menu-icon" loading="lazy">
           <span class="menu-text">Dashboard</span>
           <i class="menu-indicator"></i>
@@ -115,100 +114,141 @@
           <span class="menu-text">Quản lý khách hàng</span>
           <i class="menu-indicator"></i>
         </a>
-        <a href="admin_blogmanagement.html" class="sidebar-link" data-label="Marketing Management" data-page="marketing">
-          <img src="../assets/images/marketing.png" alt="" class="menu-icon" loading="lazy">
-          <span class="menu-text">Quản lý Blogs</span>
-          <i class="menu-indicator"></i>
+        <a href="admin_blogmanagement.html" class="sidebar-link" data-label="FAQ Management" data-page="faq">
+        <img src="../assets/images/marketing.png" alt="" class="menu-icon" loading="lazy">
+        <span class="menu-text">Quản lý Blogs</span>
+        <i class="menu-indicator"></i>
         </a>
-        <a href="admin_faqmanagement.html" class="sidebar-link" data-label="Consultation & Support" data-page="support">
-          <img src="../assets/images/consultation.png" alt="" class="menu-icon" loading="lazy">
-          <span class="menu-text">Tư vấn & Hỗ trợ</span>
-          <i class="menu-indicator"></i>
+        <a href="admin_faqmanagement.html" class="sidebar-link active" data-label="Consultation & Support" data-page="support">
+        <img src="../assets/images/consultation.png" alt="" class="menu-icon" loading="lazy">
+        <span class="menu-text">Tư vấn & Hỗ trợ</span>
+        <i class="menu-indicator"></i>
         </a>
       </nav>
     </aside>
-
     <!-- Main Content -->
     <main class="dashboard-content" id="main-content" tabindex="-1">
       <header class="page-header">
-        <h2>📊 Tổng quan hoạt động</h2>
-        <p>Chào mừng Admin! Dưới đây là các chỉ số hiệu suất thời gian thực.</p>
+        <h2>Quản lý FAQ</h2>
+        <p>Theo dõi và quản lý các câu hỏi thường gặp, câu trả lời.</p>
         <div class="page-actions">
-          <button class="btn-refresh" aria-label="Làm mới dữ liệu">
-            <i class="fas fa-sync-alt"></i> Làm mới
-          </button>
-          <button class="btn-export" aria-label="Xuất báo cáo">
-            <i class="fas fa-download"></i> Xuất báo cáo
+          <button class="btn-refresh" id="refreshBtn"><i class="fas fa-sync-alt"></i> Làm mới</button>
+          <button class="btn-export" id="exportBtn"><i class="fas fa-download"></i> Xuất báo cáo</button>
+          <button class="btn-create" id="createFaqBtn">
+            <i class="fas fa-plus-circle"></i> Tạo FAQ mới
           </button>
         </div>
       </header>
-
-      <!-- KPI Grid -->
-      <section class="kpi-grid" aria-label="Chỉ số hiệu suất chính">
-        <article class="kpi-card" role="group">
-          <div class="kpi-icon">
-            <i class="fas fa-shopping-cart"></i>
-          </div>
-          <div class="kpi-value" data-value="152" aria-label="152 đơn hàng hôm nay">152</div>
-          <div class="kpi-label">Đơn hàng hôm nay</div>
-          <div class="kpi-trend positive">
-            <i class="fas fa-arrow-up"></i> +12% so với hôm qua
-          </div>
-        </article>
-        
-        <article class="kpi-card" role="group">
-          <div class="kpi-icon">
-            <i class="fas fa-chart-line"></i>
-          </div>
-          <div class="kpi-value" data-value="45.3M₫" aria-label="45.3 triệu đồng doanh thu hôm nay">45.3M₫</div>
-          <div class="kpi-label">Doanh thu hôm nay</div>
-          <div class="kpi-trend positive">
-            <i class="fas fa-arrow-up"></i> +28% so với hôm qua
-          </div>
-        </article>
-        
-        <article class="kpi-card" role="group">
-          <div class="kpi-icon">
-            <i class="fas fa-undo"></i>
-          </div>
-          <div class="kpi-value" data-value="8" aria-label="8 yêu cầu hoàn tiền">8</div>
-          <div class="kpi-label">Yêu cầu hoàn tiền</div>
-          <div class="kpi-trend negative">
-            <i class="fas fa-arrow-down"></i> +2 so với hôm qua
-          </div>
-        </article>
-      </section>
-
-      <!-- Charts Section -->
-      <section class="chart-section" aria-label="Biểu đồ phân tích">
-        <div class="chart-box">
-          <div class="chart-header">
-            <h3>Biểu đồ doanh thu theo tháng</h3>
-            <div class="chart-actions">
-              <button class="chart-btn" aria-label="Xem dữ liệu 7 ngày">
-                <i class="fas fa-calendar-day"></i> 7 ngày
-              </button>
-              <button class="chart-btn active" aria-label="Xem dữ liệu 30 ngày">
-                <i class="fas fa-calendar-week"></i> 30 ngày
-              </button>
-              <button class="chart-btn" aria-label="Xem dữ liệu 12 tháng">
-                <i class="fas fa-calendar-alt"></i> 12 tháng
-              </button>
-            </div>
-          </div>
-          <canvas id="chartRevenue" aria-label="Biểu đồ đường doanh thu theo tháng"></canvas>
+      <!-- FILTER BAR -->
+      <section class="filter-bar">
+        <div class="filter-group">
+          <label for="questionFilter">Tìm câu hỏi</label>
+          <input type="text" id="questionFilter" class="filter-input" placeholder="Tìm câu hỏi...">
         </div>
-        
-        <div class="chart-box">
-          <div class="chart-header">
-            <h3>🏆 Top 5 sản phẩm bán chạy</h3>
-          </div>
-          <canvas id="chartTopProducts" aria-label="Biểu đồ cột top sản phẩm bán chạy"></canvas>
-        </div>
+        <button class="btn-apply" id="applyFilter">Áp dụng</button>
       </section>
+      <!-- TABLE -->
+      <div class="order-table-container">
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Câu hỏi</th>
+              <th>Câu trả lời</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="faqTableBody"></tbody>
+        </table>
+      </div>
+      <!-- PAGINATION -->
+      <div class="pagination" id="pagination"></div>
     </main>
   </div>
-
+  <!-- FAQ DETAIL MODAL -->
+  <div class="modal" id="faqModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title"><i class="fas fa-question-circle"></i> Chi tiết FAQ</h2>
+        <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <span class="info-label">ID</span>
+              <span class="info-value" id="faqId"></span>
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <span class="info-label">Câu hỏi</span>
+              <input type="text" id="faqQuestion" class="info-value editable">
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <span class="info-label">Câu trả lời</span>
+              <textarea id="faqAnswer" class="info-value editable" rows="10"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions-right">
+        <button class="btn-save-a" id="saveFaq"><i class="fas fa-save"></i> Lưu thay đổi</button>
+      </div>
+    </div>
+  </div>
+  <!-- CREATE FAQ MODAL -->
+  <div class="modal" id="createFaqModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <button class="modal-close" id="createFaqClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 class="modal-title">
+        <i class="fas fa-question-circle"></i> Tạo FAQ mới
+      </h3>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="newFaqQuestion">Câu hỏi</label>
+              <input type="text" id="newFaqQuestion" class="filter-input" placeholder="Nhập câu hỏi..." required>
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="newFaqAnswer">Câu trả lời</label>
+              <textarea id="newFaqAnswer" class="filter-input" rows="10" placeholder="Nhập câu trả lời..." required></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ACTION BUTTONS -->
+      <div class="modal-actions">
+        <button class="btn-save" id="saveNewFaq">
+          <i class="fas fa-save"></i> Lưu FAQ
+        </button>
+        <button class="btn-cancel-order" id="cancelNewFaq">
+          <i class="fas fa-times"></i> Hủy
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- DELETE CONFIRM MODAL -->
+  <div class="modal" id="deleteConfirmModal" role="dialog" aria-modal="true">
+    <div class="modal-content delete-modal">
+      <div class="delete-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="delete-title">Xác nhận xóa FAQ</h3>
+      <p class="delete-message">Bạn có chắc chắn muốn xóa FAQ này không?</p>
+      <div class="delete-actions">
+        <button class="btn-cancel-order" id="cancelDelete"><i class="fas fa-times"></i> Hủy</button>
+        <button class="btn-delete-confirm" id="confirmDelete"><i class="fas fa-trash-alt"></i> Xóa</button>
+      </div>
+    </div>
+  </div>
   <!-- FOOTER -->
   <footer class="footer" role="contentinfo">
     <div class="footer-inner">

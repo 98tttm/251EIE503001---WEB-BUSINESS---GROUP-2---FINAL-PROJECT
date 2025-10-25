@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCare Admin - Quản lý sản phẩm</title>
+  <meta name="description" content="Quản lý sản phẩm MediCare - Xem, chỉnh sửa, thêm sản phẩm, danh mục, thuộc tính các sản phẩm">
+  <link rel="preload" href="../assets/images/LOGO Vàng MediCare.png" as="image">
+  <link rel="preload" href="../assets/images/logo_tròn.png" as="image">
+  <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
+  <link rel="stylesheet" href="../css/admin_homepage.css">
+  <link rel="stylesheet" href="../css/admin_promanagement.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <script src="../js/admin_promanagement.js" defer></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="admin-header" role="banner">
+    <div class="admin-header-left">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Mở/đóng menu sidebar" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <img src="../assets/images/LOGO Vàng MediCare.png" alt="Logo MediCare" class="admin-logo" loading="eager">
+      <h1 class="admin-title">MediCare Admin Portal</h1>
+    </div>
+    <div class="admin-header-center">
+      <div class="search-container">
+        <i class="fas fa-search search-icon" aria-hidden="true"></i>
+        <input type="search" id="searchInput" placeholder="Tìm kiếm sản phẩm, danh mục..." class="admin-search" 
+               aria-label="Tìm kiếm sản phẩm hoặc danh mục" autocomplete="off">
+      </div>
+    </div>
+    <div class="admin-header-right">
+      <div class="admin-icon notif" role="button" tabindex="0" aria-label="Thông báo (3 chưa đọc)">
+        <button class="notif-bell has-unread" id="notifBtn" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M12 2a5 5 0 00-5 5v2.09c0 .53-.21 1.04-.59 1.41L4.7 12.62A1 1 0 005 14h14a1 1 0 00.83-1.57l-1.71-2.12a2 2 0 01-.45-1.28V7a5 5 0 00-5-5zm0 20a3 3 0 01-2.82-2h5.64A3 3 0 0112 22z"/>
+          </svg>
+          <span class="notif-badge" aria-hidden="true">3</span>
+        </button>
+        <div class="notif-dropdown" id="notifDropdown" role="menu" aria-labelledby="notifBtn">
+          <div class="notif-head">
+            <span>Thông báo</span>
+            <span class="notif-count">3 chưa đọc</span>
+          </div>
+          <ul role="menu" aria-label="Danh sách thông báo">
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-shopping-cart"></i>
+                <div>3 sản phẩm mới cần duyệt</div>
+                <span class="notif-time">2 phút trước</span>
+              </div>
+            </li>
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-exclamation-triangle"></i>
+                <div>2 sản phẩm sắp hết hạn</div>
+                <span class="notif-time">1 giờ trước</span>
+              </div>
+            </li>
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-undo"></i>
+                <div>1 yêu cầu cập nhật giá</div>
+                <span class="notif-time">Hôm nay</span>
+              </div>
+            </li>
+          </ul>
+          <a href="#" class="notif-viewall" role="menuitem">Xem tất cả thông báo</a>
+        </div>
+      </div>
+      <div class="admin-user">
+        <img src="../assets/images/avatar_15657781.png" alt="Ảnh đại diện Admin" class="admin-avatar" loading="lazy">
+        <div class="admin-user-info">
+          <span class="admin-name" aria-label="Tên quản trị viên">Admin</span>
+          <span class="admin-role">Quản trị viên</span>
+        </div>
+        <button class="logout-btn" id="logoutBtn" aria-label="Đăng xuất" title="Đăng xuất">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="admin-layout">
+    <aside class="sidebar" id="sidebar" aria-label="Menu điều hướng chính" role="navigation">
+      <h3>Danh mục quản trị</h3>
+      <nav>
+        <a href="admin_homepage.html" class="sidebar-link" data-label="Dashboard" data-page="dashboard">
+          <img src="../assets/images/dashboard.png" alt="Biểu tượng Dashboard" class="menu-icon" loading="lazy">
+          <span class="menu-text">Dashboard</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_ordmanagement.html" class="sidebar-link" data-label="Order Management" data-page="orders">
+          <img src="../assets/images/order1.png" alt="Biểu tượng Quản lý đơn hàng" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý đơn hàng</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_promanagement.html" class="sidebar-link active" data-label="Product Management" data-page="products">
+          <img src="../assets/images/drug.png" alt="Biểu tượng Quản lý sản phẩm" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý sản phẩm</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_cusmanagement.html" class="sidebar-link" data-label="Customer Management" data-page="customers">
+          <img src="../assets/images/customer.png" alt="Biểu tượng Quản lý khách hàng" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý khách hàng</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_blogmanagement.html" class="sidebar-link" data-label="Marketing Management" data-page="marketing">
+          <img src="../assets/images/marketing.png" alt="Biểu tượng Quản lý Marketing" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý Blogs</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_faqmanagement.html" class="sidebar-link" data-label="Consultation & Support" data-page="support">
+          <img src="../assets/images/consultation.png" alt="Biểu tượng Tư vấn & Hỗ trợ" class="menu-icon" loading="lazy">
+          <span class="menu-text">Tư vấn & Hỗ trợ</span>
+          <i class="menu-indicator"></i>
+        </a>
+      </nav>
+    </aside>
+    <main class="dashboard-content" id="main-content" tabindex="-1">
+      <header class="page-header">
+        <h2>Quản lý sản phẩm</h2>
+        <p>Theo dõi và quản lý thông tin sản phẩm của MediCare.</p>
+        <div class="page-actions">
+          <button class="btn-refresh" id="refreshBtn" aria-label="Làm mới danh sách sản phẩm">
+            <i class="fas fa-sync"></i> Làm mới
+          </button>
+          <button class="btn-export" id="exportBtn"><i class="fas fa-download"></i> Xuất báo cáo</button>
+          <button class="btn-create" id="createProductBtn" aria-label="Thêm sản phẩm mới">
+            <i class="fas fa-plus"></i> Thêm sản phẩm
+          </button>
+          <button class="btn-manage" id="manageCategoryBtn" aria-label="Quản lý danh mục">
+            <i class="fas fa-tags"></i> Quản lý danh mục
+          </button>
+        </div>
+      </header>
+      <!-- FILTER BAR -->
+    <section class="filter-bar">
+    <div class="filter-group">
+        <label for="filterName">Tên sản phẩm</label>
+        <input type="text" id="filterName" class="filter-input" placeholder="Tìm theo tên" aria-label="Tìm kiếm theo tên sản phẩm">
+    </div>
+    <div class="filter-group">
+        <label for="filterCategory">Danh mục</label>
+        <select id="filterCategory" class="filter-select" aria-label="Lọc theo danh mục">
+        <option value="">Tất cả</option>
+        <option value="thuoc">Thuốc</option>
+        <option value="vitamin">Vitamin</option>
+        <option value="khangsinh">Kháng sinh</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="filterStatus">Trạng thái</label>
+        <select id="filterStatus" class="filter-select" aria-label="Lọc theo trạng thái">
+        <option value="">Tất cả</option>
+        <option value="active">Hoạt động</option>
+        <option value="pending">Chờ duyệt</option>
+        <option value="inactive">Không hoạt động</option>
+        <option value="expired">Hết hạn</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="filterExpiry">Hạn sử dụng</label>
+        <select id="filterExpiry" class="filter-select" aria-label="Lọc theo hạn sử dụng">
+        <option value="">Tất cả</option>
+        <option value="near">Sắp hết hạn</option>
+        <option value="expired">Hết hạn</option>
+        </select>
+    </div>
+    <button class="btn-apply" id="applyFilter" aria-label="Áp dụng bộ lọc">
+        <i class="fas fa-filter"></i> Áp dụng
+    </button>
+    </section>
+    <!-- TABLE -->
+    <div class="order-table-container">
+    <table class="order-table" aria-label="Bảng danh sách sản phẩm">
+        <thead>
+        <tr>
+            <th></th>
+            <th scope="col">ID</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Danh mục</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Tồn kho</th>
+            <th scope="col">Hạn sử dụng</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Hình ảnh</th>
+            <th scope="col">Đánh giá</th>
+            <th scope="col" class="action-header">Hành động</th>
+        </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+    </table>
+    </div>
+    <!-- PAGINATION -->
+      <div class="pagination" id="pagination"></div>
+    </main>
+  </div>
+  <!-- CREATE PRODUCT MODAL -->
+  <div class="modal" id="createProductModal" role="dialog" aria-modal="true" aria-labelledby="createProductTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="createProductTitle"><i class="fas fa-plus"></i> Thêm sản phẩm mới</h3>
+        <button class="modal-close" id="closeCreateModal" aria-label="Đóng modal thêm sản phẩm"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newProdName">Tên sản phẩm</label>
+              <input type="text" id="newProdName" class="editable" required aria-required="true">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newProdCategory">Danh mục</label>
+              <select id="newProdCategory" class="editable" aria-required="true">
+                <option value="">Chọn danh mục</option>
+                <option value="thuoc">Thuốc</option>
+                <option value="vitamin">Vitamin</option>
+                <option value="khangsinh">Kháng sinh</option>
+              </select>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newProdPrice">Giá (VNĐ)</label>
+              <input type="number" id="newProdPrice" class="editable" min="0" required aria-required="true">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newProdDiscount">Giá khuyến mãi (VNĐ)</label>
+              <input type="number" id="newProdDiscount" class="editable" min="0">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newProdStock">Tồn kho</label>
+              <input type="number" id="newProdStock" class="editable" min="0" required aria-required="true">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newProdExpiry">Hạn sử dụng</label>
+              <input type="date" id="newProdExpiry" class="editable" required aria-required="true">
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="newProdImage">Hình ảnh</label>
+              <input type="file" id="newProdImage" accept="image/*" aria-describedby="newImageHelp">
+              <small id="newImageHelp" class="form-text">Chọn hình ảnh sản phẩm (JPG, PNG).</small>
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="newProdDescription">Mô tả</label>
+              <textarea id="newProdDescription" class="editable" rows="4" aria-describedby="newDescHelp"></textarea>
+              <small id="newDescHelp" class="form-text">Mô tả chi tiết sản phẩm.</small>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newProdStatus">Trạng thái</label>
+              <select id="newProdStatus" class="editable prodStatus" aria-required="true">
+                <option value="active">Hoạt động</option>
+                <option value="pending">Chờ duyệt</option>
+                <option value="inactive">Không hoạt động</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-save" id="saveNewProduct"><i class="fas fa-save"></i> Lưu</button>
+        <button class="btn-cancel" id="cancelCreate"><i class="fas fa-times"></i> Hủy</button>
+      </div>
+    </div>
+  </div>
+  <!-- VIEW PRODUCT MODAL -->
+  <div class="modal" id="viewProductModal" role="dialog" aria-modal="true" aria-labelledby="viewProductTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="viewProductTitle"><i class="fas fa-eye"></i> Xem sản phẩm</h3>
+        <button class="modal-close" id="closeViewModal" aria-label="Đóng modal xem sản phẩm"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card"><strong>ID:</strong> <span id="viewProdId"></span></div>
+          <div class="info-card"><strong>Tên sản phẩm:</strong> <span id="viewProdName"></span></div>
+          <div class="info-card"><strong>Danh mục:</strong> <span id="viewProdCategory"></span></div>
+          <div class="info-card"><strong>Giá:</strong> <span id="viewProdPrice"></span></div>
+          <div class="info-card"><strong>Tồn kho:</strong> <span id="viewProdStock"></span></div>
+          <div class="info-card"><strong>Hạn sử dụng:</strong> <span id="viewProdExpiry"></span></div>
+          <div class="info-card"><strong>Trạng thái:</strong> <span id="viewProdStatus"></span></div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <strong>Hình ảnh:</strong>
+            <img id="viewProdImage" src="" alt="Hình sản phẩm" class="product-img" style="max-width: 120px; border-radius: 8px; margin-top: 8px;">
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <strong>Mô tả:</strong>
+            <p id="viewProdDescription" style="white-space: pre-wrap; margin-top: 4px;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- EDIT PRODUCT MODAL -->
+  <div class="modal" id="editProductModal" role="dialog" aria-modal="true" aria-labelledby="editProductTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="editProductTitle"><i class="fas fa-edit"></i> Chỉnh sửa sản phẩm</h3>
+        <button class="modal-close" id="closeEditModal" aria-label="Đóng modal chỉnh sửa sản phẩm"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label">ID</label>
+              <span id="prodId" class="info-value"></span>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="prodName">Tên sản phẩm</label>
+              <input type="text" id="prodName" class="editable" required aria-required="true">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="prodCategory">Danh mục</label>
+              <select id="prodCategory" class="editable" aria-required="true">
+                <option value="">Chọn danh mục</option>
+                <option value="thuoc">Thuốc</option>
+                <option value="vitamin">Vitamin</option>
+                <option value="khangsinh">Kháng sinh</option>
+              </select>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="prodPrice">Giá (VNĐ)</label>
+              <input type="number" id="prodPrice" class="editable" min="0" required aria-required="true">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="prodDiscount">Giá khuyến mãi (VNĐ)</label>
+              <input type="number" id="prodDiscount" class="editable" min="0">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="prodStock">Tồn kho</label>
+              <input type="number" id="prodStock" class="editable" min="0" required aria-required="true">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="prodExpiry">Hạn sử dụng</label>
+              <input type="date" id="prodExpiry" class="editable" required aria-required="true">
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="prodImage">Hình ảnh</label>
+              <input type="file" id="prodImage" accept="image/*" aria-describedby="imageHelp">
+              <small id="imageHelp" class="form-text">Chọn hình ảnh sản phẩm (JPG, PNG).</small>
+              <img id="prodImagePreview" src="" alt="Xem trước hình ảnh sản phẩm" class="prod-img">
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="prodDescription">Mô tả</label>
+              <textarea id="prodDescription" class="editable" rows="4" aria-describedby="descHelp"></textarea>
+              <small id="descHelp" class="form-text">Mô tả chi tiết sản phẩm.</small>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="prodStatus">Trạng thái</label>
+              <select id="prodStatus" class="editable prodStatus" aria-required="true">
+                <option value="active">Hoạt động</option>
+                <option value="pending">Chờ duyệt</option>
+                <option value="inactive">Không hoạt động</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-save" id="saveProduct" aria-label="Lưu sản phẩm"><i class="fas fa-save"></i> Lưu</button>
+      </div>
+    </div>
+  </div>
+  <!-- CATEGORY MANAGEMENT MODAL -->
+  <div class="modal" id="categoryModal" role="dialog" aria-modal="true" aria-labelledby="categoryTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="categoryTitle"><i class="fas fa-tags"></i> Quản lý danh mục</h3>
+        <button class="modal-close" id="closeCategoryModal" aria-label="Đóng modal quản lý danh mục"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tên danh mục</th>
+              <th class="action-header">Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="categoryTableBody"></tbody>
+        </table>
+        <button class="btn-add" id="addCategoryBtn" aria-label="Thêm danh mục mới">
+          <i class="fas fa-plus"></i> Thêm danh mục
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- CATEGORY EDIT MODAL (small) -->
+  <div class="modal" id="categoryEditModal" aria-modal="true" role="dialog">
+    <div class="modal-content small">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fas fa-tags"></i> Chỉnh sửa danh mục</h3>
+        <button class="modal-close" id="closeCategoryEdit" aria-label="Đóng"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-card">
+          <div class="info-item">
+            <label class="info-label" for="catEditId">ID</label>
+            <input id="catEditId" type="text" disabled>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-item">
+            <label class="info-label" for="catEditName">Tên danh mục</label>
+            <input id="catEditName" type="text" placeholder="Nhập tên danh mục">
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-save" id="saveCategory"><i class="fas fa-save"></i> Lưu</button>
+      </div>
+    </div>
+  </div>
+  <!-- DELETE CATEGORY CONFIRM MODAL -->
+  <div class="modal" id="deleteCategoryModal" role="dialog" aria-modal="true">
+    <div class="modal-content small">
+      <div class="modal-header danger">
+        <h3 class="modal-title"><i class="fas fa-trash-alt"></i> Xác nhận xoá danh mục</h3>
+        <button class="modal-close" id="closeDeleteCategoryModal" aria-label="Đóng"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p id="deleteCategoryMessage" style="margin: 12px 0; font-size: 16px; text-align: center;"></p>
+      </div>
+      <div class="modal-actions">
+        <button id="confirmDeleteCategory" class="btn-danger"><i class="fas fa-trash"></i> Xoá</button>
+        <button id="cancelDeleteCategory" class="btn-cancel"><i class="fas fa-times"></i> Hủy</button>
+      </div>
+    </div>
+  </div>
+  <!-- DELETE CONFIRM MODAL -->
+  <div class="modal" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+    <div class="modal-content delete-modal">
+      <div class="delete-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="delete-title" id="deleteTitle">Xác nhận xóa sản phẩm</h3>
+      <p class="delete-message">Bạn có chắc chắn muốn xóa sản phẩm này không?</p>
+      <div class="delete-actions">
+        <button class="btn-cancel-order" id="cancelDelete" aria-label="Hủy xóa sản phẩm"><i class="fas fa-times"></i> Hủy</button>
+        <button class="btn-delete-confirm" id="confirmDelete" aria-label="Xác nhận xóa sản phẩm"><i class="fas fa-trash-alt"></i> Xóa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><i class="fas fa-info-circle"></i> VỀ MEDICARE</h3>
+          <a href="#" aria-label="Giới thiệu MediCare">Giới thiệu</a>
+          <a href="#" aria-label="Chính sách bảo mật">Chính sách bảo mật</a>
+          <a href="#" aria-label="Hỗ trợ kỹ thuật">Hỗ trợ kỹ thuật</a>
+        </div>
+        <div class="footer-section">
+          <h3><i class="fas fa-phone"></i> LIÊN HỆ</h3>
+          <div><i class="fas fa-headset"></i> 1900 0908</div>
+          <div><i class="fas fa-envelope"></i> <a href="mailto:support@medicare.vn">support@medicare.vn</a></div>
+        </div>
+        <div class="footer-section">
+          <h3><i class="fas fa-cogs"></i> QUẢN TRỊ</h3>
+          <a href="#" aria-label="Cài đặt tài khoản">Cài đặt tài khoản</a>
+          <a href="#" aria-label="Quản lý người dùng">Quản lý người dùng</a>
+          <a href="#" aria-label="Báo cáo hệ thống">Báo cáo hệ thống</a>
+        </div>
+        <div class="footer-section">
+          <h3><i class="fas fa-question-circle"></i> TRỢ GIÚP</h3>
+          <a href="#" aria-label="Hướng dẫn sử dụng">Hướng dẫn sử dụng</a>
+          <a href="#" aria-label="Câu hỏi thường gặp">FAQs</a>
+          <a href="#" aria-label="Liên hệ hỗ trợ">Liên hệ hỗ trợ</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2025 MediCare Admin Control Panel. All rights reserved.</span>
+        <span class="footer-version">v1.1.0</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
