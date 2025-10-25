@@ -1,0 +1,250 @@
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCare Admin Portal - Dashboard</title>
+  <meta name="description" content="Bảng điều khiển quản trị MediCare - Theo dõi đơn hàng, doanh thu, sản phẩm">
+  <link rel="preload" href="../assets/images/LOGO Vàng MediCare.png" as="image">
+  <link rel="preload" href="../assets/images/logo_tròn.png" as="image">
+  <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
+  <link rel="stylesheet" href="../css/admin_homepage.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  <script src="../js/admin_homepage.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="admin-header" role="banner">
+    <div class="admin-header-left">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Mở/đóng menu sidebar" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <img src="../assets/images/LOGO Vàng MediCare.png" alt="Logo MediCare" class="admin-logo" loading="eager">
+      <h1 class="admin-title">MediCare Admin Portal</h1>
+    </div>
+
+    <div class="admin-header-center">
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="search" placeholder="Tìm kiếm đơn hàng, sản phẩm..." class="admin-search" 
+               aria-label="Tìm kiếm" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="admin-header-right">
+      <div class="admin-icon notif" role="button" tabindex="0" aria-label="Thông báo (3 chưa đọc)">
+        <button class="notif-bell has-unread" id="notifBtn" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M12 2a5 5 0 00-5 5v2.09c0 .53-.21 1.04-.59 1.41L4.7 12.62A1 1 0 005 14h14a1 1 0 00.83-1.57l-1.71-2.12a2 2 0 01-.45-1.28V7a5 5 0 00-5-5zm0 20a3 3 0 01-2.82-2h5.64A3 3 0 0112 22z"/>
+          </svg>
+          <span class="notif-badge" aria-hidden="true">3</span>
+        </button>
+        
+        <!-- Notification Dropdown -->
+        <div class="notif-dropdown" id="notifDropdown" role="menu" aria-labelledby="notifBtn">
+          <div class="notif-head">
+            <span>Thông báo</span>
+            <span class="notif-count">3 chưa đọc</span>
+          </div>
+          <ul role="menu" aria-label="Danh sách thông báo">
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-shopping-cart"></i>
+                <div>3 đơn hàng mới hôm nay</div>
+                <span class="notif-time">2 phút trước</span>
+              </div>
+            </li>
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-exclamation-triangle"></i>
+                <div>2 sản phẩm sắp hết HSD</div>
+                <span class="notif-time">1 giờ trước</span>
+              </div>
+            </li>
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-undo"></i>
+                <div>1 yêu cầu hoàn tiền cần xử lý</div>
+                <span class="notif-time">Hôm nay</span>
+              </div>
+            </li>
+          </ul>
+          <a href="#" class="notif-viewall" role="menuitem">Xem tất cả thông báo</a>
+        </div>
+      </div>
+      
+      <div class="admin-user">
+        <img src="../assets/images/avatar_15657781.png" alt="Ảnh đại diện Admin" class="admin-avatar" loading="lazy">
+        <div class="admin-user-info">
+          <span class="admin-name" aria-label="Admin"> Admin </span>
+          <span class="admin-role">Quản trị viên</span>
+        </div>
+        <button class="logout-btn" aria-label="Đăng xuất" title="Đăng xuất">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Menu điều hướng chính" role="navigation">
+      <h3>Danh mục quản trị</h3>
+      <nav>
+        <a href="#" class="sidebar-link active" data-label="Dashboard" data-page="dashboard">
+          <img src="../assets/images/dashboard.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Dashboard</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_ordmanagement.html" class="sidebar-link" data-label="Order Management" data-page="orders">
+          <img src="../assets/images/order1.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý đơn hàng</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_promanagement.html" class="sidebar-link" data-label="Product Management" data-page="products">
+          <img src="../assets/images/drug.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý sản phẩm</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_cusmanagement.html" class="sidebar-link" data-label="Customer Management" data-page="customers">
+          <img src="../assets/images/customer.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý khách hàng</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_blogmanagement.html" class="sidebar-link" data-label="Marketing Management" data-page="marketing">
+          <img src="../assets/images/marketing.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý Blogs</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_faqmanagement.html" class="sidebar-link" data-label="Consultation & Support" data-page="support">
+          <img src="../assets/images/consultation.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Tư vấn & Hỗ trợ</span>
+          <i class="menu-indicator"></i>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-content" id="main-content" tabindex="-1">
+      <header class="page-header">
+        <h2>📊 Tổng quan hoạt động</h2>
+        <p>Chào mừng Admin! Dưới đây là các chỉ số hiệu suất thời gian thực.</p>
+        <div class="page-actions">
+          <button class="btn-refresh" aria-label="Làm mới dữ liệu">
+            <i class="fas fa-sync-alt"></i> Làm mới
+          </button>
+          <button class="btn-export" aria-label="Xuất báo cáo">
+            <i class="fas fa-download"></i> Xuất báo cáo
+          </button>
+        </div>
+      </header>
+
+      <!-- KPI Grid -->
+      <section class="kpi-grid" aria-label="Chỉ số hiệu suất chính">
+        <article class="kpi-card" role="group">
+          <div class="kpi-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <div class="kpi-value" data-value="152" aria-label="152 đơn hàng hôm nay">152</div>
+          <div class="kpi-label">Đơn hàng hôm nay</div>
+          <div class="kpi-trend positive">
+            <i class="fas fa-arrow-up"></i> +12% so với hôm qua
+          </div>
+        </article>
+        
+        <article class="kpi-card" role="group">
+          <div class="kpi-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="kpi-value" data-value="45.3M₫" aria-label="45.3 triệu đồng doanh thu hôm nay">45.3M₫</div>
+          <div class="kpi-label">Doanh thu hôm nay</div>
+          <div class="kpi-trend positive">
+            <i class="fas fa-arrow-up"></i> +28% so với hôm qua
+          </div>
+        </article>
+        
+        <article class="kpi-card" role="group">
+          <div class="kpi-icon">
+            <i class="fas fa-undo"></i>
+          </div>
+          <div class="kpi-value" data-value="8" aria-label="8 yêu cầu hoàn tiền">8</div>
+          <div class="kpi-label">Yêu cầu hoàn tiền</div>
+          <div class="kpi-trend negative">
+            <i class="fas fa-arrow-down"></i> +2 so với hôm qua
+          </div>
+        </article>
+      </section>
+
+      <!-- Charts Section -->
+      <section class="chart-section" aria-label="Biểu đồ phân tích">
+        <div class="chart-box">
+          <div class="chart-header">
+            <h3>Biểu đồ doanh thu theo tháng</h3>
+            <div class="chart-actions">
+              <button class="chart-btn" aria-label="Xem dữ liệu 7 ngày">
+                <i class="fas fa-calendar-day"></i> 7 ngày
+              </button>
+              <button class="chart-btn active" aria-label="Xem dữ liệu 30 ngày">
+                <i class="fas fa-calendar-week"></i> 30 ngày
+              </button>
+              <button class="chart-btn" aria-label="Xem dữ liệu 12 tháng">
+                <i class="fas fa-calendar-alt"></i> 12 tháng
+              </button>
+            </div>
+          </div>
+          <canvas id="chartRevenue" aria-label="Biểu đồ đường doanh thu theo tháng"></canvas>
+        </div>
+        
+        <div class="chart-box">
+          <div class="chart-header">
+            <h3>🏆 Top 5 sản phẩm bán chạy</h3>
+          </div>
+          <canvas id="chartTopProducts" aria-label="Biểu đồ cột top sản phẩm bán chạy"></canvas>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><i class="fas fa-info-circle"></i> VỀ MEDICARE</h3>
+          <a href="#" aria-label="Giới thiệu MediCare">Giới thiệu</a>
+          <a href="#" aria-label="Chính sách bảo mật">Chính sách bảo mật</a>
+          <a href="#" aria-label="Hỗ trợ kỹ thuật">Hỗ trợ kỹ thuật</a>
+        </div>
+        
+        <div class="footer-section">
+          <h3><i class="fas fa-phone"></i> LIÊN HỆ</h3>
+          <div><i class="fas fa-headset"></i> 1900 0908</div>
+          <div><i class="fas fa-envelope"></i> <a href="mailto:support@medicare.vn">support@medicare.vn</a></div>
+        </div>
+        
+        <div class="footer-section">
+          <h3><i class="fas fa-cogs"></i> QUẢN TRỊ</h3>
+          <a href="#" aria-label="Cài đặt tài khoản">Cài đặt tài khoản</a>
+          <a href="#" aria-label="Quản lý người dùng">Quản lý người dùng</a>
+          <a href="#" aria-label="Báo cáo hệ thống">Báo cáo hệ thống</a>
+        </div>
+        
+        <div class="footer-section">
+          <h3><i class="fas fa-question-circle"></i> TRỢ GIÚP</h3>
+          <a href="#" aria-label="Hướng dẫn sử dụng">Hướng dẫn sử dụng</a>
+          <a href="#" aria-label="Câu hỏi thường gặp">FAQs</a>
+          <a href="#" aria-label="Liên hệ hỗ trợ">Liên hệ hỗ trợ</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2025 MediCare Admin Control Panel. All rights reserved.</span>
+        <span class="footer-version">v1.1.0</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

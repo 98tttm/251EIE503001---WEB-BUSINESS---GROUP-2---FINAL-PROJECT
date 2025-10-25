@@ -1,0 +1,373 @@
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCare Admin - Blog Management</title>
+  <meta name="description" content="Quản lý blog MediCare - Xem, chỉnh sửa, xóa, thêm bài viết">
+  <link rel="preload" href="../assets/images/LOGO Vàng MediCare.png" as="image">
+  <link rel="preload" href="../assets/images/logo_tròn.png" as="image">
+  <link rel="icon" type="image/png" href="../assets/images/logo_tròn.png">
+  <link rel="stylesheet" href="../css/admin_homepage.css">
+  <link rel="stylesheet" href="../css/admin_blogmanagement.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="../js/admin_blogmanagement.js" defer></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="admin-header" role="banner">
+    <div class="admin-header-left">
+      <button class="hamburger" id="hamburgerBtn" aria-label="Mở/đóng menu sidebar" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <img src="../assets/images/LOGO Vàng MediCare.png" alt="Logo MediCare" class="admin-logo" loading="eager">
+      <h1 class="admin-title">MediCare Admin Portal</h1>
+    </div>
+
+    <div class="admin-header-center">
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="search" placeholder="Tìm kiếm blog, tác giả..." class="admin-search" 
+               aria-label="Tìm kiếm" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="admin-header-right">
+      <div class="admin-icon notif" role="button" tabindex="0" aria-label="Thông báo (3 chưa đọc)">
+        <button class="notif-bell has-unread" id="notifBtn" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M12 2a5 5 0 00-5 5v2.09c0 .53-.21 1.04-.59 1.41L4.7 12.62A1 1 0 005 14h14a1 1 0 00.83-1.57l-1.71-2.12a2 2 0 01-.45-1.28V7a5 5 0 00-5-5zm0 20a3 3 0 01-2.82-2h5.64A3 3 0 0112 22z"/>
+          </svg>
+          <span class="notif-badge" aria-hidden="true">3</span>
+        </button>
+        <!-- Notification Dropdown -->
+        <div class="notif-dropdown" id="notifDropdown" role="menu" aria-labelledby="notifBtn">
+          <div class="notif-head">
+            <span>Thông báo</span>
+            <span class="notif-count">3 chưa đọc</span>
+          </div>
+          <ul role="menu" aria-label="Danh sách thông báo">
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-shopping-cart"></i>
+                <div>3 đơn hàng mới hôm nay</div>
+                <span class="notif-time">2 phút trước</span>
+              </div>
+            </li>
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-exclamation-triangle"></i>
+                <div>2 sản phẩm sắp hết HSD</div>
+                <span class="notif-time">1 giờ trước</span>
+              </div>
+            </li>
+            <li role="menuitem">
+              <div class="notif-item">
+                <i class="notif-icon fas fa-undo"></i>
+                <div>1 yêu cầu hoàn tiền cần xử lý</div>
+                <span class="notif-time">Hôm nay</span>
+              </div>
+            </li>
+          </ul>
+          <a href="#" class="notif-viewall" role="menuitem">Xem tất cả thông báo</a>
+        </div>
+      </div>
+      
+      <div class="admin-user">
+        <img src="../assets/images/avatar_15657781.png" alt="Ảnh đại diện Admin" class="admin-avatar" loading="lazy">
+        <div class="admin-user-info">
+          <span class="admin-name" aria-label="Admin"> Admin </span>
+          <span class="admin-role">Quản trị viên</span>
+        </div>
+        <button class="logout-btn" aria-label="Đăng xuất" title="Đăng xuất">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+  <!-- MAIN LAYOUT -->
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Menu điều hướng chính" role="navigation">
+      <h3>Danh mục quản trị</h3>
+      <nav>
+        <a href="admin_homepage.html" class="sidebar-link" data-label="Dashboard" data-page="dashboard">
+          <img src="../assets/images/dashboard.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Dashboard</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_ordmanagement.html" class="sidebar-link" data-label="Order Management" data-page="orders">
+          <img src="../assets/images/order1.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý đơn hàng</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_promanagement.html" class="sidebar-link" data-label="Product Management" data-page="products">
+          <img src="../assets/images/drug.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý sản phẩm</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_cusmanagement.html" class="sidebar-link" data-label="Customer Management" data-page="customers">
+          <img src="../assets/images/customer.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý khách hàng</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_blogmanagement.html" class="sidebar-link active" data-label="Marketing Management" data-page="marketing">
+          <img src="../assets/images/marketing.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Quản lý Blogs</span>
+          <i class="menu-indicator"></i>
+        </a>
+        <a href="admin_faqmanagement.html" class="sidebar-link" data-label="Consultation & Support" data-page="support">
+          <img src="../assets/images/consultation.png" alt="" class="menu-icon" loading="lazy">
+          <span class="menu-text">Tư vấn & Hỗ trợ</span>
+          <i class="menu-indicator"></i>
+        </a>
+      </nav>
+    </aside>
+    <!-- Main Content -->
+    <main class="dashboard-content" id="main-content" tabindex="-1">
+      <header class="page-header">
+        <h2>Quản lý Blogs</h2>
+        <p>Quản lý các bài viết blog, thêm mới, chỉnh sửa, xóa.</p>
+        <div class="page-actions">
+          <button class="btn-refresh" id="refreshBtn"><i class="fas fa-sync-alt"></i> Làm mới</button>
+          <button class="btn-export" id="exportBtn"><i class="fas fa-download"></i> Xuất báo cáo</button>
+          <button class="btn-create" id="createBlogBtn">
+            <i class="fas fa-plus-circle"></i> Tạo blog mới
+          </button>
+        </div>
+      </header>
+      <!-- FILTER BAR -->
+      <section class="filter-bar">
+        <div class="filter-group">
+          <label for="titleFilter">Tiêu đề</label>
+          <input type="text" id="titleFilter" class="filter-input" placeholder="Tìm tiêu đề...">
+        </div>
+        <div class="filter-group">
+          <label for="authorFilter">Tác giả</label>
+          <input type="text" id="authorFilter" class="filter-input" placeholder="Tìm tác giả...">
+        </div>
+        <div class="filter-group">
+          <label for="dateFrom">Từ ngày</label>
+          <input type="date" id="dateFrom" class="filter-input">
+        </div>
+        <div class="filter-group">
+          <label for="dateTo">Đến ngày</label>
+          <input type="date" id="dateTo" class="filter-input">
+        </div>
+        <div class="filter-group">
+          <label for="categoryFilter">Danh mục</label>
+          <select id="categoryFilter" class="filter-input">
+            <option value="">Tất cả</option>
+            <option value="Tim Mạch">Tim Mạch</option>
+            <option value="Dinh Dưỡng">Dinh Dưỡng</option>
+            <option value="Người Cao Tuổi">Người Cao Tuổi</option>
+            <option value="Tiêu Hóa">Tiêu Hóa</option>
+          </select>
+        </div>
+        <button class="btn-apply" id="applyFilter">Áp dụng</button>
+      </section>
+      <!-- TABLE -->
+      <div class="order-table-container">
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tiêu đề</th>
+              <th>Tác giả</th>
+              <th>Ngày đăng</th>
+              <th>Danh mục</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="blogTableBody"></tbody>
+        </table>
+      </div>
+      <!-- PAGINATION -->
+      <div class="pagination" id="pagination"></div>
+    </main>
+  </div>
+  <!-- BLOG DETAIL MODAL -->
+  <div class="modal" id="blogModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title"><i class="fas fa-edit"></i> Chi tiết Blog</h2>
+        <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">ID</span>
+              <span class="info-value" id="blogId"></span>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Tiêu đề</span>
+              <input type="text" id="blogTitle" class="info-value editable">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Tác giả</span>
+              <input type="text" id="blogAuthor" class="info-value editable">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Ngày đăng</span>
+              <input type="date" id="blogDate" class="info-value editable">
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-label">Danh mục</span>
+              <select id="blogCategory" class="info-value editable">
+                <option value="Tim Mạch">Tim Mạch</option>
+                <option value="Dinh Dưỡng">Dinh Dưỡng</option>
+                <option value="Người Cao Tuổi">Người Cao Tuổi</option>
+                <option value="Tiêu Hóa">Tiêu Hóa</option>
+              </select>
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <span class="info-label">Tóm tắt</span>
+              <textarea id="blogSummary" class="info-value editable" rows="4"></textarea>
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <span class="info-label">Nội dung (XML format)</span>
+              <textarea id="blogContent" class="info-value editable" rows="10"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-save-a" id="saveBlog"><i class="fas fa-save"></i> Lưu thay đổi</button>
+      </div>
+    </div>
+  </div>
+  <!-- CREATE BLOG MODAL -->
+  <div class="modal" id="createBlogModal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <button class="modal-close" id="createBlogClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 class="modal-title">
+        <i class="fas fa-plus-circle"></i> Tạo blog mới
+      </h3>
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newBlogTitle">Tiêu đề</label>
+              <input type="text" id="newBlogTitle" class="filter-input" placeholder="Nhập tiêu đề..." required>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newBlogAuthor">Tác giả</label>
+              <input type="text" id="newBlogAuthor" class="filter-input" placeholder="Nhập tác giả..." required>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newBlogDate">Ngày đăng</label>
+              <input type="date" id="newBlogDate" class="filter-input" required>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-item">
+              <label class="info-label" for="newBlogCategory">Danh mục</label>
+              <select id="newBlogCategory" class="filter-input" required>
+                <option value="">Chọn danh mục</option>
+                <option value="Tim Mạch">Tim Mạch</option>
+                <option value="Dinh Dưỡng">Dinh Dưỡng</option>
+                <option value="Người Cao Tuổi">Người Cao Tuổi</option>
+                <option value="Tiêu Hóa">Tiêu Hóa</option>
+              </select>
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="newBlogSummary">Tóm tắt</label>
+              <textarea id="newBlogSummary" class="filter-input" rows="4" placeholder="Nhập tóm tắt..." required></textarea>
+            </div>
+          </div>
+          <div class="info-card" style="grid-column: 1 / -1;">
+            <div class="info-item">
+              <label class="info-label" for="newBlogContent">Nội dung (XML format)</label>
+              <textarea id="newBlogContent" class="filter-input" rows="10" placeholder="Nhập nội dung dưới dạng XML..." required></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ACTION BUTTONS -->
+      <div class="modal-actions">
+        <button class="btn-save" id="saveNewBlog">
+          <i class="fas fa-save"></i> Lưu blog
+        </button>
+        <button class="btn-cancel-order" id="cancelNewBlog">
+          <i class="fas fa-times"></i> Hủy
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- DELETE CONFIRM MODAL -->
+  <div class="modal" id="deleteConfirmModal" role="dialog" aria-modal="true">
+    <div class="modal-content delete-modal">
+      <div class="delete-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="delete-title">Xác nhận xóa blog</h3>
+      <p class="delete-message">Bạn có chắc chắn muốn xóa blog này không?</p>
+      <div class="delete-actions">
+        <button class="btn-cancel-order" id="cancelDelete"><i class="fas fa-times"></i> Hủy</button>
+        <button class="btn-delete-confirm" id="confirmDelete"><i class="fas fa-trash-alt"></i> Xóa</button>
+      </div>
+    </div>
+  </div>
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><i class="fas fa-info-circle"></i> VỀ MEDICARE</h3>
+          <a href="#" aria-label="Giới thiệu MediCare">Giới thiệu</a>
+          <a href="#" aria-label="Chính sách bảo mật">Chính sách bảo mật</a>
+          <a href="#" aria-label="Hỗ trợ kỹ thuật">Hỗ trợ kỹ thuật</a>
+        </div>
+        
+        <div class="footer-section">
+          <h3><i class="fas fa-phone"></i> LIÊN HỆ</h3>
+          <div><i class="fas fa-headset"></i> 1900 0908</div>
+          <div><i class="fas fa-envelope"></i> <a href="mailto:support@medicare.vn">support@medicare.vn</a></div>
+        </div>
+        
+        <div class="footer-section">
+          <h3><i class="fas fa-cogs"></i> QUẢN TRỊ</h3>
+          <a href="#" aria-label="Cài đặt tài khoản">Cài đặt tài khoản</a>
+          <a href="#" aria-label="Quản lý người dùng">Quản lý người dùng</a>
+          <a href="#" aria-label="Báo cáo hệ thống">Báo cáo hệ thống</a>
+        </div>
+        
+        <div class="footer-section">
+          <h3><i class="fas fa-question-circle"></i> TRỢ GIÚP</h3>
+          <a href="#" aria-label="Hướng dẫn sử dụng">Hướng dẫn sử dụng</a>
+          <a href="#" aria-label="Câu hỏi thường gặp">FAQs</a>
+          <a href="#" aria-label="Liên hệ hỗ trợ">Liên hệ hỗ trợ</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2025 MediCare Admin Control Panel. All rights reserved.</span>
+        <span class="footer-version">v1.1.0</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

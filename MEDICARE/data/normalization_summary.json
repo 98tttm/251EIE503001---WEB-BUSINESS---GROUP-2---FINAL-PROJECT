@@ -1,0 +1,12 @@
+{
+  "totalProducts": 8118,
+  "errors": 0,
+  "errorDetails": [],
+  "timestamp": "2025-10-17T03:37:56.486Z",
+  "features": {
+    "hasImages": 8118,
+    "hasGallery": 8118,
+    "prescriptionRequired": 4252,
+    "featured": 791
+  }
+}

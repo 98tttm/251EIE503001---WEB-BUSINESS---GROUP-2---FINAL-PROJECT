@@ -1,0 +1,61 @@
+<!-- products.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Sản phẩm</title>
+    <link rel="stylesheet" href="../css/products.css"> <!-- Tái sử dụng CSS, hoặc tạo products.css mới -->
+</head>
+<body>
+    <header>
+        <h1>Danh sách Sản phẩm</h1>
+        <a href="../html/index.html">Quay lại trang chủ</a>
+    </header>
+    <main>
+        <!-- Section 1: Bộ lọc tìm kiếm sản phẩm -->
+        <section id="product-filter" class="product-section">
+            <h2>Bộ lọc</h2>
+            <div class="filter-group">
+                <label for="category-filter">Danh mục:</label>
+                <select id="category-filter">
+                    <option value="">Tất cả</option>
+                    <!-- Danh mục sẽ load bằng JS -->
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="brand-filter">Thương hiệu:</label>
+                <select id="brand-filter">
+                    <option value="">Tất cả</option>
+                    <!-- Thương hiệu sẽ load bằng JS -->
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="price-filter">Giá (VNĐ):</label>
+                <input type="number" id="price-min" placeholder="Tối thiểu" min="0">
+                <input type="number" id="price-max" placeholder="Tối đa" min="0">
+            </div>
+            <button id="apply-filter" class="filter-button">Áp dụng bộ lọc</button>
+            <button id="reset-filter" class="filter-button">Làm mới</button>
+        </section>
+
+        <!-- Section 2: Danh sách sản phẩm -->
+        <section id="product-list" class="product-section">
+            <h2>Sản phẩm</h2>
+            <div id="product-grid" class="product-grid">
+                <!-- Sản phẩm sẽ load bằng JS -->
+            </div>
+            <button id="show-more" class="show-more" style="display: none;">Xem thêm</button>
+        </section>
+
+        <!-- Section 3: Các sản phẩm đã xem -->
+        <section id="viewed-products" class="product-section">
+            <h2>Các sản phẩm đã xem</h2>
+            <div id="viewed-list" class="product-grid">
+                <!-- Sản phẩm đã xem sẽ load bằng JS -->
+            </div>
+        </section>
+    </main>
+    <script src="../js/products.js"></script>
+</body>
+</html>

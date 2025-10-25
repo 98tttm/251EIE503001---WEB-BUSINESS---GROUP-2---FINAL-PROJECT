@@ -1,0 +1,68 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Dependency directories
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+logs*.txt
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage & testing
+coverage/
+.nyc_output/
+jest-test-results.json
+
+# Build outputs
+dist/
+build/
+tmp/
+temp/
+.cache/
+*.tmp
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System batch files
+*.bat
+
+# Database / configs
+database.sqlite
+*.db
+*.db3
+*.sqlite3
+
+# Local test and backup files
+*.bak
+*.old
+*.orig
+
+# Ignore lock files (optional)
+package-lock.json
+yarn.lock
+
+#ignore database files
+data/
+convert.py
+data_drug.csv
+longchau_products.json
+longchau_categories.json
+longchau_products_normalized.json
+longchau_products_fixed.json
+normalization_summary.json
