@@ -93,9 +93,21 @@ async function createDatabaseIndexes(db) {
     // ==================== CARTS COLLECTION ====================
     const carts = db.collection('carts');
     
+    // OLD: unique: true caused error with multiple null userId (guest carts)
+    // await carts.createIndex(
+    //   { userId: 1 },
+    //   { background: true, name: 'idx_user_cart', unique: true }
+    // );
+    
+    // NEW: Use partial index - only index when userId exists (not null)
     await carts.createIndex(
       { userId: 1 },
-      { background: true, name: 'idx_user_cart', unique: true }
+      { 
+        background: true, 
+        name: 'idx_user_cart', 
+        unique: true,
+        partialFilterExpression: { userId: { $exists: true, $ne: null } }
+      }
     );
     
     await carts.createIndex(
