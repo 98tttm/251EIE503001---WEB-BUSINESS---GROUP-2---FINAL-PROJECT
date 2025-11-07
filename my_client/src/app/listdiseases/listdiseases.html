@@ -1,0 +1,289 @@
+<div class="listdiseases-page">
+  <div class="breadcrumb-container">
+    <a routerLink="/" class="breadcrumb-link">Trang chủ</a>
+    <span class="breadcrumb-separator">/</span>
+    <a routerLink="/blogs" class="breadcrumb-link">Chuyên trang sức khỏe</a>
+    <span class="breadcrumb-separator">/</span>
+    @if (viewMode() === 'category' && selectedCategoryName()) {
+      <a routerLink="/diseases" class="breadcrumb-link">Bệnh lý</a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">{{ selectedCategoryName() }}</span>
+    } @else {
+      <span class="breadcrumb-current">Bệnh</span>
+    }
+  </div>
+
+  @if (viewMode() === 'category') {
+    <!-- Category View: Show diseases for selected category -->
+    <div class="category-hero" [class.has-background]="selectedCategoryBackground()">
+      <div class="category-hero-bg" [style.background-image]="selectedCategoryBackground() ? 'url(' + selectedCategoryBackground() + ')' : ''"></div>
+      <div class="category-hero-overlay"></div>
+      <div class="category-hero-content">
+        <div class="category-hero-card">
+          <h1 class="category-title">{{ selectedCategoryName() }}</h1>
+          <p class="category-subtitle">Cùng nhà thuốc MediCare tìm hiểu các bệnh về {{ selectedCategoryName().toLowerCase() }}</p>
+        </div>
+      </div>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Đang tải danh sách bệnh...</p>
+      </div>
+    } @else if (error()) {
+      <div class="error-container">
+        <h2>❌ {{ error() }}</h2>
+        <button (click)="loadAllDiseases(selectedCategory())" class="btn-retry">Thử lại</button>
+      </div>
+    } @else {
+      <!-- Diseases Section for Category -->
+      <div class="category-diseases-section">
+        <div class="section-title">
+          <svg class="book-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 19.5C4 18.837 4.263 18.2011 4.7319 17.7311C5.20081 17.2611 5.83697 17 6.5 17H20.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6.5 4H20.5V20H6.5C5.83697 20 5.20081 19.7389 4.7319 19.2689C4.263 18.7989 4 18.163 4 17.5V6.5C4 5.83697 4.263 5.20081 4.7319 4.7319C5.20081 4.263 5.83697 4 6.5 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 8H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>Các bệnh {{ selectedCategoryName().toLowerCase() }}</span>
+        </div>
+
+        @if (paginatedDiseases().length === 0) {
+          <div class="empty-diseases">
+            <p>Không có bệnh nào trong nhóm này.</p>
+          </div>
+        } @else {
+          <div class="diseases-grid">
+            @for (disease of paginatedDiseases(); track disease.id) {
+              <div class="disease-card-item" (click)="navigateToDisease(disease)">
+                @if (disease.primary_image?.url) {
+                  <div class="disease-card-image">
+                    <img [src]="disease.primary_image!.url" [alt]="disease.name" loading="lazy" decoding="async"
+                         (error)="$event.target.src = 'https://via.placeholder.com/400x300?text=MediCare'; $event.target.onerror = null;"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=MediCare';">
+                  </div>
+                } @else {
+                  <div class="disease-card-image no-image">
+                    <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="200" height="150" fill="#f0f0f0"/>
+                      <text x="100" y="75" font-size="16" fill="#999" text-anchor="middle" dominant-baseline="middle">{{ disease.name.substring(0, 20) }}</text>
+                    </svg>
+                  </div>
+                }
+                <div class="disease-card-content">
+                  <h3 class="disease-card-name">{{ disease.name }}</h3>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="pagination">
+            <button (click)="prevPage()" [disabled]="currentPage() === 1" class="pagination-btn">‹</button>
+            @if (totalPages() <= 10) {
+              @for (pageNumber of [].constructor(totalPages()); track $index) {
+                <button (click)="goToPage($index + 1)" [class.active]="currentPage() === $index + 1" class="pagination-btn">{{ $index + 1 }}</button>
+              }
+            } @else {
+              <span>Trang {{ currentPage() }} / {{ totalPages() }}</span>
+            }
+            <button (click)="nextPage()" [disabled]="currentPage() === totalPages()" class="pagination-btn">›</button>
+          </div>
+        }
+      </div>
+    }
+  } @else {
+    <!-- Default View: Show body parts and specialized groups -->
+    <div class="page-header">
+      <h1 class="page-title">Tìm hiểu về Bệnh</h1>
+    </div>
+
+    @if (loading()) {
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Đang tải danh sách bệnh...</p>
+      </div>
+    } @else if (error()) {
+      <div class="error-container">
+        <h2>❌ {{ error() }}</h2>
+        <button (click)="loadAllDiseases()" class="btn-retry">Thử lại</button>
+      </div>
+    } @else {
+    <div class="human-body-section">
+      <div class="section-title">
+        <svg class="book-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 19.5C4 18.837 4.263 18.2011 4.7319 17.7311C5.20081 17.2611 5.83697 17 6.5 17H20.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6.5 4H20.5V20H6.5C5.83697 20 5.20081 19.7389 4.7319 19.2689C4.263 18.7989 4 18.163 4 17.5V6.5C4 5.83697 4.263 5.20081 4.7319 4.7319C5.20081 4.263 5.83697 4 6.5 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 8H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M8 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>Cơ thể người</span>
+      </div>
+
+      <div class="body-section-content">
+        <!-- Human Body Diagram -->
+        <div class="body-diagram-container">
+          <div class="body-diagram">
+            <img src="/assets/images/icon/cothenguoi.png" alt="Cơ thể người" class="body-diagram-image">
+            <p class="disclaimer">*Hình ảnh chỉ mang tính chất tham khảo.</p>
+          </div>
+        </div>
+
+        <!-- Body Parts List -->
+        <div class="body-parts-list">
+          <button
+            type="button"
+            class="body-part-button"
+            [class.active]="selectedBodyPart() === 'đầu'"
+            (click)="selectBodyPart('đầu')"
+          >
+            <span class="body-part-icon">
+              <img src="/assets/images/icon/dau_e1a16d75e9.png" alt="Đầu">
+            </span>
+            <span class="body-part-label">Đầu</span>
+          </button>
+
+          <button
+            type="button"
+            class="body-part-button"
+            [class.active]="selectedBodyPart() === 'cổ'"
+            (click)="selectBodyPart('cổ')"
+          >
+            <span class="body-part-icon">
+              <img src="/assets/images/icon/co_33c4c49eb3.png" alt="Cổ">
+            </span>
+            <span class="body-part-label">Cổ</span>
+          </button>
+
+          <button
+            type="button"
+            class="body-part-button"
+            [class.active]="selectedBodyPart() === 'ngực'"
+            (click)="selectBodyPart('ngực')"
+          >
+            <span class="body-part-icon">
+              <img src="/assets/images/icon/nguc_221af3d39b.png" alt="Ngực">
+            </span>
+            <span class="body-part-label">Ngực</span>
+          </button>
+
+          <button
+            type="button"
+            class="body-part-button"
+            [class.active]="selectedBodyPart() === 'bụng'"
+            (click)="selectBodyPart('bụng')"
+          >
+            <span class="body-part-icon">
+              <img src="/assets/images/icon/bung_348e9befd6.png" alt="Bụng">
+            </span>
+            <span class="body-part-label">Bụng</span>
+          </button>
+
+          <button
+            type="button"
+            class="body-part-button"
+            [class.active]="selectedBodyPart() === 'sinh dục'"
+            (click)="selectBodyPart('sinh dục')"
+          >
+            <span class="body-part-icon">
+              <img src="/assets/images/icon/sinhduc_38e6d217b5.png" alt="Sinh dục">
+            </span>
+            <span class="body-part-label">Sinh dục</span>
+          </button>
+
+          <button
+            type="button"
+            class="body-part-button"
+            [class.active]="selectedBodyPart() === 'tứ chi'"
+            (click)="selectBodyPart('tứ chi')"
+          >
+            <span class="body-part-icon">
+              <img src="/assets/images/icon/tuchi_bd1dbb8bdd.png" alt="Tứ chi">
+            </span>
+            <span class="body-part-label">Tứ chi</span>
+          </button>
+
+          <button
+            type="button"
+            class="body-part-button"
+            [class.active]="selectedBodyPart() === 'da'"
+            (click)="selectBodyPart('da')"
+          >
+            <span class="body-part-icon">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/96x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/da_8f56485608.png" alt="Da">
+            </span>
+            <span class="body-part-label">Da</span>
+          </button>
+        </div>
+
+        <!-- Diseases List -->
+        <div class="diseases-list-container">
+          @if (paginatedDiseases().length === 0) {
+            <div class="empty-diseases">
+              <p>Không có bệnh nào cho bộ phận này.</p>
+            </div>
+          } @else {
+            <div class="diseases-list">
+              @for (disease of paginatedDiseases(); track disease.id) {
+                <div class="disease-item" (click)="navigateToDisease(disease)">
+                  {{ disease.name }}
+                </div>
+              }
+            </div>
+          }
+
+          <div class="pagination">
+            <button (click)="prevPage()" [disabled]="currentPage() === 1" class="pagination-btn">‹</button>
+            @if (totalPages() <= 10) {
+              @for (pageNumber of [].constructor(totalPages()); track $index) {
+                <button (click)="goToPage($index + 1)" [class.active]="currentPage() === $index + 1" class="pagination-btn">{{ $index + 1 }}</button>
+              }
+            } @else {
+              <span>Trang {{ currentPage() }} / {{ totalPages() }}</span>
+            }
+            <button (click)="nextPage()" [disabled]="currentPage() === totalPages()" class="pagination-btn">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Specialized Disease Groups Section -->
+    <div class="specialized-disease-section">
+      <div class="specialized-disease-header">
+        <div class="specialized-disease-title">
+          <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/64x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/danh_muc_noi_bat_d03496597a.png" alt="Nhóm bệnh chuyên khoa" class="specialized-title-icon">
+          <span class="specialized-title-text">Nhóm bệnh chuyên khoa</span>
+        </div>
+      </div>
+
+      @if (filteredSpecializedGroups().length === 0) {
+        <div class="empty-specialized-groups">
+          <p>Không có nhóm bệnh chuyên khoa phù hợp.</p>
+        </div>
+      } @else {
+        <div class="specialized-grid">
+          @for (group of displayedSpecializedGroups(); track group.id) {
+            <div class="specialized-card" (click)="selectSpecializedGroup(group.id)">
+              <div class="specialized-card-image">
+                <img [src]="group.icon" [alt]="group.name">
+              </div>
+              <div class="specialized-card-info">
+                <h3 class="specialized-title">{{ group.name }}</h3>
+                <p class="specialized-count">{{ group.count | number }} bài viết</p>
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (showMoreSpecializedGroupsVisible() && showMoreSpecializedGroupsLabel()) {
+          <div class="view-more-container">
+            <button class="view-more-link" type="button" (click)="toggleSpecializedGroups()">
+              {{ showMoreSpecializedGroupsLabel() }}
+            </button>
+          </div>
+        }
+      }
+    </div>
+  }
+  }
+</div>

@@ -1,0 +1,219 @@
+<div class="medicine-request-page">
+  <div class="container">
+    <!-- Header -->
+    <div class="page-header">
+      <button class="back-btn" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Quay lại
+      </button>
+      <h1 class="page-title">Cần mua thuốc</h1>
+    </div>
+
+    <div class="content-layout">
+      <!-- Left Column - Form -->
+      <div class="form-column">
+        <!-- Contact Information -->
+        <section class="form-section">
+          <h2 class="section-title">Thông tin liên hệ</h2>
+          
+          <div class="form-group">
+            <label class="form-label">Họ và tên <span class="required">*</span></label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="Nhập họ và tên đầy đủ"
+              [value]="fullName()"
+              (input)="fullName.set($any($event.target).value)"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Số điện thoại <span class="required">*</span></label>
+            <input
+              type="tel"
+              class="form-input"
+              placeholder="Nhập số điện thoại"
+              [value]="phoneNumber()"
+              (input)="phoneNumber.set($any($event.target).value)"
+              maxlength="11"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Ghi chú (không bắt buộc)</label>
+            <textarea
+              class="form-textarea"
+              rows="4"
+              placeholder="Ví dụ: Tôi cần tư vấn thuốc về bệnh đau dạ dày"
+              [value]="notes()"
+              (input)="notes.set($any($event.target).value)"
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- Prescription Images -->
+        <section class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">Thêm ảnh nếu có đơn thuốc (không bắt buộc)</h2>
+            <p class="section-subtitle">Giúp dược sĩ tư vấn chính xác nhất</p>
+          </div>
+
+          <div class="image-upload-area">
+            <input
+              type="file"
+              id="prescription-upload"
+              accept="image/*"
+              multiple
+              (change)="onImageSelect($event)"
+              style="display: none;"
+            />
+            
+            <label for="prescription-upload" class="upload-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Thêm ảnh</span>
+            </label>
+
+            <!-- Image Previews -->
+            @if (imagePreviewUrls().length > 0) {
+              <div class="image-preview-grid">
+                @for (url of imagePreviewUrls(); track $index) {
+                  <div class="image-preview-item">
+                    <img [src]="url" [alt]="'Ảnh ' + ($index + 1)" />
+                    <button class="remove-image-btn" (click)="removeImage($index)" type="button">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Medicine Names -->
+        <section class="form-section">
+          <div class="section-header">
+            <h2 class="section-title">Thêm thuốc cần tư vấn (không bắt buộc)</h2>
+            <p class="section-subtitle">Nhập theo tên thuốc hoặc sản phẩm</p>
+          </div>
+
+          <!-- Medicine List -->
+          @if (medicineNames().length > 0) {
+            <div class="medicine-list">
+              @for (medicine of medicineNames(); track $index) {
+                <div class="medicine-item">
+                  <span class="medicine-name">{{ medicine }}</span>
+                  <button class="remove-medicine-btn" (click)="removeMedicine($index)" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Add Medicine Input -->
+          @if (showMedicineInput()) {
+            <div class="add-medicine-input">
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Nhập tên thuốc hoặc sản phẩm"
+                [value]="newMedicineName()"
+                (input)="newMedicineName.set($any($event.target).value)"
+                (keyup.enter)="addMedicine()"
+                (blur)="showMedicineInput.set(false)"
+              />
+              <button class="add-btn" (click)="addMedicine()" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+          } @else {
+            <button class="add-medicine-btn" (click)="showMedicineInput.set(true)" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Thêm thuốc</span>
+            </button>
+          }
+        </section>
+
+        <!-- Submit Button -->
+        <div class="submit-section">
+          <button
+            class="submit-btn"
+            (click)="submitRequest()"
+            [disabled]="submitting() || !fullName().trim() || !phoneNumber().trim()"
+          >
+            @if (submitting()) {
+              <span class="spinner"></span>
+              <span>Đang gửi...</span>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+              </svg>
+              <span>Gửi yêu cầu tư vấn</span>
+            }
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column - Information -->
+      <div class="info-column">
+        <!-- Process Steps -->
+        <section class="info-section">
+          <h3 class="info-title">Quy trình tư vấn tại MediCare</h3>
+          
+          <div class="process-steps">
+            <div class="process-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <p>Quý khách vui lòng điền thông tin liên hệ, cung cấp ảnh đơn thuốc hoặc tên sản phẩm cần tư vấn (nếu có).</p>
+              </div>
+            </div>
+
+            <div class="process-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <p>Dược sĩ chuyên môn của nhà thuốc sẽ gọi lại tư vấn miễn phí cho quý khách.</p>
+              </div>
+            </div>
+
+            <div class="process-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <p>Quý khách có thể tới các Nhà thuốc MediCare gần nhất để được hỗ trợ mua hàng trực tiếp.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Notes -->
+        <section class="info-section">
+          <h3 class="info-title">Lưu ý:</h3>
+          <ul class="notes-list">
+            <li>Nếu mua thuốc kê đơn, vui lòng mang theo đơn thuốc.</li>
+            <li>Dược sĩ vẫn sẽ chủ động tư vấn cho quý khách kể cả trong trường hợp không có đơn thuốc.</li>
+          </ul>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>
+

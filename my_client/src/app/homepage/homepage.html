@@ -1,0 +1,667 @@
+<div class="homepage">
+  <!-- Hero Banner with Slides -->
+  <section class="hero-banner-section">
+    <div class="hero-banner-container">
+      <!-- Background Image Layers for smooth crossfade -->
+      <div class="hero-background-layer layer-a" 
+           [style.background-image]="'url(' + bgImageA() + ')'"
+           [class.visible]="isBgAVisible()">
+      </div>
+      <div class="hero-background-layer layer-b" 
+           [style.background-image]="'url(' + bgImageB() + ')'"
+           [class.visible]="!isBgAVisible()">
+      </div>
+      
+      <!-- Content Layer -->
+      <div class="hero-content-layer">
+        <!-- Central Slide Container - Top -->
+        <div class="hero-slide-center">
+          <!-- Slide Navigation Arrows - Left and Right -->
+          <button class="nav-arrow nav-prev-side" (click)="prevSlide()">‹</button>
+          <button class="nav-arrow nav-next-side" (click)="nextSlide()">›</button>
+          
+          <div class="slide-content">
+            <!-- Placeholder to keep height -->
+            <img [src]="slideImgA()" alt="placeholder" class="slide-image-placeholder">
+            <!-- Crossfade slide images -->
+            <img [src]="slideImgA()" alt="Slide A" class="slide-image-layer" [class.visible]="isSlideAVisible()">
+            <img [src]="slideImgB()" alt="Slide B" class="slide-image-layer" [class.visible]="!isSlideAVisible()">
+          </div>
+          
+          <!-- Slide Navigation Dots -->
+          <div class="slide-nav">
+            <div class="slide-dots">
+              @for (slide of heroSlides(); track slide.id; let i = $index) {
+                <span class="dot" [class.active]="currentSlideIndex() === i" (click)="goToSlide(i)"></span>
+              }
+            </div>
+          </div>
+        </div>
+        
+        <!-- Feature Images - Bottom Center -->
+        <div class="hero-feature-bottom">
+          <div class="feature-card feature-left" 
+               (mouseenter)="pauseFeatureBannerAutoPlay()" 
+               (mouseleave)="resumeFeatureBannerAutoPlay()">
+            <button class="feature-nav prev" (click)="prevFeatureBanner(); $event.stopPropagation()">‹</button>
+            <div class="feature-banner-clickable" (click)="onFeatureBannerClick()" style="cursor: pointer;">
+              <img [src]="featureImgA()" alt="Feature Banner A" class="feature-image-layer" [class.visible]="isFeatureImgAVisible()" loading="lazy" decoding="async">
+              <img [src]="featureImgB()" alt="Feature Banner B" class="feature-image-layer" [class.visible]="!isFeatureImgAVisible()" loading="lazy" decoding="async">
+            </div>
+            <button class="feature-nav next" (click)="nextFeatureBanner(); $event.stopPropagation()">›</button>
+            <div class="feature-dots">
+              @for (banner of featureBannerList(); track banner; let i = $index) {
+                <span class="feature-dot" [class.active]="featureIndex() === i" (click)="goToFeatureBanner(i); $event.stopPropagation()"></span>
+              }
+            </div>
+          </div>
+          <div class="feature-right-wrapper">
+            <div class="feature-card">
+              <img [src]="featureImages().right" alt="Feature Right Top" class="feature-image" loading="lazy" decoding="async">
+            </div>
+            <div class="feature-card">
+              <img [src]="featureImages().rightBottom" alt="Feature Right Bottom" class="feature-image" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Access Section -->
+  <section class="quick-access-section">
+    <div class="quick-access-container">
+      <div class="quick-access-buttons">
+        <button class="quick-access-btn" (click)="navigateToMedicineRequest()">
+          <img src="/assets/images/icon/canmuathuoc.png" alt="Cần mua thuốc" class="btn-icon">
+          <span class="btn-text">Cần mua thuốc</span>
+        </button>
+        <button class="quick-access-btn" (click)="navigateToPharmacistChat()">
+          <img src="/assets/images/icon/bacsi.png" alt="Tư vấn với Dược Sĩ" class="btn-icon">
+          <span class="btn-text">Tư vấn với Dược Sĩ</span>
+        </button>
+        <button class="quick-access-btn" (click)="navigateToOrders()">
+          <img src="/assets/images/icon/my_order.png" alt="Đơn của tôi" class="btn-icon">
+          <span class="btn-text">Đơn của tôi</span>
+        </button>
+        <button class="quick-access-btn" (click)="navigateToDrugSearch()">
+          <img src="/assets/images/icon/tracuuthuoc.png" alt="Tra cứu thuốc" class="btn-icon">
+          <span class="btn-text">Tra cứu thuốc</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flash Sale Section - Independent Section -->
+  <section class="flash-sale-section">
+    <div class="flash-sale-container">
+      <!-- Flash Sale Header with MECA -->
+      <div class="flash-sale-header">
+        <div class="flash-sale-banner-wrapper">
+          <!-- MECA Robot floating next to title -->
+          <img [src]="mecaImage()" alt="MECA" class="meca-image-floating" loading="lazy" decoding="async">
+          <div class="flash-sale-banner">
+            <img [src]="flashSaleBanner()" alt="Flash Sale" class="banner-image" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </div>
+      <div class="flash-sale-time-slots-wrapper">
+        <div class="flash-sale-time-slots">
+          @for (slot of flashSaleTimeSlots(); track slot.id; let i = $index) {
+            <div class="time-slot" 
+                 [class.active]="currentFlashSaleIndex() === i"
+                 (click)="selectFlashSaleSlot(i)">
+              <div class="slot-time">{{slot.startTime}} - {{slot.endTime}}, {{slot.date}}</div>
+              <div class="slot-status" [class]="slot.status">
+                @if (slot.status === 'active') {
+                  @if (timeSlotCountdown()[slot.id]) {
+                    <span>Đang diễn ra</span>
+                    <div class="realtime-countdown">
+                      Còn lại: {{timeSlotCountdown()[slot.id].hours.toString().padStart(2, '0')}}:{{timeSlotCountdown()[slot.id].minutes.toString().padStart(2, '0')}}:{{timeSlotCountdown()[slot.id].seconds.toString().padStart(2, '0')}}
+                    </div>
+                  } @else {
+                    <span>Đang diễn ra</span>
+                  }
+                } @else if (slot.status === 'upcoming') {
+                  @if (timeSlotCountdown()[slot.id]) {
+                    <span>Sắp diễn ra</span>
+                    <div class="realtime-countdown">
+                      Còn: {{timeSlotCountdown()[slot.id].hours.toString().padStart(2, '0')}}:{{timeSlotCountdown()[slot.id].minutes.toString().padStart(2, '0')}}:{{timeSlotCountdown()[slot.id].seconds.toString().padStart(2, '0')}}
+                    </div>
+                  } @else {
+                    <span>Sắp diễn ra</span>
+                  }
+                } @else {
+                  <span>Đã kết thúc</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+        @if (currentFlashSaleSlot()) {
+          <div class="flash-sale-countdown">
+            <div class="countdown-label">Kết thúc sau</div>
+            <div class="countdown-timer">
+              @if (timeSlotCountdown()[currentFlashSaleSlot()!.id]) {
+                <div class="timer-unit">
+                  <span class="timer-value">{{timeSlotCountdown()[currentFlashSaleSlot()!.id].hours.toString().padStart(2, '0')}}</span>
+                </div>
+                <span class="timer-separator">:</span>
+                <div class="timer-unit">
+                  <span class="timer-value">{{timeSlotCountdown()[currentFlashSaleSlot()!.id].minutes.toString().padStart(2, '0')}}</span>
+                </div>
+                <span class="timer-separator">:</span>
+                <div class="timer-unit">
+                  <span class="timer-value">{{timeSlotCountdown()[currentFlashSaleSlot()!.id].seconds.toString().padStart(2, '0')}}</span>
+                </div>
+              } @else {
+                <div class="timer-unit">
+                  <span class="timer-value">00</span>
+                </div>
+                <span class="timer-separator">:</span>
+                <div class="timer-unit">
+                  <span class="timer-value">00</span>
+                </div>
+                <span class="timer-separator">:</span>
+                <div class="timer-unit">
+                  <span class="timer-value">00</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+      <div class="flash-sale-products">
+        @if (flashSaleLoading()) {
+          <div class="flash-sale-loading">
+            <div class="loading-spinner"></div>
+            <p>Đang tải sản phẩm...</p>
+          </div>
+        } @else {
+          @if (flashSaleProducts().length > 0) {
+            <button class="carousel-nav-btn carousel-prev" (click)="scrollFlashSaleProducts(-300)">‹</button>
+            <div class="product-carousel" id="flashSaleProducts">
+              <div class="product-list">
+                @for (product of flashSaleProducts(); track product.id) {
+                  <div class="product-card" (click)="navigateToProduct(product.id)">
+                    <div class="discount-badge">-{{product.discount}}%</div>
+                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" class="product-image" loading="lazy" decoding="async"
+                         (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+                    <div class="product-info">
+                      <div class="product-name">{{product.name}}</div>
+                      @if (product.originalPrice) {
+                        <div class="product-price">
+                          <span class="current-price">{{product.price.toLocaleString('vi-VN')}}đ</span>
+                          @if (product.unit) {
+                            <span class="price-unit"> / {{product.unit}}</span>
+                          }
+                          <div class="original-price">{{product.originalPrice.toLocaleString('vi-VN')}}đ</div>
+                        </div>
+                      } @else {
+                        <div class="product-price">
+                          <span class="current-price">{{product.price.toLocaleString('vi-VN')}}đ</span>
+                          @if (product.unit) {
+                            <span class="price-unit"> / {{product.unit}}</span>
+                          }
+                        </div>
+                      }
+                      <button class="view-detail-btn" (click)="navigateToProduct(product.id); $event.stopPropagation()">
+                        Xem chi tiết
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+            <button class="carousel-nav-btn carousel-next" (click)="scrollFlashSaleProducts(300)">›</button>
+          } @else {
+            <div class="flash-sale-empty">
+              <p>Chưa có sản phẩm flash sale</p>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Best Seller Products Section -->
+  <section class="best-seller-section">
+    <div class="best-seller-container">
+      <div class="best-seller-header">
+        <div class="best-seller-title-banner">
+          <img src="/assets/images/icon/tag.webp" alt="Tag" class="title-icon">
+          <span class="title-text">Sản phẩm bán chạy nhất</span>
+        </div>
+      </div>
+      <div class="best-seller-products">
+        @if (bestSellerLoading()) {
+          <div class="flash-sale-loading">
+            <div class="loading-spinner"></div>
+            <p>Đang tải sản phẩm...</p>
+          </div>
+        } @else {
+          @if (bestSellerProducts().length > 0) {
+            <button class="carousel-nav-btn carousel-prev" (click)="scrollBestSellerProducts(-300)">‹</button>
+            <div class="product-carousel" id="bestSellerProducts">
+              <div class="product-list">
+                @for (product of bestSellerProducts(); track product.id) {
+                  <div class="product-card" (click)="navigateToProduct(product.id)">
+                    @if (product.discount && product.discount > 0) {
+                      <div class="discount-badge">-{{product.discount}}%</div>
+                    }
+                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" class="product-image" loading="lazy" decoding="async"
+                         (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+                    <div class="product-info">
+                      <div class="product-name">{{product.name}}</div>
+                      @if (product.originalPrice) {
+                        <div class="product-price">
+                          <span class="current-price">{{product.price.toLocaleString('vi-VN')}}đ</span>
+                          @if (product.unit) {
+                            <span class="price-unit"> / {{product.unit}}</span>
+                          }
+                          <div class="original-price">{{product.originalPrice.toLocaleString('vi-VN')}}đ</div>
+                        </div>
+                      } @else {
+                        <div class="product-price">
+                          <span class="current-price">{{product.price.toLocaleString('vi-VN')}}đ</span>
+                          @if (product.unit) {
+                            <span class="price-unit"> / {{product.unit}}</span>
+                          }
+                        </div>
+                      }
+                      <button class="view-detail-btn" (click)="navigateToProduct(product.id); $event.stopPropagation()">
+                        Xem chi tiết
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+            <button class="carousel-nav-btn carousel-next" (click)="scrollBestSellerProducts(300)">›</button>
+          } @else {
+            <div class="flash-sale-empty">
+              <p>Chưa có sản phẩm bán chạy</p>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Marketing Banner Section -->
+  <section class="marketing-banner-section">
+    <div class="marketing-banner-container">
+      <div class="marketing-banner-header">
+        <div class="marketing-banner-title">
+          <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/64x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/cup_27b76e93c4_802538ef4f.webp" alt="Túi nhỏ đa-zi-năng" class="marketing-title-icon">
+          <span class="marketing-title-text">Túi nhỏ đa-zi-năng</span>
+        </div>
+      </div>
+      <div class="marketing-banner-content">
+        <div class="marketing-banner-top">
+          <div class="marketing-banner-item left" (click)="navigateToBrand('laroche-posay')" style="cursor: pointer;">
+            <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/1280x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/D_Story_telling_1_600x213_5_441e77a434.png" alt="Hiểu đúng về thuốc" class="marketing-banner-image" loading="lazy" decoding="async">
+          </div>
+          <div class="marketing-banner-item right" (click)="navigateToBrand('laroche-posay')" style="cursor: pointer;">
+            <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/1280x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/D_Story_telling_2_600x213_5_82b1dcf01f.png" alt="Dịu mắt cả ngày" class="marketing-banner-image" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <div class="marketing-banner-bottom" (click)="navigateToBrand('laroche-posay')" style="cursor: pointer;">
+          <img src="/assets/images/theme_banner/mkt.png" alt="Túi nhỏ đa-zi-năng" class="marketing-banner-large" loading="lazy" decoding="async">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Categories Section -->
+  <section class="featured-categories-section">
+    <div class="featured-categories-container">
+      <div class="featured-categories-header">
+        <div class="featured-categories-title">
+          <img src="/assets/images/icon/danhmucnoibat.png" alt="Danh mục nổi bật" class="featured-title-icon">
+          <span class="featured-title-text">Danh mục nổi bật</span>
+        </div>
+      </div>
+      <div class="featured-categories-grid">
+        @for (category of featuredCategories(); track category.id) {
+          <div class="category-card" (click)="navigateToCategory(category.slug)">
+            <div class="category-icon-wrapper">
+              <img [src]="category.icon" [alt]="category.name" class="category-icon" [attr.loading]="'eager'">
+            </div>
+            <div class="category-name">{{category.name}}</div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Favorite Brands Section -->
+  <section class="favorite-brands-section">
+    <div class="favorite-brands-container">
+      <div class="favorite-brands-header">
+        <div class="favorite-brands-title">
+          <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/64x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/cup_27b76e93c4_802538ef4f.webp" alt="Thương hiệu yêu thích" class="favorite-title-icon">
+          <span class="favorite-title-text">Thương hiệu yêu thích</span>
+        </div>
+      </div>
+      <div class="favorite-brands-carousel-wrapper">
+        <button class="carousel-nav-btn carousel-prev" (click)="scrollFavoriteBrands(-300)">‹</button>
+        <div class="favorite-brands-carousel" id="favoriteBrandsCarousel">
+          <div class="favorite-brands-list">
+            <!-- Jpanwell -->
+            <div class="brand-card" (click)="navigateToBrand('jpanwell')">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/00503274_vien_uong_chong_lao_hoa_lam_dep_da_nmn_premium_21600_60v_1865_63e4_large_5bf0c423ec.jpg" alt="Jpanwell Product" class="brand-product-image" loading="lazy" decoding="async">
+              <div class="brand-logo-wrapper">
+                <img src="/assets/images/thuonghieu/Jpanwell.webp" alt="Jpanwell Logo" class="brand-logo" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <!-- Ocavill -->
+            <div class="brand-card" (click)="navigateToBrand('ocavill')">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_08507_dda074fe01.png" alt="Ocavill Product" class="brand-product-image" loading="lazy" decoding="async">
+              <div class="brand-logo-wrapper">
+                <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/OCAVILL_1_0fa129f445.png" alt="Ocavill Logo" class="brand-logo" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <!-- Brauer -->
+            <div class="brand-card" (click)="navigateToBrand('brauer')">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_01916_d9fd6ed671.jpg" alt="Brauer Product" class="brand-product-image" loading="lazy" decoding="async">
+              <div class="brand-logo-wrapper">
+                <img src="/assets/images/thuonghieu/brauer.webp" alt="Brauer Logo" class="brand-logo" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <!-- Vitamins For Life -->
+            <div class="brand-card" (click)="navigateToBrand('vitamins-for-life')">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/00033383_vien_uong_ho_tro_tim_mach_omega_plus_10_vitamins_for_life_60v_1049_620b_large_51c80bec0e.jpg" alt="Vitamins For Life Product" class="brand-product-image" loading="lazy" decoding="async">
+              <div class="brand-logo-wrapper">
+                <img src="/assets/images/thuonghieu/Vitamins_For_Life.webp" alt="Vitamins For Life Logo" class="brand-logo" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <!-- Vitabiotics -->
+            <div class="brand-card" (click)="navigateToBrand('vitabiotics')">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_00437_Recovered_e28e272a49.jpg" alt="Vitabiotics Product" class="brand-product-image" loading="lazy" decoding="async">
+              <div class="brand-logo-wrapper">
+                <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Vitabiotics_1_8d1424372d.png" alt="Vitabiotics Logo" class="brand-logo" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <!-- Datino -->
+            <div class="brand-card" (click)="navigateToBrand('datino')">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_09752_24fda6614d.jpg" alt="Datino Product" class="brand-product-image" loading="lazy" decoding="async">
+              <div class="brand-logo-wrapper">
+                <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/Datino_2_5bb24a0318.png" alt="Datino Logo" class="brand-logo" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <!-- Okamoto -->
+            <div class="brand-card" (click)="navigateToBrand('okamoto')">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_09728_0364c338ed.jpg" alt="Okamoto Product" class="brand-product-image" loading="lazy" decoding="async">
+              <div class="brand-logo-wrapper">
+                <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/OKAMOTO_1_0c3fb5d4a4.png" alt="Okamoto Logo" class="brand-logo" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <!-- Pearlie White -->
+            <div class="brand-card" (click)="navigateToBrand('pearlie-white')">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/DSC_01905_6147649932.jpg" alt="Pearlie White Product" class="brand-product-image" loading="lazy" decoding="async">
+              <div class="brand-logo-wrapper">
+                <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/202005_PW_Pearlie_White_Logo_Horizontal_1200x1200_5b570c5f2f.webp" alt="Pearlie White Logo" class="brand-logo" loading="lazy" decoding="async">
+              </div>
+            </div>
+            <!-- KamiCARE -->
+            <div class="brand-card" (click)="navigateToBrand('kamicare')">
+              <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/00503113_tam_bong_nguoi_lon_kamicare_hop_tron_200_que_1_dau_xoan_1_dau_thuong_7880_642c_large_bf675d3230.jpg" alt="KamiCARE Product" class="brand-product-image" loading="lazy" decoding="async">
+              <div class="brand-logo-wrapper">
+                <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/256x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Kami_Care_8942b73aeb.png" alt="KamiCARE Logo" class="brand-logo" loading="lazy" decoding="async">
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-nav-btn carousel-next" (click)="scrollFavoriteBrands(300)">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Today Section -->
+  <section class="featured-products-today-section">
+    <div class="featured-products-today-container">
+      <div class="featured-products-today-header">
+        <div class="featured-products-today-title">
+          <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/28x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/noi_bat_hom_nay_38f9f1008e.png" alt="Sản phẩm nổi bật hôm nay" class="featured-today-icon">
+          <span class="featured-today-text">Sản phẩm nổi bật hôm nay</span>
+        </div>
+      </div>
+      <div class="featured-products-today-products">
+        @if (featuredProductsTodayLoading()) {
+          <div class="flash-sale-loading">
+            <div class="loading-spinner"></div>
+            <p>Đang tải sản phẩm...</p>
+          </div>
+        } @else {
+          @if (featuredProductsToday().length > 0) {
+            <button class="carousel-nav-btn carousel-prev" (click)="scrollFeaturedProductsToday(-300)">‹</button>
+            <div class="product-carousel" id="featuredProductsToday">
+              <div class="product-list">
+                @for (product of featuredProductsToday(); track product.id) {
+                  <div class="product-card" (click)="navigateToProduct(product.id)">
+                    @if (product.discount && product.discount > 0) {
+                      <div class="discount-badge">-{{product.discount}}%</div>
+                    }
+                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" class="product-image" loading="lazy" decoding="async"
+                         (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+                    <div class="product-info">
+                      <div class="product-name">{{product.name}}</div>
+                      @if (product.originalPrice) {
+                        <div class="product-price">
+                          <span class="current-price">{{product.price.toLocaleString('vi-VN')}}đ</span>
+                          @if (product.unit) {
+                            <span class="price-unit"> / {{product.unit}}</span>
+                          }
+                          <div class="original-price">{{product.originalPrice.toLocaleString('vi-VN')}}đ</div>
+                        </div>
+                      } @else {
+                        <div class="product-price">
+                          <span class="current-price">{{product.price.toLocaleString('vi-VN')}}đ</span>
+                          @if (product.unit) {
+                            <span class="price-unit"> / {{product.unit}}</span>
+                          }
+                        </div>
+                      }
+                      <button class="view-detail-btn" (click)="navigateToProduct(product.id); $event.stopPropagation()">
+                        Chọn mua
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+            <button class="carousel-nav-btn carousel-next" (click)="scrollFeaturedProductsToday(300)">›</button>
+          } @else {
+            <div class="flash-sale-empty">
+              <p>Chưa có sản phẩm nổi bật</p>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Health Corner Section -->
+  <section class="health-corner-section">
+    <div class="health-corner-container">
+      <div class="health-corner-header">
+        <div class="health-corner-title" (click)="navigateToBlogList()">
+          <img src="https://cdn.nhathuoclongchau.com.vn/unsafe/28x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/smalls/goc_suc_khoe_77c4d4524f.png" alt="Góc sức khỏe" class="health-corner-icon">
+          <span class="health-corner-text">Góc sức khỏe</span>
+        </div>
+        <a (click)="navigateToBlogList()" class="view-all-link">Xem tất cả ></a>
+      </div>
+      <div class="health-corner-categories">
+        <button class="category-btn">Phòng bệnh & Sống khoẻ</button>
+        <button class="category-btn">Dinh dưỡng</button>
+        <button class="category-btn">Khỏe đẹp</button>
+        <button class="category-btn">Tin tức sức khỏe</button>
+        <button class="category-btn">Mẹ & bé</button>
+        <button class="category-btn">Giới tính</button>
+      </div>
+      <div class="health-corner-content">
+        @if (healthCornerLoading()) {
+          <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Đang tải bài viết...</p>
+          </div>
+        } @else if (mainArticle()) {
+          <div class="main-article-wrapper">
+            <div class="main-article" (click)="navigateToArticle(mainArticle()!.cleanSlug || mainArticle()!.slug)">
+              <div class="main-article-image-wrapper">
+                <img [src]="getArticleImage(mainArticle())" [alt]="mainArticle()!.title" class="main-article-image" loading="lazy" decoding="async"
+                     (error)="$event.target.src = 'https://via.placeholder.com/600x400?text=MediCare'; $event.target.onerror = null;"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400?text=MediCare';">
+              </div>
+              <div class="main-article-content">
+                @if (mainArticle()!.category) {
+                  <span class="main-article-category">{{ mainArticle()!.category }}</span>
+                }
+                <h2 class="main-article-title">{{ mainArticle()!.title }}</h2>
+                <p class="main-article-description">{{ truncate(getArticleDescription(mainArticle()), 220) }}</p>
+                <div class="main-article-meta">
+                  <span>{{ mainArticle()!.author || 'MediCare' }}</span>
+                  @if (mainArticle()!.publishedAt) {
+                    <span>{{ formatBlogDate(mainArticle()!.publishedAt) }}</span>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sidebar-articles">
+            @for (article of sidebarArticles(); track article.slug || article.id || $index) {
+              <div class="sidebar-article-item" (click)="navigateToArticle(article.cleanSlug || article.slug)">
+                <div class="sidebar-article-image-wrapper">
+                  <img [src]="getArticleImage(article)" [alt]="article.title" class="sidebar-article-image" loading="lazy" decoding="async"
+                       (error)="$event.target.src = 'https://via.placeholder.com/300x200?text=MediCare'; $event.target.onerror = null;"
+                       onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=MediCare';">
+                </div>
+                <div class="sidebar-article-content">
+                  @if (article.category) {
+                    <span class="sidebar-article-category">{{ article.category }}</span>
+                  }
+                  <h3 class="sidebar-article-title">{{ article.title }}</h3>
+                  @if (article.publishedAt) {
+                    <span class="sidebar-article-date">{{ formatBlogDate(article.publishedAt) }}</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="empty-state">
+            <p>Chưa có bài viết nào</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Diseases Section -->
+  <section class="diseases-section">
+    <div class="diseases-container">
+      <div class="diseases-header">
+        <div class="diseases-title">
+          <svg class="diseases-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="currentColor"/>
+          </svg>
+          <span class="diseases-text">Nhóm bệnh chuyên khoa</span>
+        </div>
+        <div class="diseases-header-right">
+          <span class="header-separator">|</span>
+          <a (click)="navigateToAllDiseases()" class="view-all-link" style="cursor: pointer;">Xem tất cả »</a>
+        </div>
+      </div>
+      
+      @if (specializedGroupsLoading()) {
+        <div class="loading-container" style="padding: 40px; text-align: center;">
+          <div class="loading-spinner"></div>
+          <p>Đang tải nhóm bệnh chuyên khoa...</p>
+        </div>
+      } @else if (filteredSpecializedGroups().length > 0) {
+        <div class="specialized-groups-grid">
+          @for (group of displayedSpecializedGroups(); track group.id) {
+            <div class="specialized-group-card" (click)="navigateToSpecializedGroup(group.id)">
+              <div class="specialized-group-icon">
+                @if (group.image) {
+                  <img [src]="group.image" [alt]="group.name" class="category-icon-image">
+                } @else {
+                  <span class="icon-emoji">{{ group.icon }}</span>
+                }
+              </div>
+              <h3 class="specialized-group-title">{{ group.name }}</h3>
+              <p class="specialized-group-count">{{ group.count }} bài viết</p>
+            </div>
+          }
+        </div>
+        
+        @if (showMoreSpecializedGroupsVisible() && showMoreSpecializedGroupsLabel()) {
+          <div class="view-more-container">
+            <button class="view-more-link" type="button" (click)="toggleSpecializedGroups()">
+              {{ showMoreSpecializedGroupsLabel() }}
+            </button>
+          </div>
+        }
+      } @else {
+        <div class="empty-state" style="padding: 40px; text-align: center;">
+          <p>Không có nhóm bệnh chuyên khoa nào.</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Recently Viewed Products Section -->
+  @if (recentlyViewed().length > 0) {
+    <section class="recently-viewed-section">
+      <div class="recently-viewed-container">
+        <h2 class="section-title">Sản phẩm vừa xem</h2>
+        <div class="slider-container">
+          @if (recentlyViewed().length > 5) {
+            <button class="slider-btn prev" (click)="prevSlideRecentlyViewed()" [disabled]="currentSlide() === 0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <button class="slider-btn next" (click)="nextSlideRecentlyViewed()" [disabled]="currentSlide() >= recentlyViewed().length - 5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          }
+          <div class="slider-wrapper">
+            <div class="products-slider" [style.transform]="'translateX(-' + (currentSlide() * getSlideWidth()) + 'px)'">
+              @for (product of recentlyViewed(); track product.id) {
+                <div class="product-card">
+                  @if (product.discount && product.discount > 0) {
+                    <div class="discount-badge">-{{ calculateDiscountPercent(product.price, product.discount) }}%</div>
+                  }
+                  <div class="product-image" (click)="navigateToProduct(product.id)">
+                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" loading="lazy" decoding="async">
+                  </div>
+                  <div class="product-info">
+                    <div class="product-name" (click)="navigateToProduct(product.id)">{{ product.name }}</div>
+                    <div class="product-pricing">
+                      <span class="product-price">{{ product.price.toLocaleString('vi-VN') }}đ</span>
+                      @if (product.unit) {
+                        <span class="product-unit">/ {{ product.unit }}</span>
+                      }
+                    </div>
+                    @if (product.originalPrice && product.originalPrice > product.price) {
+                      <div class="product-original-price">{{ product.originalPrice.toLocaleString('vi-VN') }}đ</div>
+                    }
+                    <button class="btn-add-cart" (click)="addToCart(product)">Chọn mua</button>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+</div>
+

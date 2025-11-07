@@ -1,0 +1,257 @@
+import { Component, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+
+interface PaymentItem {
+  _id: string;
+  name: string;
+  image: string;
+  price: number;
+  discount?: number;
+  quantity: number;
+  unit: string;
+}
+
+interface PendingOrderData {
+  orderData: any;
+  orderPayload: any;
+  orderDataWithNumber?: any;
+}
+
+@Component({
+  selector: 'app-card-payment',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './card-payment.html',
+  styleUrl: './card-payment.css',
+})
+export class CardPayment implements OnInit {
+  items = signal<PaymentItem[]>([]);
+  total = signal(0);
+  orderNumber = signal<string>('');
+  isPending = signal<boolean>(false); // Order not created yet
+  pendingOrderData = signal<PendingOrderData | null>(null);
+  
+  selectedPaymentMethod = signal<'card' | 'apple' | 'google' | 'vnpay' | null>(null);
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  ngOnInit() {
+    // Get order data from route state or localStorage
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state || history.state;
+    
+    let orderNum = '';
+    
+    // Check if order is pending (not created yet)
+    if (state && state.pending === true) {
+      this.isPending.set(true);
+      
+      // Load from state
+      if (state.orderData) {
+        this.items.set(state.orderData.items || []);
+        this.total.set(state.orderData.total || 0);
+      }
+      
+      // Load pending order data from localStorage
+      const pendingDataStr = localStorage.getItem('pendingOrderData');
+      if (pendingDataStr) {
+        const pendingData: PendingOrderData = JSON.parse(pendingDataStr);
+        this.pendingOrderData.set(pendingData);
+        
+        if (pendingData.orderData) {
+          this.items.set(pendingData.orderData.items || []);
+          this.total.set(pendingData.orderData.total || 0);
+        }
+      }
+    } else {
+      // Order already created (from existing order)
+      this.isPending.set(false);
+      
+      if (state && state.orderData) {
+        this.items.set(state.orderData.items || []);
+        this.total.set(state.orderData.total || 0);
+        orderNum = state.orderData.orderNumber || '';
+      } else {
+        // Fallback to localStorage
+        const lastOrder = localStorage.getItem('lastOrderInfo');
+        if (lastOrder) {
+          const orderData = JSON.parse(lastOrder);
+          this.items.set(orderData.items || []);
+          this.total.set(orderData.total || 0);
+          orderNum = orderData.orderNumber || '';
+        }
+      }
+      
+      // Try to get orderNumber from localStorage if not in state
+      if (!orderNum) {
+        const lastOrderId = localStorage.getItem('lastOrderId');
+        if (lastOrderId) {
+          orderNum = lastOrderId;
+        }
+      }
+      
+      this.orderNumber.set(orderNum);
+    }
+  }
+
+  formatPrice(price: number): string {
+    return price.toLocaleString('vi-VN') + 'đ';
+  }
+
+  selectPaymentMethod(method: 'card' | 'apple' | 'google' | 'vnpay') {
+    this.selectedPaymentMethod.set(method);
+  }
+
+  async processPayment() {
+    const method = this.selectedPaymentMethod();
+    
+    if (!method) {
+      alert('Vui lòng chọn phương thức thanh toán');
+      return;
+    }
+
+    // If order is pending, create it now
+    if (this.isPending() && this.pendingOrderData()) {
+      const pendingData = this.pendingOrderData();
+      
+      if (!pendingData) {
+        alert('Không tìm thấy dữ liệu đơn hàng. Vui lòng thử lại.');
+        return;
+      }
+      
+      console.log('📦 Creating order now (user confirmed payment)...');
+      
+      try {
+        // Create order in database
+        const response = await fetch('http://localhost:3000/api/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(pendingData.orderPayload)
+        });
+        
+        const orderResponse = await response.json();
+        
+        if (orderResponse.success && orderResponse.data) {
+          console.log('✅ Order created:', orderResponse.data.orderNumber);
+          
+          const orderNumber = orderResponse.data.orderNumber;
+          const orderId = orderResponse.data._id || orderNumber;
+          
+          // Store order info
+          localStorage.setItem('lastOrderId', orderNumber);
+          localStorage.setItem('lastOrderData', JSON.stringify({
+            orderNumber: orderNumber,
+            _id: orderId
+          }));
+          
+          // Clear pending order data
+          localStorage.removeItem('pendingOrderData');
+          localStorage.removeItem('checkoutItems');
+          localStorage.removeItem('checkoutVoucher'); // Clear voucher after order is created
+          
+          // Remove ordered items from cart
+          const orderedItemIds = this.items().map(item => item._id);
+          console.log('🗑️ Removing ordered items from cart:', orderedItemIds);
+          
+          try {
+            const cartResponse = await fetch(`http://localhost:3000/api/cart/${localStorage.getItem('userId') || 'guest'}`);
+            const cartData = await cartResponse.json();
+            
+            if (cartData.success && cartData.data && cartData.data.items) {
+              const remainingItems = cartData.data.items.filter((item: any) => 
+                !orderedItemIds.includes(String(item._id))
+              );
+              
+              await fetch(`http://localhost:3000/api/cart/${localStorage.getItem('userId') || 'guest'}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: remainingItems })
+              });
+            }
+          } catch (cartError) {
+            console.error('Error removing items from cart:', cartError);
+          }
+          
+          // Handle invoice if required
+          if (pendingData.orderPayload?.requireInvoice) {
+            try {
+              await fetch('http://localhost:3000/api/orders/send-invoice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  ...pendingData.orderData,
+                  orderNumber: orderNumber,
+                  _id: orderId
+                })
+              });
+            } catch (invoiceError) {
+              console.error('Error sending invoice:', invoiceError);
+            }
+          }
+          
+          // Redirect to order success page
+          this.router.navigate(['/order-success'], {
+            state: {
+              orderData: {
+                ...pendingData.orderData,
+                orderNumber: orderNumber,
+                _id: orderId,
+                paymentMethod: 'card'
+              }
+            }
+          });
+        } else {
+          alert('Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại.');
+          console.error('Order creation failed:', orderResponse);
+        }
+      } catch (error) {
+        console.error('Error creating order:', error);
+        alert('Có lỗi xảy ra khi tạo đơn hàng. Vui lòng thử lại.');
+      }
+    } else {
+      // Order already exists, just redirect to success
+      this.router.navigate(['/order-success'], {
+        state: {
+          orderData: {
+            items: this.items(),
+            total: this.total(),
+            orderNumber: this.orderNumber(),
+            paymentMethod: 'card'
+          }
+        }
+      });
+    }
+  }
+
+  getPaymentMethodName(method: string): string {
+    const methods: { [key: string]: string } = {
+      'card': 'Thẻ quốc tế',
+      'apple': 'Apple Pay',
+      'google': 'Google Pay',
+      'vnpay': 'Ví VNPay'
+    };
+    return methods[method] || method;
+  }
+
+  cancelPayment() {
+    if (confirm('Bạn có chắc muốn hủy thanh toán?')) {
+      // Clear pending order data if exists
+      if (this.isPending()) {
+        localStorage.removeItem('pendingOrderData');
+      }
+      this.router.navigate(['/cart']);
+    }
+  }
+
+  goBack() {
+    // Keep pendingOrderData in localStorage so user can return
+    this.router.navigate(['/payment']);
+  }
+}
+

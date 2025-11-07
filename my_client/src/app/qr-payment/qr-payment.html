@@ -1,0 +1,177 @@
+<div class="qr-payment-container">
+  <div class="qr-payment-content">
+    <!-- Header -->
+    <div class="payment-header">
+      <button class="btn-back" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Quay lại
+      </button>
+      <h1 class="payment-title">Thanh toán bằng QR Code</h1>
+    </div>
+
+    <div class="payment-main">
+      <!-- Left: QR Code & Bank Info -->
+      <div class="payment-left">
+        <div class="qr-section">
+          <h2 class="section-title">Quét mã QR để thanh toán</h2>
+          
+          <!-- QR Code Image -->
+          <div class="qr-code-wrapper">
+            <div class="qr-code-frame">
+              <div class="qr-code-container">
+                <img [src]="qrCode()" alt="QR Code" class="qr-code-image">
+                <!-- Scanning Animation -->
+                <div class="scan-line"></div>
+                <div class="qr-loading" *ngIf="!qrCode()">
+                  <div class="spinner"></div>
+                  <p>Đang tạo mã QR...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instructions -->
+          <div class="instructions">
+            <h3>Cách thanh toán:</h3>
+            <ol>
+              <li>Mở ứng dụng ngân hàng trên điện thoại</li>
+              <li>Chọn chức năng "Quét mã QR"</li>
+              <li>Quét mã QR code trên màn hình</li>
+              <li>Kiểm tra thông tin và xác nhận thanh toán</li>
+              <li>Nhấn "Xác nhận thanh toán" bên dưới sau khi đã chuyển khoản</li>
+            </ol>
+          </div>
+
+          <!-- Bank Account Info -->
+          <div class="bank-info">
+            <h3 class="bank-info-title">Thông tin chuyển khoản</h3>
+            <div class="bank-details">
+              <div class="bank-row">
+                <span class="bank-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="4" width="20" height="18" rx="2" ry="2"></rect>
+                    <path d="M6 8h12M6 12h12M6 16h8"></path>
+                  </svg>
+                  Ngân hàng:
+                </span>
+                <span class="bank-value bank-name">{{ bankAccount().bank }}</span>
+              </div>
+              <div class="bank-row">
+                <span class="bank-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  Tên tài khoản:
+                </span>
+                <span class="bank-value account-name">{{ bankAccount().name }}</span>
+              </div>
+              <div class="bank-row highlight-row">
+                <span class="bank-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                  Số tài khoản:
+                </span>
+                <div class="bank-account-number">
+                  <span class="bank-value account-number">{{ bankAccount().number }}</span>
+                  <button class="btn-copy" (click)="copyAccountNumber()" title="Sao chép số tài khoản">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="bank-row highlight-row">
+                <span class="bank-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                  Số tiền:
+                </span>
+                <span class="bank-value amount">{{ formatPrice(total()) }}</span>
+              </div>
+              <div class="bank-row">
+                <span class="bank-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                  </svg>
+                  Nội dung:
+                </span>
+                <span class="bank-value content-text">Thanh toán đơn hàng {{ orderNumber() || 'MediCare' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Order Summary -->
+      <div class="payment-right">
+        <div class="order-summary">
+          <h2 class="summary-title">Đơn hàng của bạn</h2>
+          
+          <!-- Order Items -->
+          <div class="order-items">
+            @for (item of items(); track item._id) {
+              <div class="order-item">
+                <img [src]="item.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="item.name" class="item-image">
+                <div class="item-details">
+                  <h4 class="item-name">{{ item.name }}</h4>
+                  <div class="item-meta">
+                    <span class="item-quantity">Số lượng: {{ item.quantity }}</span>
+                    <span class="item-unit">{{ item.unit }}</span>
+                  </div>
+                </div>
+                <div class="item-price">
+                  <span class="price-current">{{ formatPrice(item.price * item.quantity) }}</span>
+                  @if (item.discount && item.discount > 0) {
+                    <span class="price-original">{{ formatPrice((item.price + item.discount) * item.quantity) }}</span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Order Total -->
+          <div class="order-total">
+            <div class="total-row">
+              <span class="total-label">Tổng tiền:</span>
+              <span class="total-value">{{ formatPrice(total()) }}</span>
+            </div>
+            <div class="total-row highlight">
+              <span class="total-label">Thành tiền:</span>
+              <span class="total-value final">{{ formatPrice(total()) }}</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="payment-actions">
+            <button class="btn-confirm" (click)="confirmPayment()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Xác nhận thanh toán
+            </button>
+            <button class="btn-cancel" (click)="cancelPayment()">
+              Hủy thanh toán
+            </button>
+          </div>
+
+          <!-- Note -->
+          <p class="payment-note">
+            <strong>Lưu ý:</strong> Vui lòng chuyển khoản đúng số tiền và nội dung như trên. Sau khi chuyển khoản thành công, nhấn nút "Xác nhận thanh toán" để hoàn tất đơn hàng.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

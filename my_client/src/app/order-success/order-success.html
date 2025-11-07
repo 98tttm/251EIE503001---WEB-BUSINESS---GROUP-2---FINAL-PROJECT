@@ -1,0 +1,55 @@
+<div class="success-container">
+  <div class="success-content">
+    <!-- Mascot -->
+    <div class="mascot-wrapper" align="center">
+      <img src="/assets/images/MECA/Success.png" alt="Success" class="mascot" style="width: 200px;">
+    </div>
+
+    <!-- Success Message -->
+    <h1 class="success-title">Đặt hàng thành công</h1>
+
+    @if (orderInfo()) {
+      <div class="order-info-card">
+        <!-- Order Location -->
+        <p class="order-location">
+          Đơn hàng đang được xử lý tại nhà thuốc MediCare
+          <br>
+          <strong>{{ orderInfo().address?.detailAddress }}, {{ orderInfo().address?.ward }}, {{ orderInfo().address?.district }}, {{ orderInfo().address?.province }}</strong>
+        </p>
+
+        <!-- Delivery Time -->
+        <div class="info-row">
+          <span class="info-label">Thời gian nhận hàng dự kiến</span>
+          <span class="info-value">{{ orderInfo().expectedDelivery }}</span>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="info-row">
+          <span class="info-label">Phương thức thanh toán</span>
+          <div class="payment-method-display">
+            @if (orderInfo().paymentMethod === 'cod') {
+              <img src="/assets/images/bank/cash.png" alt="COD" class="payment-icon-small">
+            } @else if (orderInfo().paymentMethod === 'qr') {
+              <img src="/assets/images/bank/qr.png" alt="QR" class="payment-icon-small">
+            } @else if (orderInfo().paymentMethod === 'bank') {
+              <img src="/assets/images/bank/bank.png" alt="Bank" class="payment-icon-small">
+            } @else if (orderInfo().paymentMethod === 'card') {
+              <img src="/assets/images/bank/card.png" alt="Card" class="payment-icon-small">
+            } @else if (orderInfo().paymentMethod === 'momo') {
+              <img src="/assets/images/bank/momo.png" alt="MoMo" class="payment-icon-small momo-rounded">
+            }
+            <span class="payment-text">{{ getPaymentMethodName(orderInfo().paymentMethod) }}</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn-primary" (click)="viewOrderDetails()">Chi tiết đơn hàng</button>
+          <button class="btn-secondary" (click)="goToHome()">Về trang chủ</button>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
+

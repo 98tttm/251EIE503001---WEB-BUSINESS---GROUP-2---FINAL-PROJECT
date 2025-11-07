@@ -1,0 +1,159 @@
+<div class="blog-detail-page">
+  @if (loading()) {
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Đang tải bài viết...</p>
+    </div>
+  } @else if (error()) {
+    <div class="error-container">
+      <h2>{{ error() }}</h2>
+      <button class="btn-back" (click)="goBack()">← Quay lại Góc sức khỏe</button>
+    </div>
+  } @else if (article(); as article) {
+    <div class="blog-detail-container">
+      <div class="blog-top-breadcrumb">
+        <nav class="breadcrumb-nav">
+          <a routerLink="/" class="breadcrumb-link">Trang chủ</a>
+          <span class="breadcrumb-separator">/</span>
+          <a routerLink="/blogs" class="breadcrumb-link">Góc sức khỏe</a>
+          @for (crumb of article.breadcrumb || []; track crumb?.slug || crumb?.name || $index) {
+            <span class="breadcrumb-separator">/</span>
+            @if (crumb?.slug) {
+              @if (crumb.slug === '/') {
+                <a routerLink="/" class="breadcrumb-link">{{ crumb?.name }}</a>
+              } @else if (crumb.slug === 'blogs') {
+                <a routerLink="/blogs" class="breadcrumb-link">{{ crumb?.name }}</a>
+              } @else {
+                <a [routerLink]="['/blogs/category', crumb.slug]" class="breadcrumb-link">{{ crumb?.name }}</a>
+              }
+            } @else {
+              <span class="breadcrumb-current">{{ crumb?.name }}</span>
+            }
+          }
+          @if (article.category && (!article.breadcrumb || article.breadcrumb.length === 0)) {
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">{{ article.category }}</span>
+          }
+        </nav>
+      </div>
+      <section class="blog-hero" [class.has-image]="article.primaryImage?.trim()">
+        <div class="blog-hero-bg" [style.background-image]="(article.primaryImage?.trim()) ? 'url(' + article.primaryImage + ')' : ''"></div>
+        <div class="blog-hero-overlay"></div>
+        <div class="blog-hero-content">
+          <div class="hero-header">
+            <button class="btn-back ghost" (click)="goBack()">← Quay lại danh sách</button>
+            <nav class="hero-breadcrumb">
+              <a routerLink="/">Trang chủ</a>
+              <span>/</span>
+              <a routerLink="/blogs">Góc sức khỏe</a>
+              @for (crumb of article.breadcrumb || []; track crumb?.slug || crumb?.name || $index) {
+                <span>/</span>
+                @if (crumb?.slug) {
+                  @if (crumb.slug === '/') {
+                    <a routerLink="/">{{ crumb?.name }}</a>
+                  } @else if (crumb.slug === 'blogs') {
+                    <a routerLink="/blogs">{{ crumb?.name }}</a>
+                  } @else {
+                    <a [routerLink]="['/blogs/category', crumb.slug]">{{ crumb?.name }}</a>
+                  }
+                } @else {
+                  <span>{{ crumb?.name }}</span>
+                }
+              }
+            </nav>
+          </div>
+
+          <div class="hero-card">
+            @if (article.category) {
+              <span class="hero-category">{{ article.category }}</span>
+            }
+            <h1 class="hero-title">{{ article.title }}</h1>
+            <div class="hero-meta">
+              <span>{{ article.author || 'MediCare' }}</span>
+              @if (formattedPublishedDate()) {
+                <span>{{ formattedPublishedDate() }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="blog-body">
+        <div class="content-layout" [class.no-toc]="tableOfContents().length === 0">
+          @if (tableOfContents().length > 0) {
+            <aside class="toc-panel">
+              <h3 class="toc-title">Mục lục bài viết</h3>
+              <ul class="toc-list">
+                @for (item of tableOfContents(); track item.id) {
+                  <li>
+                    <button type="button"
+                            class="toc-button"
+                            [class.active]="activeSection() === item.id"
+                            [class.level-3]="item.level === 3"
+                            [class.level-4]="item.level === 4"
+                            (click)="scrollToSection(item.id)">
+                      {{ item.label }}
+                    </button>
+                  </li>
+                }
+              </ul>
+            </aside>
+          }
+
+          <div class="content-panel" #contentPanel (scroll)="onContentScroll()">
+            @if (article.primaryImage?.trim()) {
+              <div class="featured-image-wrapper">
+                <img [src]="article.primaryImage || 'https://via.placeholder.com/800x400?text=MediCare'"
+                     [alt]="article.title"
+                     class="featured-image"
+                     loading="lazy"
+                     decoding="async"
+                     (error)="$event.target.src = 'https://via.placeholder.com/800x400?text=MediCare'; $event.target.onerror = null;"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=MediCare';">
+              </div>
+            }
+
+            @if (article.shortDescription) {
+              <div class="blog-summary-card">
+                <p>{{ article.shortDescription }}</p>
+              </div>
+            }
+
+            @if (article.contentHtml) {
+              <div class="article-content" [innerHTML]="article.contentHtml"></div>
+            }
+
+            @if (getDisplayTags().length > 0) {
+              <div class="blog-tags">
+                <h3>Từ khóa nổi bật</h3>
+                <div class="tags-list">
+                  @for (tag of getDisplayTags(); track tag.label) {
+                    <span class="tag-pill">#{{ tag.label }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (article.relatedArticles && article.relatedArticles.length > 0) {
+              <div class="related-articles">
+                <div class="related-header">
+                  <h2>Bài viết liên quan</h2>
+                </div>
+                <div class="related-grid">
+                  @for (related of article.relatedArticles; track related.slug || related.cleanSlug || related.id || $index) {
+                    <article class="related-card" (click)="navigateToRelatedArticle(related)">
+                      <h4>{{ related.name }}</h4>
+                      @if (related.createdAt) {
+                        <span class="related-date">{{ related.createdAt | date:'dd/MM/yyyy' }}</span>
+                      }
+                    </article>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

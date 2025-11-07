@@ -1,0 +1,429 @@
+<div class="admin-order-create">
+  <header class="page-header">
+    <div class="header-content">
+      <a routerLink="/collections/orders" class="back-link">
+        <span class="material-icon">arrow_back</span>
+        Quay lại đơn hàng
+      </a>
+      <div class="header-title">
+        <h1>
+          <span class="icon">🛒</span>
+          Tạo đơn hàng mới
+        </h1>
+        <p>Tạo đơn hàng cho khách hàng với quyền admin</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="order-layout" *ngIf="!loading(); else loadingState">
+    <form [formGroup]="orderForm" (ngSubmit)="submitOrder()" class="order-form">
+      
+      <!-- Customer Information -->
+      <section class="form-section">
+        <div class="section-header">
+          <h2>
+            <span class="material-icon">person</span>
+            Thông tin khách hàng
+          </h2>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-field">
+            <label>
+              Tên khách hàng <span class="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              formControlName="customerName"
+              placeholder="Nguyễn Văn A"
+              [class.error]="orderForm.get('customerName')?.invalid && orderForm.get('customerName')?.touched"
+            />
+            <span class="error-message" *ngIf="orderForm.get('customerName')?.invalid && orderForm.get('customerName')?.touched">
+              Vui lòng nhập tên khách hàng
+            </span>
+          </div>
+
+          <div class="form-field">
+            <label>
+              Số điện thoại <span class="required">*</span>
+            </label>
+            <input 
+              type="tel" 
+              formControlName="customerPhone"
+              placeholder="0987654321"
+              [class.error]="orderForm.get('customerPhone')?.invalid && orderForm.get('customerPhone')?.touched"
+            />
+            <span class="error-message" *ngIf="orderForm.get('customerPhone')?.invalid && orderForm.get('customerPhone')?.touched">
+              Số điện thoại không hợp lệ (10 số)
+            </span>
+          </div>
+
+          <div class="form-field full-width">
+            <label>Email (tùy chọn)</label>
+            <input 
+              type="email" 
+              formControlName="customerEmail"
+              placeholder="email@example.com"
+              [class.error]="orderForm.get('customerEmail')?.invalid && orderForm.get('customerEmail')?.touched"
+            />
+            <span class="error-message" *ngIf="orderForm.get('customerEmail')?.invalid && orderForm.get('customerEmail')?.touched">
+              Email không hợp lệ
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Shipping Address -->
+      <section class="form-section">
+        <div class="section-header">
+          <h2>
+            <span class="material-icon">local_shipping</span>
+            Địa chỉ giao hàng
+          </h2>
+          <label class="checkbox-label">
+            <input 
+              type="checkbox" 
+              [checked]="sameAsCustomer()"
+              (change)="toggleSameAsCustomer()"
+            />
+            <span>Giống thông tin khách hàng</span>
+          </label>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label>
+              Người nhận <span class="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              formControlName="shippingName"
+              placeholder="Nguyễn Văn A"
+              [class.error]="orderForm.get('shippingName')?.invalid && orderForm.get('shippingName')?.touched"
+            />
+          </div>
+
+          <div class="form-field">
+            <label>
+              Số điện thoại <span class="required">*</span>
+            </label>
+            <input 
+              type="tel" 
+              formControlName="shippingPhone"
+              placeholder="0987654321"
+              [class.error]="orderForm.get('shippingPhone')?.invalid && orderForm.get('shippingPhone')?.touched"
+            />
+          </div>
+
+          <div class="form-field">
+            <label>
+              Tỉnh/Thành phố <span class="required">*</span>
+            </label>
+            <select 
+              formControlName="province"
+              (change)="onProvinceChange($any($event.target).value)"
+              [class.error]="orderForm.get('province')?.invalid && orderForm.get('province')?.touched"
+            >
+              <option value="">Chọn tỉnh/thành</option>
+              <option *ngFor="let p of provinces()" [value]="p.code">{{ p.name }}</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>
+              Quận/Huyện <span class="required">*</span>
+            </label>
+            <select 
+              formControlName="district"
+              (change)="onDistrictChange($any($event.target).value)"
+              [class.error]="orderForm.get('district')?.invalid && orderForm.get('district')?.touched"
+              [disabled]="!orderForm.get('province')?.value || loadingDistricts()"
+            >
+              <option value="">Chọn quận/huyện</option>
+              <option *ngFor="let d of districts()" [value]="d.code">{{ d.name }}</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>
+              Phường/Xã <span class="required">*</span>
+            </label>
+            <select 
+              formControlName="ward"
+              [class.error]="orderForm.get('ward')?.invalid && orderForm.get('ward')?.touched"
+              [disabled]="!orderForm.get('district')?.value || loadingWards()"
+            >
+              <option value="">Chọn phường/xã</option>
+              <option *ngFor="let w of wards()" [value]="w.code">{{ w.name }}</option>
+            </select>
+          </div>
+
+          <div class="form-field full-width">
+            <label>
+              Địa chỉ cụ thể <span class="required">*</span>
+            </label>
+            <textarea 
+              formControlName="shippingAddress"
+              placeholder="Số nhà, tên đường..."
+              rows="2"
+              [class.error]="orderForm.get('shippingAddress')?.invalid && orderForm.get('shippingAddress')?.touched"
+            ></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products Selection -->
+      <section class="form-section">
+        <div class="section-header">
+          <h2>
+            <span class="material-icon">shopping_bag</span>
+            Sản phẩm
+          </h2>
+          <span class="count-badge">{{ selectedProducts().length }} sản phẩm</span>
+        </div>
+
+        <!-- Product Search -->
+        <div class="product-search">
+          <div class="search-input-wrapper">
+            <span class="material-icon">search</span>
+            <input 
+              type="text"
+              [value]="productSearchTerm()"
+              (input)="onProductSearchInput($event)"
+              placeholder="Tìm kiếm sản phẩm theo tên, SKU..."
+              (focus)="showProductSearch.set(true)"
+            />
+            <span class="spinner" *ngIf="searchingProduct()"></span>
+          </div>
+
+          <!-- Search Results -->
+          <div class="search-results" *ngIf="showProductSearch() && products().length > 0">
+            <div 
+              class="product-result-item"
+              *ngFor="let product of products()"
+              (click)="addProduct(product)"
+            >
+              <img 
+                [src]="product.image || '/assets/images/no-image.png'" 
+                [alt]="product.name"
+                class="product-image"
+              />
+              <div class="product-info">
+                <div class="product-name">{{ product.name }}</div>
+                <div class="product-meta">
+                  <span class="product-price">{{ product.finalPrice || product.price | number }}đ</span>
+                  <span class="product-stock" [class.low]="product.stock <= 10">
+                    Còn {{ product.stock }} sp
+                  </span>
+                </div>
+              </div>
+              <button type="button" class="add-btn">
+                <span class="material-icon">add_circle</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Products -->
+        <div class="selected-products">
+          <div class="empty-products" *ngIf="selectedProducts().length === 0">
+            <span class="material-icon">shopping_cart</span>
+            <p>Chưa có sản phẩm nào</p>
+            <small>Tìm kiếm và thêm sản phẩm vào đơn hàng</small>
+          </div>
+
+          <div class="product-list" *ngIf="selectedProducts().length > 0">
+            <div 
+              class="product-item"
+              *ngFor="let item of selectedProducts()"
+            >
+              <img 
+                [src]="item.image || '/assets/images/no-image.png'"
+                [alt]="item.productName"
+                class="product-image"
+              />
+              <div class="product-details">
+                <div class="product-name">{{ item.productName }}</div>
+                <div class="product-price">{{ item.price | number }}đ</div>
+              </div>
+              <div class="quantity-controls">
+                <button 
+                  type="button"
+                  class="qty-btn"
+                  (click)="updateQuantity(item.productId, item.quantity - 1)"
+                >
+                  <span class="material-icon">remove</span>
+                </button>
+                <input 
+                  type="number"
+                  class="qty-input"
+                  [value]="item.quantity"
+                  (change)="updateQuantity(item.productId, +$any($event.target).value)"
+                  min="1"
+                />
+                <button 
+                  type="button"
+                  class="qty-btn"
+                  (click)="updateQuantity(item.productId, item.quantity + 1)"
+                >
+                  <span class="material-icon">add</span>
+                </button>
+              </div>
+              <div class="item-total">
+                {{ item.price * item.quantity | number }}đ
+              </div>
+              <button 
+                type="button"
+                class="remove-btn"
+                (click)="removeProduct(item.productId)"
+              >
+                <span class="material-icon">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Payment & Notes -->
+      <section class="form-section">
+        <div class="section-header">
+          <h2>
+            <span class="material-icon">payment</span>
+            Thanh toán & Ghi chú
+          </h2>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field full-width">
+            <label>
+              Phương thức thanh toán <span class="required">*</span>
+            </label>
+            <div class="payment-methods">
+              <label 
+                *ngFor="let method of paymentMethods"
+                class="payment-method"
+                [class.selected]="orderForm.get('paymentMethod')?.value === method.value"
+              >
+                <input 
+                  type="radio"
+                  formControlName="paymentMethod"
+                  [value]="method.value"
+                />
+                <span class="method-icon">{{ method.icon }}</span>
+                <span class="method-label">{{ method.label }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-field full-width">
+            <label>Ghi chú khách hàng</label>
+            <textarea 
+              formControlName="customerNotes"
+              placeholder="Ghi chú từ khách hàng..."
+              rows="2"
+            ></textarea>
+          </div>
+
+          <div class="form-field full-width">
+            <label>Ghi chú nội bộ (Admin)</label>
+            <textarea 
+              formControlName="adminNotes"
+              placeholder="Ghi chú nội bộ cho đơn hàng..."
+              rows="2"
+            ></textarea>
+          </div>
+        </div>
+      </section>
+    </form>
+
+    <!-- Order Summary Sidebar -->
+    <aside class="order-summary">
+      <div class="summary-card">
+        <h3>Tóm tắt đơn hàng</h3>
+
+        <div class="summary-row">
+          <span>Tạm tính</span>
+          <span class="value">{{ subtotal() | number }}đ</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Phí vận chuyển</span>
+          <span class="value">{{ shippingFee() | number }}đ</span>
+        </div>
+
+        <!-- Promotion -->
+        <div class="promotion-section">
+          <div class="promotion-header">
+            <span class="material-icon">local_offer</span>
+            <span>Mã giảm giá</span>
+          </div>
+
+          <div class="applied-promotion" *ngIf="appliedPromotion()">
+            <div class="promo-info">
+              <span class="promo-code">{{ appliedPromotion()!.code }}</span>
+              <span class="promo-discount">-{{ discount() | number }}đ</span>
+            </div>
+            <button 
+              type="button"
+              class="remove-promo"
+              (click)="removePromotion()"
+            >
+              <span class="material-icon">close</span>
+            </button>
+          </div>
+
+          <div class="available-promotions" *ngIf="!appliedPromotion() && promotions().length > 0">
+            <button 
+              *ngFor="let promo of promotions()"
+              type="button"
+              class="promo-item"
+              (click)="applyPromotion(promo)"
+              [disabled]="promo.minOrderAmount > subtotal()"
+            >
+              <div class="promo-code">{{ promo.code }}</div>
+              <div class="promo-desc">Giảm {{ promo.discountPercent }}%</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="summary-row discount" *ngIf="discount() > 0">
+          <span>Giảm giá</span>
+          <span class="value">-{{ discount() | number }}đ</span>
+        </div>
+
+        <div class="summary-row total">
+          <span>Tổng cộng</span>
+          <span class="value">{{ total() | number }}đ</span>
+        </div>
+
+        <button 
+          type="submit"
+          class="submit-btn"
+          (click)="submitOrder()"
+          [disabled]="submitting() || orderForm.invalid || selectedProducts().length === 0"
+        >
+          <span class="material-icon" *ngIf="!submitting()">check_circle</span>
+          <span class="spinner" *ngIf="submitting()"></span>
+          <span>{{ submitting() ? 'Đang tạo...' : 'Tạo đơn hàng' }}</span>
+        </button>
+
+        <button 
+          type="button"
+          class="cancel-btn"
+          routerLink="/collections/orders"
+          [disabled]="submitting()"
+        >
+          Hủy bỏ
+        </button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<ng-template #loadingState>
+  <div class="loading-state">
+    <span class="spinner"></span>
+    <p>Đang tải dữ liệu...</p>
+  </div>
+</ng-template>
+

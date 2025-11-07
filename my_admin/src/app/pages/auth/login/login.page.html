@@ -1,0 +1,82 @@
+<div class="auth-container">
+  <div class="brand-side">
+    <div class="brand-card">
+      <img class="logo" src="/img/MEDICARE.png" alt="MediCare logo" />
+      <h2 align="center">Control Center</h2>
+      <p>
+        Quản trị toàn bộ dữ liệu sản phẩm, đơn hàng, nội dung và người dùng trên một bảng điều khiển duy nhất.
+        Theo dõi số liệu thời gian thực, tối ưu vận hành và ra quyết định nhanh chóng.
+      </p>
+      <ul>
+        <li><span class="material-icon">dashboard</span> Dashboard trực quan, dữ liệu cập nhật liên tục</li>
+        <li><span class="material-icon">insights</span> Phân tích doanh thu, hàng tồn, hiệu suất danh mục</li>
+        <li><span class="material-icon">security</span> Bảo mật chuẩn JWT, phân quyền chi tiết</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="form-side">
+    <div class="form-card">
+      <h1>Đăng nhập quản trị</h1>
+      <p class="subtitle">Sử dụng tài khoản đã được phân quyền quản lý để truy cập.</p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" autocomplete="off" novalidate>
+        <div class="form-field" [class.invalid]="emailControl.invalid && (emailControl.dirty || emailControl.touched)">
+          <label for="email">Email quản trị</label>
+          <div class="input">
+            <span class="material-icon">mail</span>
+            <input id="email" type="email" placeholder="admin@medicare.vn" formControlName="email" />
+          </div>
+          <small *ngIf="emailControl.hasError('required')">Vui lòng nhập email.</small>
+          <small *ngIf="emailControl.hasError('email') && !emailControl.hasError('required')">
+            Email không hợp lệ.
+          </small>
+        </div>
+
+        <div class="form-field" [class.invalid]="passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)">
+          <label for="password">Mật khẩu</label>
+          <div class="input">
+            <span class="material-icon">lock</span>
+            <input
+              id="password"
+              type="password"
+              placeholder="Nhập mật khẩu"
+              formControlName="password"
+              minlength="6"
+            />
+          </div>
+          <small *ngIf="passwordControl.hasError('required')">Vui lòng nhập mật khẩu.</small>
+          <small *ngIf="passwordControl.hasError('minlength') && !passwordControl.hasError('required')">
+            Mật khẩu tối thiểu 6 ký tự.
+          </small>
+        </div>
+
+        <div class="form-options">
+          <label class="remember">
+            <input type="checkbox" formControlName="remember" />
+            <span>Ghi nhớ đăng nhập</span>
+          </label>
+          <a class="support" href="mailto:support@medicare.vn">Liên hệ hỗ trợ</a>
+        </div>
+
+        <button type="submit" class="submit" [disabled]="loading()">
+          <span class="material-icon" *ngIf="loading(); else loginIcon">hourglass_top</span>
+          <ng-template #loginIcon>
+            <span class="material-icon">login</span>
+          </ng-template>
+          <span>{{ loading() ? 'Đang xác thực...' : 'Đăng nhập' }}</span>
+        </button>
+
+        <p class="status" *ngIf="statusMessage()">{{ statusMessage() }}</p>
+      </form>
+
+      <div class="footnote">
+        <span class="material-icon">verified_user</span>
+        Phiên làm việc bảo mật với JWT 7 ngày &amp; xác thực quyền truy cập admin.
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-notification-center></app-notification-center>
+

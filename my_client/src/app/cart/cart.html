@@ -1,0 +1,416 @@
+<div class="cart-container">
+  <!-- Empty Cart State -->
+  @if (isEmpty) {
+    <div class="empty-cart">
+      <div class="empty-cart-content">
+        <!-- Empty Cart Icon/Image -->
+        <div class="empty-cart-icon">
+          <img 
+            src="https://nhathuoclongchau.com.vn/estore-images/cart/illustration-cart-empty.png" 
+            alt="Giỏ hàng trống" 
+            class="empty-cart-image"
+          />
+        </div>
+
+        <h2 class="empty-cart-title">Chưa có sản phẩm nào trong giỏ</h2>
+        <p class="empty-cart-subtitle">Cùng khám phá hàng ngàn sản phẩm<br>tại Nhà thuốc MediCare nhé!</p>
+
+        <button class="btn-discover" (click)="goToHome()">Khám phá ngay</button>
+      </div>
+
+      <!-- Recently Viewed Products Section -->
+      @if (recentlyViewed().length > 0) {
+        <div class="recently-viewed">
+          <h2 class="section-title">Sản phẩm vừa xem</h2>
+          <div class="slider-container">
+            @if (recentlyViewed().length > 5) {
+              <button class="slider-btn prev" (click)="prevSlide()" [disabled]="currentSlide() === 0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 18l-6-6 6-6"/>
+                </svg>
+              </button>
+              <button class="slider-btn next" (click)="nextSlide()" [disabled]="currentSlide() >= recentlyViewed().length - 5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 18l6-6-6-6"/>
+                </svg>
+              </button>
+            }
+            <div class="slider-wrapper">
+              <div class="products-slider" [style.transform]="'translateX(-' + (currentSlide() * getSlideWidth()) + 'px)'">
+                @for (product of recentlyViewed(); track product._id) {
+                  <div class="product-card">
+                    <!-- Discount Badge -->
+                    @if (product.discount && product.discount > 0) {
+                      <div class="discount-badge">-{{ calculateDiscountPercent(product.price, product.discount) }}%</div>
+                    }
+                    
+                    <!-- Product Image -->
+                    <a [routerLink]="['/product', product._id]" class="product-image">
+                      <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name">
+                    </a>
+                    
+                    <!-- Product Info -->
+                    <div class="product-info">
+                      <a [routerLink]="['/product', product._id]" class="product-name">
+                        {{ product.name }}
+                      </a>
+                      
+                      <div class="product-pricing">
+                        <span class="product-price">{{ formatPrice(product.price) }}</span>
+                        @if (product.unit) {
+                          <span class="product-unit">/ {{ product.unit }}</span>
+                        }
+                      </div>
+                      
+                      @if (product.discount && product.discount > 0) {
+                        <div class="product-original-price">{{ formatPrice(product.price + product.discount) }}</div>
+                      }
+                      
+                      <!-- Add to Cart Button -->
+                      <button class="btn-add-cart" (click)="addToCart(product)">Chọn mua</button>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <!-- Cart with items -->
+    <div class="cart-with-items">
+      <div class="cart-main">
+        <!-- Cart header -->
+        <div class="cart-header">
+          <a [routerLink]="['/']" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Tiếp tục mua sắm
+          </a>
+        </div>
+
+        <!-- Free Shipping Banner -->
+        <div class="shipping-banner">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="3" width="15" height="13"></rect>
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+          </svg>
+          <span><strong>Miễn phí vận chuyển</strong> đối với đơn hàng trên 300.000đ</span>
+        </div>
+
+        <!-- Cart table -->
+        <div class="cart-table">
+          <div class="cart-table-header">
+            <div class="header-checkbox">
+              <input 
+                type="checkbox" 
+                id="select-all" 
+                [checked]="selectAll()"
+                (change)="toggleSelectAll()"
+              >
+              <label for="select-all">Chọn tất cả ({{ cartService.cartItems().length }})</label>
+            </div>
+            <div class="header-price">Giá thành</div>
+            <div class="header-quantity">Số lượng</div>
+            <div class="header-unit">Đơn vị</div>
+            <div class="header-actions">
+              <button class="btn-delete-all" (click)="showDeleteAllConfirmation()" title="Xóa tất cả">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Xóa tất cả
+              </button>
+            </div>
+          </div>
+
+          <!-- Cart items -->
+          <div class="cart-items">
+            @for (item of cartService.cartItems(); track item._id) {
+              <div class="cart-item">
+                <div class="item-checkbox">
+                  <input 
+                    type="checkbox" 
+                    [id]="'item-' + item._id" 
+                    [checked]="isItemSelected(item._id)"
+                    (change)="toggleItemSelection(item._id)"
+                  >
+                </div>
+
+                <div class="item-content">
+                  <img [src]="item.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="item.name" class="item-image">
+                  
+                  <div class="item-info">
+                    <h3 class="item-name">{{ item.name }}</h3>
+                    
+                    @if (item.discount && item.discount > 0) {
+                      <div class="item-discount-tag">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="12" cy="12" r="10"/>
+                          <polyline points="8 12 12 16 16 8"/>
+                        </svg>
+                        Giảm ngay {{ calculateDiscountPercent(item.price, item.discount) }}% áp dụng đến 31/10
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="item-price">
+                  <span class="current-price">{{ formatPrice(getItemPrice(item)) }}</span>
+                  @if (item.discount && item.discount > 0) {
+                    <span class="original-price">{{ formatPrice(getItemOriginalPrice(item)) }}</span>
+                  }
+                </div>
+
+                <div class="item-quantity">
+                  <button class="qty-btn" (click)="decreaseQuantity(item._id)">-</button>
+                  <input type="number" [value]="item.quantity" readonly class="qty-input">
+                  <button class="qty-btn" (click)="increaseQuantity(item._id)">+</button>
+                </div>
+
+                <div class="item-unit">
+                  <select class="unit-select">
+                    <option selected>{{ item.unit || 'Hộp' }}</option>
+                  </select>
+                </div>
+
+                <button class="item-delete" (click)="showDeleteConfirmation(item._id)" title="Xóa">
+                  <img src="/assets/images/icon/remove.png" alt="Xóa" width="20" height="20">
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Cart summary sidebar -->
+      <div class="cart-summary">
+        <div class="summary-card">
+          <div class="summary-header" (click)="openVoucherModal()">
+            <h3 class="summary-title">Áp dụng ưu đãi để được giảm giá</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+          
+          <div class="summary-row">
+            <span class="summary-label">Tổng tiền</span>
+            <span class="summary-value">{{ formatPrice(selectedOriginalTotal) }}</span>
+          </div>
+
+          <div class="summary-row discount">
+            <span class="summary-label">Giảm giá trực tiếp</span>
+            <span class="summary-value text-orange">{{ selectedDiscount > 0 ? '-' + formatPrice(selectedDiscount) : '0đ' }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Giảm giá voucher</span>
+            <span class="summary-value help-icon" (click)="openVoucherModal(); $event.stopPropagation()">
+              @if (appliedVoucher()) {
+                <span class="voucher-code">{{ appliedVoucher()?.code }}</span>
+                <span class="voucher-remove" (click)="removeVoucher(); $event.stopPropagation()" title="Xóa mã">×</span>
+              } @else {
+                <span>{{ formatPrice(voucherDiscount()) }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+              }
+            </span>
+          </div>
+
+          <div class="summary-row highlight">
+            <span class="summary-label">Tiết kiệm được</span>
+            <span class="summary-value text-orange">{{ formatPrice(selectedDiscount + voucherDiscount()) }}</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <span class="total-label">Thành tiền</span>
+            <div class="total-price">
+              @if (selectedOriginalTotal > finalTotal) {
+                <span class="total-original">{{ formatPrice(selectedOriginalTotal) }}</span>
+              }
+              <span class="total-final">{{ formatPrice(finalTotal) }}</span>
+            </div>
+          </div>
+
+          <button class="btn-checkout" (click)="proceedToCheckout()">
+            Mua hàng
+          </button>
+
+          <p class="checkout-note">
+            Bằng việc tiến hành đặt mua hàng, bạn đồng ý với 
+            <a href="#">Điều khoản dịch vụ</a> và 
+            <a href="#">Chính sách xử lý dữ liệu cá nhân</a> 
+            của Nhà thuốc MediCare
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recently Viewed Products Section - Shown even when cart has items -->
+    @if (recentlyViewed().length > 0) {
+      <div class="recently-viewed">
+        <h2 class="section-title">Sản phẩm vừa xem</h2>
+        <div class="slider-container">
+          @if (recentlyViewed().length > 5) {
+            <button class="slider-btn prev" (click)="prevSlide()" [disabled]="currentSlide() === 0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <button class="slider-btn next" (click)="nextSlide()" [disabled]="currentSlide() >= recentlyViewed().length - 5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          }
+          <div class="slider-wrapper">
+            <div class="products-slider" [style.transform]="'translateX(-' + (currentSlide() * getSlideWidth()) + 'px)'">
+              @for (product of recentlyViewed(); track product._id) {
+                <div class="product-card">
+                  <!-- Discount Badge -->
+                  @if (product.discount && product.discount > 0) {
+                    <div class="discount-badge">-{{ calculateDiscountPercent(product.price, product.discount) }}%</div>
+                  }
+                  
+                  <!-- Product Image -->
+                  <a [routerLink]="['/product', product._id]" class="product-image">
+                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name">
+                  </a>
+                  
+                  <!-- Product Info -->
+                  <div class="product-info">
+                    <a [routerLink]="['/product', product._id]" class="product-name">
+                      {{ product.name }}
+                    </a>
+                    
+                    <div class="product-pricing">
+                      <span class="product-price">{{ formatPrice(product.price) }}</span>
+                      @if (product.unit) {
+                        <span class="product-unit">/ {{ product.unit }}</span>
+                      }
+                    </div>
+                    
+                    @if (product.discount && product.discount > 0) {
+                      <div class="product-original-price">{{ formatPrice(product.price + product.discount) }}</div>
+                    }
+                    
+                    <!-- Add to Cart Button -->
+                    <button class="btn-add-cart" (click)="addToCart(product)">Chọn mua</button>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- Voucher Modal -->
+  @if (showVoucherModal()) {
+    <div class="modal-overlay" (click)="closeVoucherModal()">
+      <div class="voucher-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Áp dụng mã giảm giá</h3>
+          <button class="close-btn" (click)="closeVoucherModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="voucher-input-group">
+            <input 
+              type="text" 
+              class="voucher-input" 
+              placeholder="Nhập mã giảm giá"
+              [(ngModel)]="voucherCodeInput"
+              (keyup.enter)="applyVoucher()"
+              [disabled]="applyingVoucher()"
+            />
+            <button 
+              class="btn-apply-voucher" 
+              (click)="applyVoucher()"
+              [disabled]="applyingVoucher() || !voucherCodeInput.trim()"
+            >
+              @if (applyingVoucher()) {
+                <span class="spinner"></span>
+              } @else {
+                Áp dụng
+              }
+            </button>
+          </div>
+
+          @if (voucherError()) {
+            <div class="voucher-error">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              {{ voucherError() }}
+            </div>
+          }
+
+          @if (appliedVoucher()) {
+            <div class="voucher-success">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <div>
+                <strong>Mã giảm giá đã được áp dụng!</strong>
+                <p>Giảm {{ appliedVoucher()?.discountPercent }}% - {{ formatPrice(voucherDiscount()) }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Delete Confirmation Modal -->
+  @if (showDeleteConfirm()) {
+    <div class="delete-confirm-overlay" (click)="cancelDelete()">
+      <div class="delete-confirm-modal" (click)="$event.stopPropagation()">
+        <div class="modal-icon">
+          <img src="https://nhathuoclongchau.com.vn/estore-images/cart/illustration-trash.png" alt="Delete" width="120" height="120">
+        </div>
+        <h3 class="modal-title">Xác nhận xóa</h3>
+        <p class="modal-message">Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?</p>
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="cancelDelete()">Hủy</button>
+          <button class="btn-confirm-delete" (click)="confirmDelete()">Xóa</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Delete All Confirmation Modal -->
+  @if (showDeleteAllConfirm()) {
+    <div class="delete-confirm-overlay" (click)="cancelDeleteAll()">
+      <div class="delete-confirm-modal" (click)="$event.stopPropagation()">
+        <div class="modal-icon">
+          <img src="https://nhathuoclongchau.com.vn/estore-images/cart/illustration-trash.png" alt="Delete All" width="120" height="120">
+        </div>
+        <h3 class="modal-title">Xác nhận xóa tất cả</h3>
+        <p class="modal-message">Bạn có chắc muốn xóa tất cả sản phẩm khỏi giỏ hàng?</p>
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="cancelDeleteAll()">Hủy</button>
+          <button class="btn-confirm-delete" (click)="confirmDeleteAll()">Xóa tất cả</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

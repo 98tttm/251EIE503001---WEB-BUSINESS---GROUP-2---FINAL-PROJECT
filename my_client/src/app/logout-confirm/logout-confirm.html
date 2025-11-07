@@ -1,0 +1,28 @@
+<!-- Logout Confirmation Popup -->
+<div class="logout-overlay" (click)="onCancel()"></div>
+
+<div class="logout-popup">
+  <button class="logout-close-btn" (click)="onCancel()">✕</button>
+  
+  <div class="logout-content">
+    <!-- Icon -->
+    <div class="logout-icon">
+      <img src="https://nhathuoclongchau.com.vn/estore-images/logout/art.svg" alt="Logout" width="200" height="200">
+    </div>
+
+    <!-- Title -->
+    <h2 class="logout-title">Đăng xuất?</h2>
+    
+    <!-- Message -->
+    <p class="logout-message">
+      Bạn sẽ không nhận được đặc quyền riêng dành cho thành viên.
+    </p>
+
+    <!-- Buttons -->
+    <div class="logout-buttons">
+      <button class="btn-cancel" (click)="onCancel()">Đóng</button>
+      <button class="btn-confirm" (click)="onConfirm()">Đăng xuất</button>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,173 @@
+<!-- Floating Chat Button -->
+<div class="chatbot-container">
+  @if (!isOpen()) {
+    <button 
+      class="chatbot-toggle-btn"
+      (click)="toggleChat()"
+      type="button"
+      aria-label="Mở chatbot"
+    >
+      <div class="chatbot-toggle-content">
+        <div class="chatbot-toggle-icon">
+          <img src="/assets/images/MECA/MECA_headxoa.png" alt="MeCa" class="meca-icon">
+        </div>
+        <div class="chatbot-toggle-text">
+          <p class="chatbot-toggle-title">MediCare chatbot</p>
+          <p class="chatbot-toggle-subtitle">sẵn sàng hỗ trợ bạn!</p>
+        </div>
+        <div class="chatbot-notification-dot"></div>
+      </div>
+    </button>
+  }
+
+  <!-- Chat Window -->
+  @if (isOpen()) {
+    <div class="chatbot-window">
+      <!-- Header -->
+      <div class="chatbot-header">
+        <div class="chatbot-header-left">
+          <div class="chatbot-header-logo">
+            <img src="/assets/images/MECA/MECA_headxoa.png" alt="MeCa" class="meca-logo">
+          </div>
+          <h3 class="chatbot-header-title">Chat với MeCa!</h3>
+        </div>
+        <button 
+          class="chatbot-close-btn"
+          (click)="closeChat()"
+          type="button"
+          aria-label="Đóng chatbot"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Messages Area -->
+      <div class="chatbot-messages" #messagesContainer>
+        @for (message of messages(); track message.id) {
+          <div class="chatbot-message" [class.bot-message]="message.isBot" [class.user-message]="!message.isBot">
+            @if (message.isBot) {
+              <div class="chatbot-avatar">
+                <img src="/assets/images/MECA/MECA_headxoa.png" alt="MeCa Avatar" class="meca-avatar">
+              </div>
+            }
+            <div class="chatbot-message-bubble">
+              <p class="chatbot-message-text">{{ message.text }}</p>
+              
+              <!-- Product Context Card (when consulting about specific product) -->
+              @if (message.productContext) {
+                <div class="chatbot-product-context">
+                  <div class="chatbot-product-context-title">📦 Sản phẩm đang xem:</div>
+                  <a [routerLink]="['/product', message.productContext._id]" class="chatbot-product-context-card" (click)="closeChat()">
+                    <div class="chatbot-product-context-image-wrapper">
+                      <img 
+                        [src]="message.productContext.image || 'https://via.placeholder.com/400x400?text=MediCare'" 
+                        [alt]="message.productContext.name"
+                        class="chatbot-product-context-image"
+                        (error)="$any($event.target).src='https://via.placeholder.com/400x400?text=MediCare'"
+                      >
+                      @if (message.productContext.discount && message.productContext.discount > 0) {
+                        <div class="chatbot-product-context-discount">-{{ message.productContext.discount }}%</div>
+                      }
+                    </div>
+                    <div class="chatbot-product-context-info">
+                      <div class="chatbot-product-context-name">{{ message.productContext.name }}</div>
+                      @if (message.productContext.brand) {
+                        <div class="chatbot-product-context-brand">{{ message.productContext.brand }}</div>
+                      }
+                      @if (message.productContext.price) {
+                        <div class="chatbot-product-context-price">
+                          {{ formatPrice(message.productContext.price) }}
+                        </div>
+                      } @else {
+                        <div class="chatbot-product-context-price">Liên hệ</div>
+                      }
+                    </div>
+                  </a>
+                </div>
+              }
+              
+              <!-- Product Suggestions -->
+              @if (message.products && message.products.length > 0) {
+                <div class="chatbot-products">
+                  <div class="chatbot-products-title">💊 Gợi ý sản phẩm:</div>
+                  <div class="chatbot-products-grid">
+                    @for (product of message.products; track product._id) {
+                      <a [routerLink]="['/product', product._id]" class="chatbot-product-card" (click)="closeChat()">
+                        <div class="chatbot-product-image-wrapper">
+                          <img 
+                            [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" 
+                            [alt]="product.name"
+                            class="chatbot-product-image"
+                            (error)="$any($event.target).src='https://via.placeholder.com/400x400?text=MediCare'"
+                          >
+                          @if (product.discount && product.discount > 0) {
+                            <div class="chatbot-product-discount">-{{ product.discount }}%</div>
+                          }
+                        </div>
+                        <div class="chatbot-product-info">
+                          <div class="chatbot-product-name">{{ product.name }}</div>
+                          @if (product.brand) {
+                            <div class="chatbot-product-brand">{{ product.brand }}</div>
+                          }
+                          @if (product.price) {
+                            <div class="chatbot-product-price">
+                              {{ formatPrice(product.price) }}
+                            </div>
+                          } @else {
+                            <div class="chatbot-product-price">Liên hệ</div>
+                          }
+                        </div>
+                      </a>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Typing Indicator -->
+        @if (isTyping()) {
+          <div class="chatbot-message bot-message">
+            <div class="chatbot-avatar">
+              <img src="/assets/images/MECA/MECA_headxoa.png" alt="MeCa Avatar" class="meca-avatar">
+            </div>
+            <div class="chatbot-message-bubble typing-indicator">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Input Area -->
+      <div class="chatbot-input-area">
+        <input
+          type="text"
+          class="chatbot-input"
+          placeholder="Viết gì đó với MeCa..."
+          [value]="userMessage()"
+          (input)="userMessage.set($any($event.target).value)"
+          (keydown)="onKeyPress($event)"
+        />
+        <button
+          class="chatbot-send-btn"
+          (click)="sendMessage()"
+          type="button"
+          [disabled]="!userMessage().trim() || isTyping()"
+          aria-label="Gửi tin nhắn"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  }
+</div>
+

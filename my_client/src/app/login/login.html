@@ -1,0 +1,436 @@
+<!-- ==================== AUTH POPUPS ==================== -->
+
+<!-- Popup Overlay -->
+@if (showLoginPopup() || showRegisterPopup() || showForgotPasswordPopup() || showOtpPopup() || showResetPasswordPopup()) {
+  <div class="auth-overlay" (click)="closeAllPopups()"></div>
+}
+
+<!-- ==================== LOGIN POPUP ==================== -->
+@if (showLoginPopup()) {
+  <div class="auth-popup">
+    <div class="auth-popup-container">
+      <!-- Header -->
+      <div class="auth-popup-header">
+        <h2>ĐĂNG NHẬP</h2>
+        <button class="auth-close-btn" (click)="closeAllPopups()">×</button>
+      </div>
+
+      <!-- Body -->
+      <div class="auth-popup-body">
+        <form (submit)="onLogin(); $event.preventDefault()">
+          <!-- Email -->
+          <div class="auth-form-group">
+            <label>Email</label>
+            <input 
+              type="email" 
+              placeholder="Nhập email của bạn" 
+              [(ngModel)]="loginEmail"
+              name="email"
+              required
+              class="auth-input">
+          </div>
+
+          <!-- Password -->
+          <div class="auth-form-group">
+            <label>Mật khẩu</label>
+            <div class="password-input-wrapper">
+              <input 
+                [type]="showLoginPassword() ? 'text' : 'password'" 
+                placeholder="Nhập mật khẩu" 
+                [(ngModel)]="loginPassword"
+                name="password"
+                required
+                class="auth-input has-toggle">
+              <button 
+                type="button" 
+                class="password-toggle" 
+                (click)="toggleLoginPassword()"
+                [attr.aria-label]="showLoginPassword() ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'">
+                @if (showLoginPassword()) {
+                  <!-- Eye Slash Icon -->
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  </svg>
+                } @else {
+                  <!-- Eye Icon -->
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                }
+              </button>
+            </div>
+          </div>
+
+          <!-- Forgot Password Link -->
+          <div class="auth-forgot">
+            <a (click)="switchToForgotPassword()">Quên mật khẩu?</a>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="auth-submit-btn">Đăng nhập</button>
+          
+          <!-- Error Message -->
+          @if (loginError()) {
+            <div class="auth-error-message">{{ loginError() }}</div>
+          }
+        </form>
+
+        <!-- Register Link -->
+        <div class="auth-footer">
+          <p>Chưa có tài khoản? <a (click)="switchToRegister()">Đăng ký ngay</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ==================== REGISTER POPUP ==================== -->
+@if (showRegisterPopup()) {
+  <div class="auth-popup">
+    <div class="auth-popup-container">
+      <!-- Header -->
+      <div class="auth-popup-header">
+        <h2>ĐĂNG KÝ</h2>
+        <button class="auth-close-btn" (click)="closeAllPopups()">×</button>
+      </div>
+
+      <!-- Body -->
+      <div class="auth-popup-body">
+        <form (submit)="onRegister(); $event.preventDefault()">
+          <!-- Email -->
+          <div class="auth-form-group">
+            <label>Email</label>
+            <input 
+              type="email" 
+              placeholder="Nhập email của bạn" 
+              [(ngModel)]="registerEmail"
+              name="email"
+              required
+              class="auth-input">
+          </div>
+
+          <!-- Phone -->
+          <div class="auth-form-group">
+            <label>Số điện thoại</label>
+            <input 
+              type="tel" 
+              placeholder="Nhập số điện thoại" 
+              [(ngModel)]="registerPhone"
+              name="phone"
+              required
+              class="auth-input">
+          </div>
+
+          <!-- Password -->
+          <div class="auth-form-group">
+            <label>Mật khẩu</label>
+            <div class="password-input-wrapper">
+              <input 
+                [type]="showRegisterPassword() ? 'text' : 'password'" 
+                placeholder="Nhập mật khẩu" 
+                [(ngModel)]="registerPassword"
+                name="password"
+                required
+                class="auth-input has-toggle">
+              <button 
+                type="button" 
+                class="password-toggle" 
+                (click)="toggleRegisterPassword()">
+                @if (showRegisterPassword()) {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  </svg>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                }
+              </button>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="auth-form-group">
+            <label>Xác nhận mật khẩu</label>
+            <div class="password-input-wrapper">
+              <input 
+                [type]="showRegisterConfirmPassword() ? 'text' : 'password'" 
+                placeholder="Nhập lại mật khẩu" 
+                [(ngModel)]="registerConfirmPassword"
+                name="confirmPassword"
+                required
+                class="auth-input has-toggle">
+              <button 
+                type="button" 
+                class="password-toggle" 
+                (click)="toggleRegisterConfirmPassword()">
+                @if (showRegisterConfirmPassword()) {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  </svg>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                }
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="auth-submit-btn">Đăng ký</button>
+          
+          <!-- Error Message -->
+          @if (registerError()) {
+            <div class="auth-error-message">{{ registerError() }}</div>
+          }
+        </form>
+
+        <!-- Login Link -->
+        <div class="auth-footer">
+          <p>Đã có tài khoản? <a (click)="switchToLogin()">Đăng nhập ngay</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ==================== FORGOT PASSWORD POPUP ==================== -->
+@if (showForgotPasswordPopup()) {
+  <div class="auth-popup">
+    <div class="auth-popup-container">
+      <!-- Header -->
+      <div class="auth-popup-header">
+        <h2>QUÊN MẬT KHẨU</h2>
+        <button class="auth-close-btn" (click)="closeAllPopups()">×</button>
+      </div>
+
+      <!-- Body -->
+      <div class="auth-popup-body">
+        <p class="auth-description">Nhập email để nhận mã OTP khôi phục mật khẩu</p>
+        
+        <form (submit)="onForgotPassword(); $event.preventDefault()">
+          <!-- Email -->
+          <div class="auth-form-group">
+            <label>Email</label>
+            <input 
+              type="email" 
+              placeholder="Nhập email của bạn" 
+              [(ngModel)]="forgotEmail"
+              name="email"
+              required
+              class="auth-input">
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="auth-submit-btn">Gửi mã OTP</button>
+          
+          <!-- Error Message -->
+          @if (forgotPasswordError()) {
+            <div class="auth-error-message">{{ forgotPasswordError() }}</div>
+          }
+        </form>
+
+        <!-- Back to Login Link -->
+        <div class="auth-footer">
+          <p><a (click)="switchToLogin()">← Quay lại đăng nhập</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ==================== OTP VERIFICATION POPUP ==================== -->
+@if (showOtpPopup()) {
+  <div class="auth-popup">
+    <div class="auth-popup-container">
+      <!-- Header -->
+      <div class="auth-popup-header">
+        <h2>NHẬP MÃ OTP</h2>
+        <button class="auth-close-btn" (click)="closeAllPopups()">×</button>
+      </div>
+
+      <!-- Body -->
+      <div class="auth-popup-body">
+        <p class="auth-description">Mã OTP đã được gửi đến email {{ forgotEmail() }}</p>
+        
+        <form (submit)="onVerifyOtp(); $event.preventDefault()">
+          <!-- OTP Code - 6 separate boxes -->
+          <div class="auth-form-group">
+            <label>Mã OTP (6 số)</label>
+            <div class="otp-inputs">
+              <input 
+                type="text" 
+                id="otp1"
+                [(ngModel)]="otp1"
+                name="otp1"
+                maxlength="1"
+                required
+                (input)="onOtpInput($event, 'otp2')"
+                (keydown)="onOtpKeydown($event, null)"
+                class="otp-box">
+              <input 
+                type="text" 
+                id="otp2"
+                [(ngModel)]="otp2"
+                name="otp2"
+                maxlength="1"
+                required
+                (input)="onOtpInput($event, 'otp3')"
+                (keydown)="onOtpKeydown($event, 'otp1')"
+                class="otp-box">
+              <input 
+                type="text" 
+                id="otp3"
+                [(ngModel)]="otp3"
+                name="otp3"
+                maxlength="1"
+                required
+                (input)="onOtpInput($event, 'otp4')"
+                (keydown)="onOtpKeydown($event, 'otp2')"
+                class="otp-box">
+              <input 
+                type="text" 
+                id="otp4"
+                [(ngModel)]="otp4"
+                name="otp4"
+                maxlength="1"
+                required
+                (input)="onOtpInput($event, 'otp5')"
+                (keydown)="onOtpKeydown($event, 'otp3')"
+                class="otp-box">
+              <input 
+                type="text" 
+                id="otp5"
+                [(ngModel)]="otp5"
+                name="otp5"
+                maxlength="1"
+                required
+                (input)="onOtpInput($event, 'otp6')"
+                (keydown)="onOtpKeydown($event, 'otp4')"
+                class="otp-box">
+              <input 
+                type="text" 
+                id="otp6"
+                [(ngModel)]="otp6"
+                name="otp6"
+                maxlength="1"
+                required
+                (input)="onOtpInput($event, null)"
+                (keydown)="onOtpKeydown($event, 'otp5')"
+                class="otp-box">
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="auth-submit-btn">Xác nhận OTP</button>
+          
+          <!-- Error Message -->
+          @if (otpError()) {
+            <div class="auth-error-message">{{ otpError() }}</div>
+          }
+        </form>
+
+        <!-- Resend OTP Link -->
+        <div class="auth-footer">
+          <p>Không nhận được mã? <a (click)="onForgotPassword()">Gửi lại</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ==================== RESET PASSWORD POPUP ==================== -->
+@if (showResetPasswordPopup()) {
+  <div class="auth-popup">
+    <div class="auth-popup-container">
+      <!-- Header -->
+      <div class="auth-popup-header">
+        <h2>Đặt lại mật khẩu</h2>
+        <button class="auth-close-btn" (click)="closeAllPopups()">✕</button>
+      </div>
+
+      <!-- Body -->
+      <div class="auth-popup-body">
+        <p class="auth-description">Vui lòng nhập mật khẩu mới cho tài khoản {{ forgotEmail() }}</p>
+        
+        <form (submit)="onResetPassword(); $event.preventDefault()">
+          <!-- New Password -->
+          <div class="auth-form-group">
+            <label>Mật khẩu mới</label>
+            <div class="password-input-wrapper">
+              <input 
+                [type]="showNewPassword() ? 'text' : 'password'" 
+                placeholder="Nhập mật khẩu mới" 
+                [(ngModel)]="newPassword"
+                name="newPassword"
+                required
+                class="auth-input has-toggle">
+              <button 
+                type="button" 
+                class="password-toggle" 
+                (click)="toggleNewPassword()">
+                @if (showNewPassword()) {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  </svg>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                }
+              </button>
+            </div>
+          </div>
+
+          <!-- Confirm New Password -->
+          <div class="auth-form-group">
+            <label>Xác nhận mật khẩu mới</label>
+            <div class="password-input-wrapper">
+              <input 
+                [type]="showConfirmNewPassword() ? 'text' : 'password'" 
+                placeholder="Nhập lại mật khẩu mới" 
+                [(ngModel)]="confirmNewPassword"
+                name="confirmNewPassword"
+                required
+                class="auth-input has-toggle">
+              <button 
+                type="button" 
+                class="password-toggle" 
+                (click)="toggleConfirmNewPassword()">
+                @if (showConfirmNewPassword()) {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  </svg>
+                } @else {
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                }
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="auth-submit-btn">Đặt lại mật khẩu</button>
+          
+          <!-- Error Message -->
+          @if (resetPasswordError()) {
+            <div class="auth-error-message">{{ resetPasswordError() }}</div>
+          }
+        </form>
+
+        <!-- Back to login link -->
+        <div class="auth-footer">
+          <p><a (click)="switchToLogin()">Quay lại đăng nhập</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+

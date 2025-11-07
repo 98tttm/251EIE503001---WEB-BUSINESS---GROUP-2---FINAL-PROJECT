@@ -1,0 +1,474 @@
+[
+  {
+    "slug": "thuc-pham-chuc-nang/canxi-vitamin-D",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/bo_sung_canxi_vitamin_d_level_3_1cac767906.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/vitamin-tong-hop",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/chong_nang_da_mat_level_3_cf98e4420a.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/dau-ca-omega-3-dha",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/dau_ca_omega_3_dha_level_3_814328177f.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/vitamin-c",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/tpcn_vitamin_c_cac_loai_level_3_92215a0f32.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/sat-axit-folic",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/bo_sung_sat_axit_folic_level_3_46a5bbf1c4.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/sinh-ly-nam",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/sinh_ly_nam_level_3_f76dc0b6c6.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/suc-khoe-tinh-duc",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/suc_khoe_tinh_duc_level_3_55026c8887.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/can-bang-noi-tiet-to",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/can_bang_noi_tiet_to_level_3_7fad40d671.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/sinh-ly-nu",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/sinh_ly_nu_level_3_a1988dcde7.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/ho-tro-man-kinh",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/ho_tro_man_kinh_level_3_273d1706e6.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/chuc-nang-gan",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/chuc_nang_gan_level_3_aeb34d62e2.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/ho-tro-mien-dich-tang-suc-de-khang",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Tang_suc_de_khang_mien_dich_9926e39ba8.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/bao-ve-mat",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/bo_mat_bao_ve_mat_level_3_3cb3ad46da.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/ho-tro-trao-doi-chat",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/ho_tro_trao_doi_chat_level_3_814280cbb0.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/giai-ruou",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/giai_ruou_cai_ruou_level_3_95c038b70b.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/chong-lao-hoa",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/chong_lao_hoa_level_3_678036ed5a.png"
+  },
+  {
+    "slug": "thuoc/co-xuong-khop",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/co_xuong_khop_level_3_95a7a803b7.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/suc-khoe-duong-ho-hap-ho-xoang",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/ho_hap_ho_xoang_level_3_1ac351eba2.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/than-tien-liet-tuyen",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/than_tien_liet_tuyen_level_3_7e9789c0cb.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/tri",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/ho_tro_dieu_tri_tri_level_3_f2265175ea.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/gout",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/ho_tro_dieu_tri_gout_level_3_65d9072f00.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/da-day-ta-trang",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/da_day_ta_trang_level_3_15bf0448a2.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/tao-bon",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/tao_bon_level_3_d5c6858ee6.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/vi-sinh-probiotic",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/vi_sinh_probiotic_level_3_b7bc79d9ac.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/dai-trang",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/dai_trang_level_3_f096a0e215.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/kho-tieu",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/kho_tieu_level_3_e962281443.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/bo-nao-cai-thien-tri-nho",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/bo_mat_bao_ve_mat_level_3_9f9c1cdb68.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/ho-tro-giac-ngu-ngon",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/ho_tro_giac_ngu_ngon_level_3_1a522b6739.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/tuan-hoan-mau",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/tuan_hoan_mau_level_3_a3c4d43cbd.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/kiem-soat-cang-thang",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/kiem_soat_cang_thang_level_3_5b82258e04.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/hoat-huyet",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/hoat_huyet_level_3_c7497e7c74.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/da",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/da_level_3_59b0cc4d72.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/toc",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/toc_level_3_7ae28c8308.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/cholesterol",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/giam_cholesterol_level_3_f5f15760fa.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/huyet-ap",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/huyet_ap_level_3_f1d79c5311.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/tinh-mach",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/suy_gian_tinh_mach_level_3_41129d7b67.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/sua",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/sua_level_3_42d58ad9e3.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/dinh-duong-tre-em",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/dinh_duong_tre_em_level_3_85c4b519c6.png"
+  },
+  {
+    "slug": "duoc-my-pham/sua-rua-mat-kem-gel-sua",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/sua_rua_mat_kem_gel_sua_level_3_b58238bc61.png"
+  },
+  {
+    "slug": "duoc-my-pham/chong-nang-da-mat",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/chong_nang_da_mat_level_3_cf98e4420a.png"
+  },
+  {
+    "slug": "duoc-my-pham/duong-da-mat",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/duong_da_mat_level_3_831593bde3.png"
+  },
+  {
+    "slug": "duoc-my-pham/mat-na",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/mat_na_level_3_c01279ed63.png"
+  },
+  {
+    "slug": "duoc-my-pham/serum-essence-hoac-ampoule",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/serum_essence_hoac_ampoule_level_3_83a3609f46.png"
+  },
+  {
+    "slug": "duoc-my-pham/sua-tam-xa-bong",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/sua_tam_xa_bong_level_3_02e1f2f5a8.png"
+  },
+  {
+    "slug": "duoc-my-pham/chong-nang-toan-than",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/chong_nang_toan_than_level_3_636d52d165.png"
+  },
+  {
+    "slug": "duoc-my-pham/khu-mui",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/khu_mui_level_3_52900e3ee5.png"
+  },
+  {
+    "slug": "duoc-my-pham/duong-the",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/duong_the_level_3_bcdb90f6b9.png"
+  },
+  {
+    "slug": "duoc-my-pham/tri-nut-da",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/tri_nut_da_level_3_c7b2c21531.png"
+  },
+  {
+    "slug": "duoc-my-pham/cham-soc-nguc",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/cham_soc_nguc_level_3_edf67328fe.png"
+  },
+  {
+    "slug": "duoc-my-pham/massage",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/massage_level_3_993d7970c6.png"
+  },
+  {
+    "slug": "duoc-my-pham/tri-seo-mo-tham",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/viem_da_co_dia_level_3_08332b59dd.png"
+  },
+  {
+    "slug": "duoc-my-pham/da-mun",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/da_bi_mun_level_3_7ba8d236fe.png"
+  },
+  {
+    "slug": "duoc-my-pham/da-bi-kho-thieu-am",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/da_bi_kho_thieu_am_level_3_6651a18c3f.png"
+  },
+  {
+    "slug": "duoc-my-pham/nam-tan-nhang-dom-nau",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/nam_tan_nhang_dom_nau_level_3_1b8266d569.png"
+  },
+  {
+    "slug": "duoc-my-pham/viem-da-co-dia",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/viem_da_co_dia_level_3_08332b59dd.png"
+  },
+  {
+    "slug": "duoc-my-pham/da-bi-kich-ung",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/da_bi_kich_ung_level_3_4145471ab3.png"
+  },
+  {
+    "slug": "duoc-my-pham/tai-tao-chong-lao-hoa",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/tai_tao_chong_lao_hoa_da_level_3_d76f993d3d.png"
+  },
+  {
+    "slug": "duoc-my-pham/da-sam-xin-mau",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/da_sam_xin_mau_level_3_c77347eb1b.png"
+  },
+  {
+    "slug": "duoc-my-pham/dau-goi-dau-xa",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/dau_goi_dau_xa_level_3_40dc655332.png"
+  },
+  {
+    "slug": "duoc-my-pham/dau-goi-tri-nam",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/dau_goi_tri_nam_level_3_e978aefc9e.png"
+  },
+  {
+    "slug": "duoc-my-pham/duong-toc-u-toc",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/duong_toc_u_toc_level_3_e47c8afe1f.png"
+  },
+  {
+    "slug": "duoc-my-pham/dac-tri",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/dac_tri_cho_toc_level_3_1d1be90b53.png"
+  },
+  {
+    "slug": "duoc-my-pham/son-moi",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/son_moi_level_3_3afe8fcc55.png"
+  },
+  {
+    "slug": "duoc-my-pham/trang-diem-mat",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/trang_diem_mat_level_3_10391db989.png"
+  },
+  {
+    "slug": "duoc-my-pham/ngan-ngua-tri-tham-quang-bong-mat",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/tri_quang_tham_bong_mat_level_3_ee87bb96de.png"
+  },
+  {
+    "slug": "duoc-my-pham/xoa-nep-nhan-vung-mat",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/xoa_nep_nhan_vung_mat_level_3_136c5d4838.png"
+  },
+  {
+    "slug": "duoc-my-pham/tinh-dau",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/tinh_dau_level_3_0b6f321fb7.png"
+  },
+  {
+    "slug": "thuoc/thuoc-khang-sinh-khang-nam",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/thuoc_khang_sinh_duong_toan_than_level_2_b033595f14.png"
+  },
+  {
+    "slug": "thuoc/thuoc-dieu-tri-ung-thu",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/thuoc_chong_ung_thu_khac_level_3_8116899b78.png"
+  },
+  {
+    "slug": "thuoc/thuoc-tim-mach-and-mau",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/he_tim_mach_tao_mau_level_2_c85b42b397.png"
+  },
+  {
+    "slug": "thuoc/thuoc-than-kinh",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/thuoc_tri_dau_do_benh_ly_than_kinh_level_3_ade71a7d5a.png"
+  },
+  {
+    "slug": "thuoc/he-tieu-hoa-and-gan-mat",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/he_tieu_hoa_gan_mat_level_2_fbbb4ffa80.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/kem-danh-rang",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/kem_danh_rang_level_3_e8e7416b01.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/nuoc-suc-mieng",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/nuoc_suc_mieng_level_3_5b2eb4b90e.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/cham-soc-rang",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/cham_soc_rang_level_3_8928fad010.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/chi-nha-khoa",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/chi_nha_khoa_level_3_fb8eaa117c.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/bao-cao-su",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/bao_cao_su_level_3_4302b9399f.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/gel-boi-tron",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/gel_boi_tron_level_3_de17fbd4fe.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/dung-dich-ve-sinh-phu-nu",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/dung_dich_ve_sinh_phu_nu_level_3_19824d8b5c.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/ve-sinh-tai",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/ve_sinh_tai_level_3_a01c8c8cb4.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/bang-ve-sinh",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/bang_ve_sinh_level_3_dec044f9b3.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/nuoc-rua-tay",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/nuoc_rua_tay_level_3_35711014b0.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/may-do-huyet-ap",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/may_do_huyet_ap_level_3_d1cc8315d5.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/nhiet-ke",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/nhiet_ke_level_3_1f60ec9b7d.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/may-que-thu-duong-huyet",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/may_que_thu_duong_huyet_level_3_5dd4c1b707.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/thu-thai",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/thu_thai_level_3_d43b6243ac.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/kit-test-covid",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/kit_test_covid_level_3_anh_that_a4a7e228ea.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/may-do-sp-o2",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/40x40/https://cms-prod.s3-sgn09.fptcloud.com/may_do_spo2_level_3_anh_that_81c8bb7fae.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/dung-cu-ve-sinh-mui",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/dung_cu_ve_sinh_mui_level_3_b9c09af6cf.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/kim-cac-loai",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/kim_cac_loai_level_3_a5f2b837b1.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/may-massage",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/may_massage_level_3_4bf6a7b467.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/tui-chuom",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/tui_chuom_level_3_869011b667.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/vo-ngan-tinh-mach",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/vo_ngan_tinh_mach_level_3_4977786e8d.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/gang-tay",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/gang_tay_level_3_397fdd05f4.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/bang-y-te",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/bang_y_te_level_3_723e6fe8ea.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/bong-y-te",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/bong_y_te_level_3_f5f1e97bfe.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/con-va-nuoc-sat-trung",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/con_va_nuoc_sat_trung_level_3_14cf1667c6.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/cham-soc-vet-thuong",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/cham_soc_vet_thuong_level_3_0d9f2632cc.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/xit-giam-dau",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/xit_giam_dau_level_3_556e16eb7f.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/mieng-dan-giam-dau",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/80x80/https://cms-prod.s3-sgn09.fptcloud.com/mieng_dan_giam_dau_level_3_f348574869.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/sinh-ly-noi-tiet-to",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Sinh_li_Noi_tiet_to_f9d4faa138.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/cai-thien-tang-cuong-chuc-nang",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Cai_thien_tang_cuong_chuc_nang_47fdfb569a.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/ho-tro-dieu-tri",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Ho_tro_dieu_tri_149cc44167.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/ho-tro-tieu-hoa",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Ho_tro_tieu_hoa_ed4a57d578.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/than-kinh-nao",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Than_kinh_nao_ae09cbf6e8.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/lam-dep",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Ho_tro_lam_dep_dff6e2c13d.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/tim-mach-huyet-ap",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Suc_khoe_tim_mach_e413362a48.png"
+  },
+  {
+    "slug": "thuc-pham-chuc-nang/dinh-duong",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Dinh_duong_c16bba60b5.png"
+  },
+  {
+    "slug": "duoc-my-pham/cham-soc-co-the",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Cham_soc_co_the_30b1da9c1a.png"
+  },
+  {
+    "slug": "duoc-my-pham/giai-phap-lan-da",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/giai_phap_lan_da_level_2_24c57abcd0.png"
+  },
+  {
+    "slug": "duoc-my-pham/cham-soc-toc-da-dau",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Cham_soc_toc_da_dau_6b8c4e516d.png"
+  },
+  {
+    "slug": "duoc-my-pham/my-pham-trang-diem",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/My_pham_trang_diem_8589bc7b93.png"
+  },
+  {
+    "slug": "duoc-my-pham/cham-soc-da-vung-mat",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Cham_soc_da_vung_mat_2d70f0a5e3.png"
+  },
+  {
+    "slug": "duoc-my-pham/san-pham-tu-thien-nhien",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/San_pham_tu_thien_nhien_4435bda613.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/ho-tro-tinh-duc",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Ho_tro_tinh_duc_2497bbf972.png"
+  },
+  {
+    "slug": "cham-soc-ca-nhan/ve-sinh-ca-nhan",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Ve_sinh_ca_nhan_a482678d44.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/dung-cu-y-te",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Dung_cu_y_te_8ae0da0bb4.png"
+  },
+  {
+    "slug": "trang-thiet-bi-y-te/dung-cu-so-cuu",
+    "icon": "https://cdn.nhathuoclongchau.com.vn/unsafe/24x24/https://cms-prod.s3-sgn09.fptcloud.com/smalls/Dung_cu_so_cuu_277b6974b1.png"
+  }
+]

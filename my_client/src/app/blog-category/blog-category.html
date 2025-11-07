@@ -1,0 +1,134 @@
+<div class="blog-category-page">
+  <div class="category-container">
+    @if (detail(); as detail) {
+      <nav class="breadcrumb" *ngIf="detail.breadcrumb.length">
+        @for (entry of detail.breadcrumb; track entry.slug; let idx = $index; let total = $count) {
+          <span class="breadcrumb-item">
+            @if (getBreadcrumbLink(entry, idx, total); as link) {
+              <a [routerLink]="link">{{ entry.name }}</a>
+            } @else {
+              <span>{{ entry.name }}</span>
+            }
+          </span>
+          @if (idx < total - 1) {
+            <span class="breadcrumb-separator">/</span>
+          }
+        }
+      </nav>
+
+      <header class="category-header">
+        <h1 class="category-title">{{ detail.category.name }}</h1>
+        <p class="category-subtitle">
+          {{ formatCount(detail.category.articleCount || 0) }} bài viết được cập nhật bởi đội ngũ chuyên môn MediCare.
+        </p>
+      </header>
+
+      <section class="subcategory-section" *ngIf="subcategories().length > 0">
+        <div class="subcategory-grid">
+          <button type="button" class="subcategory-card" [class.active]="isAllActive()" (click)="selectAll()">
+            <div class="subcategory-icon all">
+              <span>Tất</span>
+            </div>
+            <div class="subcategory-name">Tất cả</div>
+            <div class="subcategory-count">{{ formatCount(categoryCount()) }} bài viết</div>
+          </button>
+
+          @for (subcategory of subcategories(); track subcategory.slug) {
+            <button type="button" class="subcategory-card" [class.active]="isSubcategoryActive(subcategory)" (click)="selectSubcategory(subcategory)">
+              <div class="subcategory-icon">
+                @if (getSubcategoryIcon(subcategory); as icon) {
+                  <img [src]="icon" [alt]="subcategory.name" loading="lazy" decoding="async">
+                } @else {
+                  <span>{{ getSubcategoryInitial(subcategory) }}</span>
+                }
+              </div>
+              <div class="subcategory-name">{{ subcategory.name }}</div>
+              <div class="subcategory-count">{{ formatCount(subcategory.articleCount) }} bài viết</div>
+            </button>
+          }
+        </div>
+      </section>
+
+      @if (heroArticle(); as hero) {
+        <section class="category-hero">
+          <article class="hero-feature" (click)="navigateToArticle(hero)">
+            <div class="hero-image">
+              <img [src]="getArticleImage(hero)" [alt]="hero.title" loading="lazy" decoding="async">
+            </div>
+            <div class="hero-content">
+              <span class="hero-tag">{{ getArticleCategory(hero) }}</span>
+              <h2 class="hero-title">{{ hero.title }}</h2>
+              <p class="hero-summary">{{ getArticleSummary(hero, 220) }}</p>
+              <div class="hero-meta">
+                <span>{{ getArticleAuthor(hero) }}</span>
+                <span>{{ formatDate(hero.publishedAt) }}</span>
+              </div>
+            </div>
+          </article>
+
+          @if (secondaryArticles().length > 0) {
+            <div class="hero-list">
+              @for (article of secondaryArticles(); track article.id) {
+                <button type="button" class="hero-item" (click)="navigateToArticle(article)">
+                  <span class="item-category">{{ getArticleCategory(article) }}</span>
+                  <h3 class="item-title">{{ article.title }}</h3>
+                  <p class="item-summary">{{ getArticleSummary(article, 120) }}</p>
+                  <span class="item-date">{{ formatDate(article.publishedAt) }}</span>
+                </button>
+              }
+            </div>
+          }
+        </section>
+      }
+
+      <section class="article-feed" *ngIf="feedArticles().length > 0">
+        <div class="feed-grid">
+          @for (article of feedArticles(); track article.id) {
+            <article class="feed-card" (click)="navigateToArticle(article)">
+              <div class="feed-image">
+                <img [src]="getArticleImage(article)" [alt]="article.title" loading="lazy" decoding="async">
+              </div>
+              <div class="feed-content">
+                <span class="feed-category">{{ getArticleCategory(article) }}</span>
+                <h3 class="feed-title">{{ article.title }}</h3>
+                <p class="feed-summary">{{ getArticleSummary(article, 200) }}</p>
+                <div class="feed-meta">
+                  <span>{{ getArticleAuthor(article) }}</span>
+                  <span>{{ formatDate(article.publishedAt) }}</span>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+
+      @if (feedArticles().length === 0 && secondaryArticles().length === 0 && !heroArticle()) {
+        <div class="empty-state">
+          <p>Chưa có bài viết nào thuộc chuyên mục này.</p>
+        </div>
+      }
+
+      @if (remainingCount() > 0) {
+        <div class="view-more">
+          <button type="button" class="btn-view-more" (click)="viewAll()">
+            Xem thêm {{ formatCount(remainingCount()) }} bài viết
+          </button>
+        </div>
+      }
+    }
+
+    @if (loading()) {
+      <div class="loading-overlay">
+        <div class="spinner"></div>
+      </div>
+    }
+
+    @if (error() && !loading()) {
+      <div class="error-banner">
+        <p>{{ error() }}</p>
+        <button type="button" (click)="retry()">Thử lại</button>
+      </div>
+    }
+  </div>
+</div>
+

@@ -1,0 +1,92 @@
+<!-- ==================== CLIENT PROFILE CONTENT ==================== -->
+<div class="profile-info-page">
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a routerLink="/">Trang chủ</a>
+        <span class="breadcrumb-separator">/</span>
+        <a routerLink="/profile">Cá nhân</a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-current">Thông tin cá nhân</span>
+      </nav>
+
+      <!-- Content Card -->
+      <div class="profile-content">
+        <h1 class="profile-title">Thông tin cá nhân</h1>
+
+        <!-- Avatar -->
+        <div class="profile-avatar-section">
+          <div class="profile-avatar">
+            <img src="/assets/images/icon/avt.png" alt="Avatar">
+          </div>
+        </div>
+
+        <!-- Profile Information -->
+        <div class="profile-info">
+          <!-- Full Name -->
+          <div class="info-row">
+            <label class="info-label">Họ và tên</label>
+            @if (isEditMode()) {
+              <input 
+                type="text" 
+                [(ngModel)]="fullName"
+                class="info-input"
+                placeholder="Nhập họ và tên">
+            } @else {
+              <span class="info-value">{{ fullName() || phone() }}</span>
+            }
+          </div>
+
+          <!-- Phone Number -->
+          <div class="info-row">
+            <label class="info-label">Số điện thoại</label>
+            <span class="info-value">{{ phone() }}</span>
+          </div>
+
+          <!-- Gender -->
+          <div class="info-row">
+            <label class="info-label">Giới tính</label>
+            @if (isEditMode()) {
+              <select [(ngModel)]="gender" class="info-input">
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="Khác">Khác</option>
+              </select>
+            } @else {
+              <span class="info-value">{{ gender() || 'Nam' }}</span>
+            }
+          </div>
+
+          <!-- Birthday -->
+          <div class="info-row">
+            <label class="info-label">Ngày sinh</label>
+            @if (isEditMode()) {
+              <input 
+                type="date" 
+                [(ngModel)]="birthday"
+                class="info-input">
+            } @else {
+              @if (birthday()) {
+                <span class="info-value">{{ birthday() }}</span>
+              } @else {
+                <a class="info-link" (click)="toggleEditMode()">Thêm thông tin</a>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="profile-actions">
+          @if (isEditMode()) {
+            <button class="btn-save" (click)="saveProfile()">Lưu thay đổi</button>
+            <button class="btn-cancel" (click)="toggleEditMode()">Hủy</button>
+          } @else {
+            <button class="btn-edit" (click)="toggleEditMode()">Chỉnh sửa thông tin</button>
+          }
+        </div>
+        
+        <!-- Error Message -->
+        @if (profileError()) {
+          <div class="profile-error-message">{{ profileError() }}</div>
+        }
+      </div>
+</div>

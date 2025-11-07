@@ -1,0 +1,1054 @@
+<section class="collection" *ngIf="collectionMeta(); else missingCollection">
+  <!-- Enhanced Header with Actions -->
+  <header class="collection-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h2>
+          <span class="collection-icon">📦</span>
+          {{ collectionLabel }}
+        </h2>
+        <p>{{ collectionMeta()?.description || collectionLabel }}</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-item">
+          <span class="stat-label">Tổng số</span>
+          <span class="stat-value">{{ pagination().total | number }}</span>
+        </div>
+        <div class="stat-item" *ngIf="isProductCollection()">
+          <span class="stat-label">Tồn kho thấp</span>
+          <span class="stat-value warning">{{ lowStockCount() | number }}</span>
+        </div>
+        <div class="stat-item" *ngIf="isOrderCollection()">
+          <span class="stat-label">Chờ xử lý</span>
+          <span class="stat-value pending">{{ orderStats()?.pending || 0 }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="toolbar">
+      <div class="search-box">
+        <span class="material-icon">search</span>
+        <input
+          type="search"
+          placeholder="Tìm kiếm theo tên, ID, SKU..."
+          [value]="searchTerm()"
+          (input)="onSearch($event.target.value)"
+        />
+        <button *ngIf="searchTerm()" (click)="clearSearch()" class="clear-search" type="button">
+          <span class="material-icon">close</span>
+        </button>
+      </div>
+      
+      <div class="toolbar-actions">
+        <button class="action-btn" type="button" (click)="toggleFilters()" [class.active]="showFilters()">
+          <span class="material-icon">filter_list</span>
+          <span>Bộ lọc</span>
+          <span class="badge" *ngIf="activeFiltersCount() > 0">{{ activeFiltersCount() }}</span>
+        </button>
+        
+        <button class="action-btn" type="button" (click)="exportData()" [disabled]="loading()">
+          <span class="material-icon">download</span>
+          <span>Xuất Excel</span>
+        </button>
+        
+        <button class="action-btn" type="button" (click)="openImportModal()" *ngIf="collectionMeta()?.allowCreate">
+          <span class="material-icon">upload</span>
+          <span>Nhập dữ liệu</span>
+        </button>
+        
+        <!-- Special button for orders to create order on behalf of customer -->
+        <button class="action-btn special" type="button" routerLink="/admin/create-order" *ngIf="isOrderCollection()">
+          <span class="material-icon">add_shopping_cart</span>
+          <span>Đặt hàng dùm khách</span>
+        </button>
+        
+        <button class="primary" type="button" (click)="goToCreate()" *ngIf="collectionMeta()?.allowCreate">
+          <span class="material-icon">add</span>
+          <span>Thêm mới</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick Stats Summary -->
+  <div class="summary-cards" *ngIf="!isPharmacistChatCollection() && !isOrderCollection()">
+    <div class="summary-card">
+      <span class="material-icon">inventory_2</span>
+      <div class="summary-content">
+        <span class="summary-label">Đang hiển thị</span>
+        <span class="summary-value">{{ items().length }} / {{ pagination().total | number }}</span>
+      </div>
+    </div>
+    <div class="summary-card" *ngIf="selected().size > 0">
+      <span class="material-icon" style="color: #2563eb">check_circle</span>
+      <div class="summary-content">
+        <span class="summary-label">Đã chọn</span>
+        <span class="summary-value">{{ selected().size }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert" *ngIf="error()">
+    <span class="material-icon">error</span>
+    {{ error() }}
+  </div>
+
+  <!-- Enhanced Filters Panel -->
+  <div class="filters-panel" *ngIf="showFilters()">
+    <div class="filters-header">
+      <h3>
+        <span class="material-icon">tune</span>
+        Bộ lọc nâng cao
+      </h3>
+      <button type="button" class="ghost-btn" (click)="clearFilters()">
+        <span class="material-icon">filter_alt_off</span>
+        Xóa tất cả bộ lọc
+      </button>
+    </div>
+    
+    <div class="filters-content">
+      <!-- Filters for products -->
+      <ng-container *ngIf="isProductCollection()">
+        <div class="filter-group">
+          <label class="filter-label">
+            <span class="material-icon">inventory</span>
+            Trạng thái tồn kho
+          </label>
+          <div class="filter-buttons">
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="stockFilter() === 'all'"
+              (click)="stockFilter.set('all')">
+              Tất cả
+            </button>
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="stockFilter() === 'in'"
+              (click)="stockFilter.set('in')">
+              Còn hàng
+            </button>
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="stockFilter() === 'out'"
+              (click)="stockFilter.set('out')">
+              Hết hàng
+            </button>
+          </div>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">
+            <span class="material-icon">payments</span>
+            Khoảng giá
+          </label>
+          <div class="price-range">
+            <input 
+              type="number" 
+              placeholder="Giá từ" 
+              [ngModel]="minPrice()" 
+              (ngModelChange)="minPrice.set($event)"
+              class="price-input"
+            />
+            <span class="range-separator">—</span>
+            <input 
+              type="number" 
+              placeholder="Giá đến" 
+              [ngModel]="maxPrice()" 
+              (ngModelChange)="maxPrice.set($event)"
+              class="price-input"
+            />
+          </div>
+        </div>
+      </ng-container>
+      
+      <!-- Filters for categories -->
+      <ng-container *ngIf="isCategoryCollection()">
+        <div class="filter-group">
+          <label class="filter-label">
+            <span class="material-icon">layers</span>
+            Cấp độ danh mục
+          </label>
+          <div class="filter-buttons">
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="levelFilter() === null"
+              (click)="levelFilter.set(null)">
+              Tất cả
+            </button>
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="levelFilter() === 1"
+              (click)="levelFilter.set(1)">
+              Cấp 1
+            </button>
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="levelFilter() === 2"
+              (click)="levelFilter.set(2)">
+              Cấp 2
+            </button>
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="levelFilter() === 3"
+              (click)="levelFilter.set(3)">
+              Cấp 3
+            </button>
+          </div>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">
+            <span class="material-icon">visibility</span>
+            Trạng thái hiển thị
+          </label>
+          <div class="filter-buttons">
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="activeFilter() === 'all'"
+              (click)="activeFilter.set('all')">
+              Tất cả
+            </button>
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="activeFilter() === 'active'"
+              (click)="activeFilter.set('active')">
+              Hoạt động
+            </button>
+            <button 
+              type="button" 
+              class="filter-btn" 
+              [class.active]="activeFilter() === 'inactive'"
+              (click)="activeFilter.set('inactive')">
+              Ẩn
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Old Filters (Hidden) -->
+  <div class="filters" *ngIf="false && isProductCollection()" style="display: none;">
+    <div class="filter-item">
+      <label>Tồn kho</label>
+      <select [ngModel]="stockFilter()" (ngModelChange)="stockFilter.set($event)">
+        <option value="all">Tất cả</option>
+        <option value="in">Còn hàng</option>
+        <option value="out">Hết hàng</option>
+      </select>
+    </div>
+    <div class="filter-item">
+      <label>Giá từ</label>
+      <input type="number" placeholder="min" [ngModel]="minPrice()" (ngModelChange)="minPrice.set($event)" />
+    </div>
+    <div class="filter-item">
+      <label>đến</label>
+      <input type="number" placeholder="max" [ngModel]="maxPrice()" (ngModelChange)="maxPrice.set($event)" />
+    </div>
+    <div class="filter-actions">
+      <button type="button" class="ghost" (click)="clearFilters()">
+        <span class="material-icon">filter_alt_off</span>
+        Bỏ lọc
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters for categories -->
+  <div class="filters" *ngIf="isCategoryCollection()">
+    <div class="filter-item">
+      <label>Cấp độ</label>
+      <select [ngModel]="levelFilter()" (ngModelChange)="onLevelFilterChange($event)">
+        <option value="">Tất cả</option>
+        <option value="1">Cấp 1</option>
+        <option value="2">Cấp 2</option>
+        <option value="3">Cấp 3</option>
+      </select>
+    </div>
+    <div class="filter-item">
+      <label>Trạng thái</label>
+      <select [ngModel]="activeFilter()" (ngModelChange)="activeFilter.set($event)">
+        <option value="all">Tất cả</option>
+        <option value="active">Hoạt động</option>
+        <option value="inactive">Ẩn</option>
+      </select>
+    </div>
+    <div class="filter-actions">
+      <button type="button" class="ghost" (click)="clearFilters()">
+        <span class="material-icon">filter_alt_off</span>
+        Bỏ lọc
+      </button>
+    </div>
+  </div>
+
+  <!-- Order Stats Dashboard -->
+  <div class="order-stats" *ngIf="isOrderCollection() && orderStats()">
+    <div class="stat-card" 
+         [class.active]="orderStatusFilter() === 'all'"
+         (click)="setOrderStatusFilter('all')">
+      <div class="stat-icon all">
+        <span class="material-icon">shopping_cart</span>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ orderStats()!.total }}</div>
+        <div class="stat-label">Tất cả</div>
+      </div>
+    </div>
+    
+    <div class="stat-card" 
+         [class.active]="orderStatusFilter() === 'pending'"
+         (click)="setOrderStatusFilter('pending')">
+      <div class="stat-icon pending">
+        <span class="material-icon">schedule</span>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ orderStats()!.pending }}</div>
+        <div class="stat-label">Chờ xử lý</div>
+      </div>
+    </div>
+    
+    <div class="stat-card" 
+         [class.active]="orderStatusFilter() === 'processing'"
+         (click)="setOrderStatusFilter('processing')">
+      <div class="stat-icon processing">
+        <span class="material-icon">hourglass_empty</span>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ orderStats()!.processing }}</div>
+        <div class="stat-label">Đang xử lý</div>
+      </div>
+    </div>
+    
+    <div class="stat-card" 
+         [class.active]="orderStatusFilter() === 'shipping'"
+         (click)="setOrderStatusFilter('shipping')">
+      <div class="stat-icon shipping">
+        <span class="material-icon">local_shipping</span>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ orderStats()!.shipping }}</div>
+        <div class="stat-label">Đang giao</div>
+      </div>
+    </div>
+    
+    <div class="stat-card" 
+         [class.active]="orderStatusFilter() === 'delivered'"
+         (click)="setOrderStatusFilter('delivered')">
+      <div class="stat-icon delivered">
+        <span class="material-icon">check_circle</span>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ orderStats()!.delivered }}</div>
+        <div class="stat-label">Đã giao</div>
+      </div>
+    </div>
+    
+    <div class="stat-card" 
+         [class.active]="orderStatusFilter() === 'cancelled'"
+         (click)="setOrderStatusFilter('cancelled')">
+      <div class="stat-icon cancelled">
+        <span class="material-icon">cancel</span>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ orderStats()!.cancelled }}</div>
+        <div class="stat-label">Đã hủy</div>
+      </div>
+    </div>
+    
+    <div class="stat-card" 
+         [class.active]="orderStatusFilter() === 'returned'"
+         (click)="setOrderStatusFilter('returned')">
+      <div class="stat-icon returned">
+        <span class="material-icon">keyboard_return</span>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ orderStats()!.returned }}</div>
+        <div class="stat-label">Đã trả</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk selection bar -->
+  <div class="bulk-bar" *ngIf="selected().size > 0">
+    <span>Đã chọn {{ selected().size | number }} sản phẩm</span>
+    <div class="spacer"></div>
+    <button type="button" class="ghost danger" (click)="deleteSelected()" *ngIf="collectionMeta()?.allowDelete">
+      <span class="material-icon">delete</span>
+      Xóa đã chọn
+    </button>
+    <button type="button" class="ghost" (click)="clearSelection()">
+      <span class="material-icon">close</span>
+      Bỏ chọn
+    </button>
+  </div>
+
+  <!-- Specialized category table -->
+  <div class="table-wrapper" *ngIf="isCategoryCollection() && !isEmpty()">
+    <table class="category-table">
+      <thead>
+        <tr>
+          <th class="name-col">Tên danh mục</th>
+          <th class="id-col">ID</th>
+          <th class="slug-col">Slug</th>
+          <th class="level-col">Cấp độ</th>
+          <th class="parent-col">Danh mục cha</th>
+          <th class="order-col">Thứ tự</th>
+          <th class="status-col">Trạng thái</th>
+          <th class="actions">Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of filteredCategories()" class="clickable-row category-row" [attr.data-level]="c.level" (click)="goToDetail(c.id)">
+          <td class="name category-name">
+            <div class="category-name-wrapper" [style.padding-left]="(c.level - 1) * 30 + 'px'">
+              <span class="category-icon" *ngIf="c.icon">
+                <span class="material-icon" *ngIf="!c.icon.startsWith('http')">{{ c.icon }}</span>
+                <img *ngIf="c.icon.startsWith('http')" [src]="c.icon" alt="Icon" />
+              </span>
+              <span class="category-icon placeholder" *ngIf="!c.icon">
+                <span class="material-icon">{{ c.level === 1 ? 'folder' : (c.level === 2 ? 'folder_open' : 'description') }}</span>
+              </span>
+              <span class="category-name-text">{{ c.name || '—' }}</span>
+              <span class="children-count" *ngIf="getCategoryChildrenCount(c.id) > 0">
+                {{ getCategoryChildrenCount(c.id) }}
+              </span>
+            </div>
+          </td>
+          <td class="mono id-col">{{ c.id.substring(0, 8) }}...</td>
+          <td class="slug-col mono">{{ c.slug || '—' }}</td>
+          <td class="level-col">
+            <span class="level-badge" [class.level-1]="c.level === 1" [class.level-2]="c.level === 2" [class.level-3]="c.level === 3">
+              <span class="material-icon">{{ c.level === 1 ? 'looks_one' : (c.level === 2 ? 'looks_two' : 'looks_3') }}</span>
+              Cấp {{ c.level }}
+            </span>
+          </td>
+          <td class="parent-col">
+            <span *ngIf="!c.parentId" class="parent-none">—</span>
+            <span *ngIf="c.parentName" class="parent-name">{{ c.parentName }}</span>
+            <span *ngIf="c.parentId && !c.parentName" class="parent-id">{{ c.parentId.substring(0, 12) }}...</span>
+          </td>
+          <td class="order-col">
+            <span class="order-value" *ngIf="c.displayOrder !== undefined && c.displayOrder !== null">{{ c.displayOrder }}</span>
+            <span class="order-auto" *ngIf="c.displayOrder === undefined || c.displayOrder === null">Auto</span>
+          </td>
+          <td class="status-col">
+            <span class="status-badge" [class.active]="c.isActive" [class.inactive]="!c.isActive">
+              <span class="material-icon">{{ c.isActive ? 'check_circle' : 'cancel' }}</span>
+              {{ c.isActive ? 'Hoạt động' : 'Ẩn' }}
+            </span>
+          </td>
+          <td class="actions" (click)="$event.stopPropagation()">
+            <div class="action-group">
+              <button type="button" class="ghost" (click)="goToDetail(c.id); $event.stopPropagation()">
+                <span class="material-icon">visibility</span>
+                <span>Xem</span>
+              </button>
+              <button type="button" class="ghost" (click)="goToEdit(c.id); $event.stopPropagation()" *ngIf="collectionMeta()?.allowUpdate">
+                <span class="material-icon">edit</span>
+                <span>Sửa</span>
+              </button>
+              <button type="button" class="ghost danger" (click)="deleteRow(c.id); $event.stopPropagation()" *ngIf="collectionMeta()?.allowDelete">
+                <span class="material-icon">delete</span>
+                <span>Xóa</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Specialized product table -->
+  <div class="table-wrapper" *ngIf="isProductCollection() && !isCategoryCollection() && !isEmpty()">
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th class="select">
+            <input type="checkbox" [checked]="allSelected()" (change)="toggleSelectAll($event.target.checked)" />
+          </th>
+          <th class="name-col">Tên sản phẩm</th>
+          <th class="id-col">ID sản phẩm</th>
+          <th class="price-col" (click)="toggleSort('price')">Giá</th>
+          <th class="stock-col">Tồn kho</th>
+          <th class="actions">Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of filteredProductRows()" class="clickable-row" (click)="goToDetail(p.id)">
+          <td class="select" (click)="$event.stopPropagation()">
+            <input type="checkbox" [checked]="selected().has(p.id)" (change)="toggleSelectOne(p.id, $event.target.checked)" (click)="$event.stopPropagation()" />
+          </td>
+          <td class="name">{{ p.name || '—' }}</td>
+          <td class="mono id-col">{{ p.id || '—' }}</td>
+          <td class="price price-col">{{ p.price | currency:'VND':'symbol':'1.0-0' }}</td>
+          <td class="stock-col">
+            <span class="stock" [class.low]="(p.stock ?? 0) <= 0" [class.ok]="(p.stock ?? 0) > 0">
+              {{ p.stock === null ? '—' : (p.stock | number) }}
+            </span>
+          </td>
+          <td class="actions" (click)="$event.stopPropagation()">
+            <div class="action-group">
+              <button type="button" class="ghost" (click)="goToDetail(p.id); $event.stopPropagation()">
+                <span class="material-icon">visibility</span>
+                <span>Xem</span>
+              </button>
+              <button type="button" class="ghost" (click)="goToEdit(p.id); $event.stopPropagation()" *ngIf="collectionMeta()?.allowUpdate">
+                <span class="material-icon">edit</span>
+                <span>Sửa</span>
+              </button>
+              <button type="button" class="ghost danger" (click)="deleteRow(p.id); $event.stopPropagation()" *ngIf="collectionMeta()?.allowDelete">
+                <span class="material-icon">delete</span>
+                <span>Xóa</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Specialized order table -->
+  <div class="table-wrapper" *ngIf="isOrderCollection() && !isEmpty()">
+    <table class="order-table">
+      <thead>
+        <tr>
+          <th class="order-number-col">Mã đơn hàng</th>
+          <th class="customer-col">Khách hàng</th>
+          <th class="date-col" (click)="toggleSort('createdAt')">Ngày đặt</th>
+          <th class="total-col">Tổng tiền</th>
+          <th class="payment-col">Thanh toán</th>
+          <th class="status-col">Trạng thái</th>
+          <th class="actions">Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of filteredOrders()" class="clickable-row" (click)="goToDetail(order.orderNumber || order._id)">
+          <td class="order-number mono">{{ order.orderNumber || order._id }}</td>
+          <td class="customer">
+            <div class="customer-info">
+              <div class="customer-name">{{ order.customerInfo?.name || order.shippingAddress?.name || '—' }}</div>
+              <div class="customer-phone">{{ order.customerInfo?.phone || order.shippingAddress?.phone || '—' }}</div>
+            </div>
+          </td>
+          <td class="date">{{ order.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td class="total">{{ order.pricing?.total || order.total || 0 | currency:'VND':'symbol':'1.0-0' }}</td>
+          <td class="payment">
+            <span class="payment-badge" [attr.data-method]="order.paymentMethod">
+              {{ order.paymentMethod === 'cod' ? 'COD' : 
+                 order.paymentMethod === 'card' ? 'Thẻ' :
+                 order.paymentMethod === 'bank' ? 'CK' : 
+                 order.paymentMethod === 'atm' ? 'ATM' :
+                 order.paymentMethod === 'qr' ? 'QR' : (order.paymentMethod || '—') }}
+            </span>
+          </td>
+          <td class="status">
+            <span class="order-status-badge" 
+                  [class.pending]="(order.status || '').toLowerCase().includes('pending')"
+                  [class.processing]="(order.status || '').toLowerCase().includes('processing') || (order.status || '').toLowerCase().includes('confirmed')"
+                  [class.shipping]="(order.status || '').toLowerCase().includes('shipping') || (order.status || '').toLowerCase().includes('giao')"
+                  [class.delivered]="(order.status || '').toLowerCase().includes('delivered') || (order.status || '').toLowerCase().includes('completed')"
+                  [class.cancelled]="(order.status || '').toLowerCase().includes('cancelled') || (order.status || '').toLowerCase().includes('hủy')"
+                  [class.returned]="(order.status || '').toLowerCase().includes('returned')">
+              {{ translateOrderStatus(order.status) }}
+            </span>
+          </td>
+          <td class="actions" (click)="$event.stopPropagation()">
+            <div class="action-group">
+              <button type="button" class="ghost" (click)="goToDetail(order.orderNumber || order._id); $event.stopPropagation()">
+                <span class="material-icon">visibility</span>
+                <span>Xem</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Generic table for other collections (not category, not product, not order) -->
+  <!-- Messenger View for Pharmacist Chats -->
+  <div class="messenger-container" *ngIf="isPharmacistChatCollection() && !isEmpty()">
+    <!-- Left Sidebar: Chat List -->
+    <div class="messenger-sidebar">
+      <div class="messenger-header">
+        <h3>Đoạn chat</h3>
+        <button type="button" class="icon-btn" title="Tìm kiếm">
+          <span class="material-icon">search</span>
+        </button>
+      </div>
+      <div class="chat-list">
+        <div
+          *ngFor="let chat of messengerChats()"
+          class="chat-item"
+          [class.active]="selectedChatId() === chat.id"
+          (click)="selectChat(chat.id)"
+        >
+          <div class="chat-avatar">
+            <span class="material-icon">person</span>
+          </div>
+          <div class="chat-info">
+            <div class="chat-name-row">
+              <span class="chat-name">{{ chat.customerName }}</span>
+              <span class="chat-time">{{ chat.lastMessageTime }}</span>
+            </div>
+            <div class="chat-preview">
+              <span class="chat-message">{{ chat.lastMessage }}</span>
+              <span class="chat-badge" *ngIf="chat.messageCount > 0">{{ chat.messageCount }}</span>
+            </div>
+            <div class="chat-customer-info" (click)="goToDetail(chat.id); $event.stopPropagation()">
+              <span class="material-icon">phone</span>
+              <span>{{ chat.customerPhone || '—' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Main: Chat Window -->
+    <div class="messenger-main">
+      <ng-container *ngIf="selectedChatView(); else noChatSelected">
+        <div class="chat-window">
+          <!-- Chat Header -->
+          <div class="chat-window-header">
+            <div class="chat-window-user" (click)="goToDetail(selectedChatView()!.id)">
+              <div class="chat-window-avatar">
+                <span class="material-icon">person</span>
+              </div>
+              <div class="chat-window-user-info">
+                <div class="chat-window-name">{{ selectedChatView()!.customerName }}</div>
+                <div class="chat-window-status">
+                  <span class="material-icon">phone</span>
+                  <span>{{ selectedChatView()!.customerPhone || '—' }}</span>
+                  <span class="status-badge" [class]="selectedChatView()!.statusClass">{{ selectedChatView()!.statusLabel }}</span>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="icon-btn" title="Tùy chọn" (click)="goToDetail(selectedChatView()!.id)">
+              <span class="material-icon">info</span>
+            </button>
+          </div>
+
+          <!-- Messages Area -->
+          <div class="chat-messages" #chatMessages>
+            <div *ngFor="let message of selectedChatView()!.messages" class="message-wrapper" [class.message-user]="message.sender === 'user'" [class.message-pharmacist]="message.sender === 'pharmacist'" [class.message-system]="message.sender === 'system'">
+              <div class="message-bubble" [class.message-file]="message.type === 'file'">
+                <div *ngIf="message.type === 'file'" class="message-file-content">
+                  <div class="file-icon-wrapper">
+                    <span class="material-icon">attach_file</span>
+                  </div>
+                  <div class="file-info">
+                    <div class="file-name">{{ message.fileName || 'File đính kèm' }}</div>
+                    <div class="file-size">{{ formatFileSize(message.fileSize || 0) }}</div>
+                  </div>
+                  <a [href]="'http://localhost:3000' + message.fileUrl" target="_blank" class="file-download" title="Tải xuống">
+                    <span class="material-icon">download</span>
+                  </a>
+                </div>
+                <div *ngIf="message.type !== 'file'" class="message-content">{{ message.content }}</div>
+                <div class="message-time">{{ message.timestamp }}</div>
+              </div>
+            </div>
+            <div *ngIf="loadingChat()" class="loading-messages">
+              <span class="material-icon">hourglass_empty</span>
+              <span>Đang tải...</span>
+            </div>
+          </div>
+
+          <!-- Input Area -->
+          <div class="chat-input-area">
+            <!-- Selected File Preview -->
+            <div *ngIf="selectedFile()" class="file-preview">
+              <span class="material-icon">attach_file</span>
+              <span class="file-name">{{ selectedFile()!.name }}</span>
+              <button type="button" class="remove-file-btn" (click)="removeSelectedFile()" title="Xóa">
+                <span class="material-icon">close</span>
+              </button>
+            </div>
+
+            <!-- Emoji Picker -->
+            <div *ngIf="showEmojiPicker()" class="emoji-picker">
+              <div class="emoji-grid">
+                <button
+                  *ngFor="let emoji of commonEmojis"
+                  type="button"
+                  class="emoji-btn"
+                  (click)="insertEmoji(emoji)"
+                  [title]="emoji"
+                >
+                  {{ emoji }}
+                </button>
+              </div>
+            </div>
+
+            <div class="input-row">
+              <button type="button" class="input-icon-btn" title="Emoji" (click)="toggleEmojiPicker()" [class.active]="showEmojiPicker()">
+                <span class="material-icon">mood</span>
+              </button>
+              <input
+                type="text"
+                class="chat-input"
+                placeholder="Nhập tin nhắn..."
+                [ngModel]="pharmacistReplyDraft()"
+                (ngModelChange)="pharmacistReplyDraft.set($event)"
+                (keydown.enter)="sendPharmacistReply()"
+                [disabled]="sendingPharmacistReply()"
+              />
+              <input
+                type="file"
+                id="file-input"
+                class="file-input-hidden"
+                (change)="onFileSelected($event)"
+                accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx"
+              />
+              <label for="file-input" class="input-icon-btn" title="Đính kèm file (<5MB)">
+                <span class="material-icon">attach_file</span>
+              </label>
+              <button
+                type="button"
+                class="send-btn"
+                (click)="sendPharmacistReply()"
+                [disabled]="sendingPharmacistReply() || (!pharmacistReplyDraft().trim() && !selectedFile())"
+                title="Gửi"
+              >
+                <span class="material-icon" *ngIf="!sendingPharmacistReply()">send</span>
+                <span class="material-icon spinner" *ngIf="sendingPharmacistReply()">hourglass_empty</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noChatSelected>
+        <div class="no-chat-selected">
+          <span class="material-icon">chat_bubble_outline</span>
+          <p>Chọn một cuộc trò chuyện để xem</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!isCategoryCollection() && !isProductCollection() && !isOrderCollection() && !isPharmacistChatCollection()">
+    <div class="table-wrapper" *ngIf="!isEmpty()">
+      <table>
+        <thead>
+          <tr>
+            <th *ngFor="let column of columns()" (click)="toggleSort(column)">
+              <span>{{ column }}</span>
+              <span class="sort" *ngIf="sortBy() === column">
+                <span class="material-icon">{{ sortDir() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</span>
+              </span>
+            </th>
+            <th class="actions">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of items(); trackBy: trackById" class="clickable-row" (click)="goToDetail(row._id || row.orderNumber)">
+            <td *ngFor="let column of columns()">{{ formatCell(row[column]) }}</td>
+            <td class="actions" (click)="$event.stopPropagation()">
+              <div class="action-group">
+                <button type="button" class="ghost" (click)="goToDetail(row._id || row.orderNumber); $event.stopPropagation()">
+                  <span class="material-icon">visibility</span>
+                  <span>Xem</span>
+                </button>
+                <button type="button" class="ghost" (click)="goToEdit(row._id || row.orderNumber); $event.stopPropagation()" *ngIf="collectionMeta()?.allowUpdate">
+                  <span class="material-icon">edit</span>
+                  <span>Sửa</span>
+                </button>
+                <button type="button" class="ghost danger" (click)="deleteRow(row._id || row.orderNumber); $event.stopPropagation()" *ngIf="collectionMeta()?.allowDelete">
+                  <span class="material-icon">delete</span>
+                  <span>Xóa</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-container *ngIf="isEmpty()">
+      <ng-container *ngTemplateOutlet="emptyState"></ng-container>
+    </ng-container>
+  </ng-container>
+
+  <div class="pagination" *ngIf="pagination().pages > 1">
+    <button type="button" (click)="changePage(pagination().page - 1)" [disabled]="pagination().page <= 1">
+      <span class="material-icon">chevron_left</span>
+      Trước
+    </button>
+    <span>Trang</span>
+    <input class="page-input" type="number" [min]="1" [max]="pagination().pages" [ngModel]="pageInput()" (ngModelChange)="onPageInput($event)" (keyup.enter)="goToPage()" />
+    <span class="page-separator">/</span>
+    <span class="page-total">{{ pagination().pages }}</span>
+    <button
+      type="button"
+      (click)="changePage(pagination().page + 1)"
+      [disabled]="pagination().page >= pagination().pages"
+    >
+      Sau
+      <span class="material-icon">chevron_right</span>
+    </button>
+  </div>
+
+  <div class="loading" *ngIf="loading()">
+    <span class="spinner"></span>
+    <span>Đang tải dữ liệu...</span>
+  </div>
+</section>
+
+<!-- Create Voucher Modal -->
+<div class="modal-overlay" *ngIf="showCreateVoucherModal()" (click)="closeCreateVoucherModal()">
+  <div class="voucher-create-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>
+        <span class="material-icon">add_circle</span>
+        Tạo mã giảm giá mới
+      </h3>
+      <button type="button" class="close-btn" (click)="closeCreateVoucherModal()">
+        <span class="material-icon">close</span>
+      </button>
+    </div>
+
+    <form [formGroup]="voucherForm" (ngSubmit)="submitVoucherForm()" class="modal-form">
+      <div class="form-section">
+        <h4>Thông tin cơ bản</h4>
+        <div class="form-grid">
+          <label class="full-width">
+            <span class="label-text">
+              <span class="material-icon">confirmation_number</span>
+              Mã giảm giá <span class="required">*</span>
+            </span>
+            <input 
+              type="text" 
+              formControlName="code" 
+              placeholder="VD: WELCOME10"
+              [class.error]="voucherForm.get('code')?.invalid && voucherForm.get('code')?.touched"
+            />
+            <small *ngIf="voucherForm.get('code')?.invalid && voucherForm.get('code')?.touched" class="error-msg">
+              Mã phải là chữ in hoa và số, không có khoảng trắng
+            </small>
+          </label>
+
+          <label class="full-width">
+            <span class="label-text">
+              <span class="material-icon">title</span>
+              Tiêu đề <span class="required">*</span>
+            </span>
+            <input 
+              type="text" 
+              formControlName="title" 
+              placeholder="VD: Chào mừng khách hàng mới"
+              [class.error]="voucherForm.get('title')?.invalid && voucherForm.get('title')?.touched"
+            />
+          </label>
+
+          <label class="full-width">
+            <span class="label-text">
+              <span class="material-icon">description</span>
+              Mô tả
+            </span>
+            <textarea 
+              formControlName="description" 
+              rows="3"
+              placeholder="Mô tả về mã giảm giá..."
+            ></textarea>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h4>Thông tin giảm giá</h4>
+        <div class="form-grid">
+          <label>
+            <span class="label-text">
+              <span class="material-icon">percent</span>
+              Phần trăm giảm giá (%) <span class="required">*</span>
+            </span>
+            <input 
+              type="number" 
+              formControlName="discountPercent" 
+              min="0" 
+              max="100"
+              placeholder="0"
+              [class.error]="voucherForm.get('discountPercent')?.invalid && voucherForm.get('discountPercent')?.touched"
+            />
+          </label>
+
+          <label>
+            <span class="label-text">
+              <span class="material-icon">attach_money</span>
+              Giảm giá cố định (₫)
+            </span>
+            <input 
+              type="number" 
+              formControlName="discount" 
+              min="0"
+              placeholder="Để trống nếu dùng phần trăm"
+            />
+            <small class="hint">Để trống nếu chỉ dùng phần trăm</small>
+          </label>
+
+          <label>
+            <span class="label-text">
+              <span class="material-icon">shopping_cart</span>
+              Đơn hàng tối thiểu (₫)
+            </span>
+            <input 
+              type="number" 
+              formControlName="minOrderAmount" 
+              min="0"
+              placeholder="0"
+            />
+            <small class="hint">0 = không giới hạn</small>
+          </label>
+
+          <label>
+            <span class="label-text">
+              <span class="material-icon">repeat</span>
+              Số lượt sử dụng tối đa
+            </span>
+            <input 
+              type="number" 
+              formControlName="maxUsage" 
+              min="1"
+              placeholder="Để trống = không giới hạn"
+            />
+            <small class="hint">Để trống = không giới hạn</small>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h4>Thời gian áp dụng</h4>
+        <div class="form-grid">
+          <label>
+            <span class="label-text">
+              <span class="material-icon">event</span>
+              Ngày bắt đầu
+            </span>
+            <input 
+              type="datetime-local" 
+              formControlName="startsAt"
+            />
+            <small class="hint">Để trống = ngay lập tức</small>
+          </label>
+
+          <label>
+            <span class="label-text">
+              <span class="material-icon">event_busy</span>
+              Ngày hết hạn
+            </span>
+            <input 
+              type="datetime-local" 
+              formControlName="expiresAt"
+            />
+            <small class="hint">Để trống = không hết hạn</small>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="isActive" />
+          <span>Kích hoạt mã giảm giá ngay sau khi tạo</span>
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="ghost" (click)="closeCreateVoucherModal()" [disabled]="creatingVoucher()">
+          Hủy
+        </button>
+        <button type="submit" class="primary" [disabled]="creatingVoucher() || voucherForm.invalid">
+          <span class="material-icon" *ngIf="!creatingVoucher()">save</span>
+          <span class="spinner" *ngIf="creatingVoucher()"></span>
+          {{ creatingVoucher() ? 'Đang tạo...' : 'Tạo mã giảm giá' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Import Data Modal -->
+<div class="modal-overlay" *ngIf="showImportModal()" (click)="closeImportModal()">
+  <div class="modal import-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>
+        <span class="material-icon">upload_file</span>
+        Nhập dữ liệu từ file
+      </h3>
+      <button type="button" class="close-btn" (click)="closeImportModal()">
+        <span class="material-icon">close</span>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="import-instructions">
+        <h4>Hướng dẫn nhập dữ liệu</h4>
+        <ol>
+          <li>Chuẩn bị file CSV với các cột tương ứng với trường dữ liệu</li>
+          <li>Dòng đầu tiên phải là tên các cột (headers)</li>
+          <li>File phải có định dạng UTF-8 để hiển thị đúng tiếng Việt</li>
+          <li>Mỗi dòng tiếp theo là một bản ghi dữ liệu</li>
+        </ol>
+        
+        <div class="example-format">
+          <h5>Ví dụ định dạng CSV:</h5>
+          <pre>name,price,stock,sku
+Sản phẩm A,100000,50,SKU001
+Sản phẩm B,200000,30,SKU002</pre>
+        </div>
+      </div>
+      
+      <div class="upload-area">
+        <input 
+          type="file" 
+          accept=".csv" 
+          id="importFile" 
+          (change)="onImportFileSelected($event)"
+          style="display: none;"
+        />
+        <label for="importFile" class="upload-label">
+          <span class="material-icon">cloud_upload</span>
+          <span class="upload-text">Chọn file CSV để nhập</span>
+          <span class="upload-hint">Kéo thả file hoặc click để chọn</span>
+        </label>
+      </div>
+      
+      <div class="import-warning">
+        <span class="material-icon">warning</span>
+        <p>Lưu ý: Dữ liệu không hợp lệ sẽ bị bỏ qua. Quá trình nhập có thể mất vài phút với file lớn.</p>
+      </div>
+    </div>
+    
+    <div class="modal-actions">
+      <button type="button" class="ghost" (click)="closeImportModal()">
+        Đóng
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #emptyState>
+  <div class="empty">
+    <span class="material-icon">inventory_2</span>
+    <p>Chưa có dữ liệu cho tài nguyên này</p>
+    <button type="button" class="ghost" (click)="goToCreate()" *ngIf="collectionMeta()?.allowCreate">
+      <span class="material-icon">add_circle</span>
+      Thêm bản ghi đầu tiên
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #missingCollection>
+  <div class="empty missing">
+    <span class="material-icon">report_problem</span>
+    <p>Không tìm thấy tài nguyên yêu cầu hoặc chưa được phân quyền.</p>
+    <a routerLink="/dashboard">Quay lại dashboard</a>
+  </div>
+</ng-template>
+

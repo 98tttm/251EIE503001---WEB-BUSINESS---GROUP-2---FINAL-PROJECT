@@ -1,0 +1,797 @@
+.listdiseases-page {
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.breadcrumb-container {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.breadcrumb-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  margin: 0 5px;
+  color: #6c757d;
+}
+
+.breadcrumb-current {
+  color: #6c757d;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+/* Category Hero */
+.category-hero {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  min-height: 260px;
+  background: #eef2ff;
+}
+
+.category-hero.has-background {
+  background: #eef2ff;
+}
+
+.category-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.02);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.category-hero.has-background .category-hero-bg {
+  filter: saturate(1.05);
+  opacity: 1;
+}
+
+.category-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.35) 55%, rgba(255, 255, 255, 0.2) 100%);
+  pointer-events: none;
+}
+
+.category-hero:not(.has-background) .category-hero-overlay {
+  background: linear-gradient(135deg, rgba(226, 232, 240, 0.6) 0%, rgba(226, 232, 240, 0.25) 100%);
+}
+
+.category-hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 60px 50px;
+  min-height: 260px;
+}
+
+.category-hero-card {
+  max-width: 560px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 24px;
+  padding: 32px 40px;
+  box-shadow: 0 25px 50px -20px rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(6px);
+}
+
+.category-title {
+  font-size: 38px;
+  font-weight: 700;
+  margin: 0 0 18px 0;
+  color: #0f172a;
+}
+
+.category-subtitle {
+  font-size: 17px;
+  margin: 0;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+/* Category Diseases Section */
+.category-diseases-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Diseases Grid for Category View */
+.diseases-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.disease-card-item {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.disease-card-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.disease-card-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disease-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.disease-card-image.no-image {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.disease-card-content {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.disease-card-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Human Body Section */
+.human-body-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.book-icon {
+  width: 28px;
+  height: 28px;
+  color: #007bff;
+}
+
+.body-section-content {
+  display: grid;
+  grid-template-columns: 420px 240px 1fr;
+  gap: 40px;
+  align-items: start;
+  min-height: auto;
+}
+
+/* Body Diagram */
+.body-diagram-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.body-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.body-diagram svg {
+  width: 100%;
+  height: auto;
+  max-height: 550px;
+}
+
+.body-diagram-image {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  max-height: 550px;
+  object-fit: contain;
+}
+
+.disclaimer {
+  font-size: 11px;
+  color: #999;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* Body Parts List */
+.body-parts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.body-part-button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  background: linear-gradient(180deg, #f7faff 0%, #eef4ff 100%);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: #334155;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.body-part-button:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.12);
+}
+
+.body-part-button.active {
+  border-color: #1a73e8;
+  background: linear-gradient(180deg, #e8f1ff 0%, #d6e8ff 100%);
+  box-shadow: 0 8px 20px rgba(26, 115, 232, 0.18);
+}
+
+.body-part-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.25s ease;
+  overflow: hidden;
+}
+
+.body-part-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: filter 0.25s ease;
+}
+
+.body-part-button.active .body-part-icon {
+  background: linear-gradient(135deg, #1a73e8 0%, #1974f6 100%);
+}
+
+.body-part-button.active .body-part-icon img {
+  filter: none;
+}
+
+.body-part-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #334155;
+  text-transform: capitalize;
+}
+
+.body-part-button.active .body-part-label {
+  color: #1a73e8;
+}
+
+/* Diseases List */
+.diseases-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.diseases-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  flex-grow: 1;
+}
+
+.disease-item {
+  padding: 14px 18px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.disease-item:hover {
+  background-color: #f1f5ff;
+  border-color: #1a73e8;
+  transform: translateY(-1px);
+}
+
+.empty-diseases {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #999;
+  font-style: italic;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination-btn {
+  background-color: #f4f7ff;
+  color: #1e293b;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  border-color: #93c5fd;
+  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.18);
+}
+
+.pagination-btn:disabled {
+  background-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pagination-btn.active {
+  background-color: #1a73e8;
+  color: #ffffff;
+  border-color: #1a73e8;
+  box-shadow: 0 8px 16px rgba(26, 115, 232, 0.25);
+  font-weight: 600;
+}
+
+/* Loading, Error, and Empty States */
+.loading-container,
+.error-container,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container h2 {
+  color: #dc3545;
+  margin-bottom: 20px;
+}
+
+.btn-retry {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-retry:hover {
+  background-color: #218838;
+}
+
+/* Specialized Disease Groups Section */
+.specialized-disease-section {
+  margin-top: 40px;
+  background: #f5f7ff;
+  border-radius: 24px;
+  padding: 30px 30px 36px 30px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.specialized-disease-header {
+  margin-bottom: 24px;
+}
+
+.specialized-disease-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.specialized-title-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.specialized-title-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a73e8;
+}
+
+.specialized-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.specialized-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.specialized-card:hover {
+  transform: translateY(-4px);
+  border-color: #1a73e8;
+  box-shadow: 0 16px 32px rgba(26, 115, 232, 0.18);
+}
+
+.specialized-card-image {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8f1ff 0%, #c2dcff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.specialized-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.specialized-card-info {
+  text-align: center;
+}
+
+.specialized-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+}
+
+.specialized-count {
+  font-size: 14px;
+  color: #475569;
+  margin: 0;
+}
+
+.view-more-container {
+  text-align: center;
+  margin-top: 26px;
+}
+
+.view-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(26, 115, 232, 0.25);
+  background: #ffffff;
+  color: #1a73e8;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.view-more-link:hover {
+  background: #1a73e8;
+  color: #ffffff;
+  border-color: #1a73e8;
+  box-shadow: 0 12px 24px rgba(26, 115, 232, 0.2);
+}
+
+.view-more-link span {
+  font-size: 12px;
+}
+
+.empty-specialized-groups {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  color: #475569;
+  font-size: 15px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .body-section-content {
+    grid-template-columns: 360px 220px 1fr;
+    gap: 32px;
+  }
+
+  .specialized-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .diseases-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .disease-card-image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 992px) {
+  .body-section-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .body-diagram {
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .body-parts-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .body-part-button {
+    flex-direction: column;
+    width: calc(33.333% - 10px);
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .body-part-label {
+    font-size: 14px;
+  }
+  
+  .diseases-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .category-hero-content {
+    padding: 50px 30px;
+  }
+
+  .category-hero-card {
+    padding: 28px 32px;
+  }
+  
+  .category-title {
+    font-size: 28px;
+  }
+
+  .diseases-list {
+    grid-template-columns: 1fr;
+  }
+
+  .specialized-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .listdiseases-page {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .page-title {
+    font-size: 28px;
+  }
+
+  .human-body-section {
+    padding: 20px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .diseases-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .disease-card-image {
+    height: 150px;
+  }
+  
+  .disease-card-name {
+    font-size: 14px;
+  }
+  
+  .category-hero-content {
+    padding: 40px 25px;
+  }
+
+  .category-hero-card {
+    padding: 24px 26px;
+  }
+  
+  .category-title {
+    font-size: 24px;
+  }
+  
+  .category-subtitle {
+    font-size: 14px;
+  }
+
+  .body-part-button {
+    width: calc(50% - 8px);
+    min-width: 0;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .body-part-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .body-part-icon img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .body-part-label {
+    font-size: 14px;
+  }
+
+  .disease-item {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .pagination-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 13px;
+  }
+
+  .specialized-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 24px;
+  }
+
+  .body-parts-list {
+    gap: 10px;
+  }
+
+  .body-part-button {
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+
+  .body-part-label {
+    font-size: 13px;
+  }
+
+  .body-part-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .body-part-icon img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .specialized-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .specialized-section {
+    padding: 20px;
+  }
+}

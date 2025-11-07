@@ -1,0 +1,39 @@
+{
+  "name": "longchau-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for Long Chau articles",
+  "main": "scrape-longchau-articles.js",
+  "scripts": {
+    "test": "node test-scraper.js",
+    "scrape": "node scrape-longchau-articles.js",
+    "scrape:small": "node scrape-longchau-articles.js 20",
+    "scrape:medium": "node scrape-longchau-articles.js 100",
+    "scrape:large": "node scrape-longchau-articles.js 500",
+    "scrape:all": "node scrape-longchau-articles.js all",
+    "scrape:simple": "node scrape-simple.js",
+    "scrape:simple:small": "node scrape-simple.js 20",
+    "scrape:simple:medium": "node scrape-simple.js 100",
+    "scrape:simple:all": "node scrape-simple.js all",
+    "scrape:improved": "node scrape-improved.js 20",
+    "scrape:improved:test": "node scrape-improved.js 3",
+    "scrape:final": "node scrape-longchau-final.js 20",
+    "scrape:final:test": "node scrape-longchau-final.js 5",
+    "debug": "node debug-page-structure.js",
+    "detect-api": "node detect-api.js",
+    "import": "node import-to-db.js"
+  },
+  "dependencies": {
+    "axios": "^1.13.1",
+    "cheerio": "^1.1.2",
+    "mongoose": "^8.19.2",
+    "puppeteer": "^21.11.0"
+  },
+  "keywords": [
+    "scraper",
+    "longchau",
+    "health",
+    "articles"
+  ],
+  "author": "",
+  "license": "ISC"
+}

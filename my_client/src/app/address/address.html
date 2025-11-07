@@ -1,0 +1,226 @@
+<!-- ==================== ADDRESS MANAGEMENT CONTENT ==================== -->
+<div class="address-content">
+    
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a routerLink="/">Trang chủ</a>
+      <span class="breadcrumb-separator">/</span>
+      <a routerLink="/profile">Cá nhân</a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">Quản lý sổ địa chỉ</span>
+    </nav>
+
+    <!-- Header -->
+    <div class="address-header">
+      <h1 class="address-title">Quản lý sổ địa chỉ</h1>
+      <button class="btn-add-address" (click)="openAddPopup()">
+        Thêm địa chỉ mới
+      </button>
+    </div>
+
+    <!-- Address List -->
+    <div class="address-list">
+      @if (addresses().length === 0) {
+        <div class="address-empty">
+          <p>Chưa có địa chỉ nào. Hãy thêm địa chỉ mới!</p>
+        </div>
+      } @else {
+        @for (address of addresses(); track address._id) {
+          <div class="address-card" [class.default]="address.isDefault">
+            <!-- Header -->
+            <div class="address-card-header">
+              <div class="address-info">
+                <h3 class="address-name">{{ address.name }}</h3>
+                <span class="address-divider">|</span>
+                <span class="address-phone">{{ address.phone }}</span>
+              </div>
+              <button class="btn-edit" (click)="openEditPopup(address)">Sửa</button>
+            </div>
+
+            <!-- Address Details -->
+            <div class="address-details">
+              <p class="address-full">
+                <strong>Địa chỉ:</strong> {{ address.detailAddress }}
+              </p>
+              <p class="address-location">
+                {{ address.ward }}, {{ address.district }}, {{ address.province }}
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="address-actions">
+              @if (address.isDefault) {
+                <span class="badge-default">Mặc định</span>
+              } @else {
+                <button class="btn-set-default" (click)="setDefaultAddress(address._id!)">
+                  Đặt làm mặc định
+                </button>
+              }
+              
+              @if (!address.isDefault) {
+                <button class="btn-delete" (click)="deleteAddress(address._id!)">
+                  Xóa
+                </button>
+              }
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+</div>
+
+<!-- ==================== ADD/EDIT ADDRESS POPUP ==================== -->
+@if (showAddressPopup()) {
+  <div class="address-popup-overlay" (click)="closePopup()"></div>
+  
+  <div class="address-popup">
+    <div class="address-popup-container">
+      <!-- Header -->
+      <div class="address-popup-header">
+        <h2>{{ isEditMode() ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới' }}</h2>
+        <button class="popup-close-btn" (click)="closePopup()">✕</button>
+      </div>
+
+      <!-- Body -->
+      <div class="address-popup-body">
+        <form (submit)="onSubmit(); $event.preventDefault()">
+          <!-- Section: Thông tin người nhận -->
+          <div class="form-section">
+            <h3 class="section-title">Thông tin người nhận</h3>
+            
+            <div class="form-group">
+              <input 
+                type="text" 
+                placeholder="Họ và tên"
+                [(ngModel)]="formName"
+                name="name"
+                required
+                class="form-input">
+            </div>
+
+            <div class="form-group">
+              <input 
+                type="tel" 
+                placeholder="Số điện thoại"
+                [(ngModel)]="formPhone"
+                name="phone"
+                required
+                class="form-input">
+            </div>
+          </div>
+
+          <!-- Section: Địa chỉ nhận hàng -->
+          <div class="form-section">
+            <h3 class="section-title">Địa chỉ nhận hàng</h3>
+            
+            <!-- Delivery Time -->
+            <div class="form-group">
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input 
+                    type="radio" 
+                    value="before"
+                    [(ngModel)]="formDeliveryTime"
+                    name="deliveryTime"
+                    class="radio-input">
+                  <span class="radio-custom"></span>
+                  <span>Giao trước sáng</span>
+                </label>
+                
+                <label class="radio-label">
+                  <input 
+                    type="radio" 
+                    value="after"
+                    [(ngModel)]="formDeliveryTime"
+                    name="deliveryTime"
+                    class="radio-input">
+                  <span class="radio-custom"></span>
+                  <span>Giao sau sáng</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Province -->
+            <div class="form-group">
+              <select 
+                [value]="selectedProvinceId()"
+                (change)="onProvinceChange($any($event.target).value); formProvince.set($any($event.target).selectedOptions[0].text)"
+                name="province"
+                required
+                class="form-select">
+                <option value="" disabled>Chọn Tỉnh/Thành phố</option>
+                @for (province of provinces(); track province._id) {
+                  <option [value]="province._id">{{ province.name }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- District -->
+            <div class="form-group">
+              <select 
+                [value]="selectedDistrictId()"
+                (change)="onDistrictChange($any($event.target).value); formDistrict.set($any($event.target).selectedOptions[0].text)"
+                name="district"
+                required
+                class="form-select"
+                [disabled]="!selectedProvinceId()">
+                <option value="" disabled>Chọn Quận/Huyện</option>
+                @for (district of districts(); track district._id) {
+                  <option [value]="district._id">{{ district.name }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Ward -->
+            <div class="form-group">
+              <select 
+                [(ngModel)]="formWard"
+                name="ward"
+                required
+                class="form-select"
+                [disabled]="!selectedDistrictId()">
+                <option value="" disabled>Chọn Phường/Xã</option>
+                @for (ward of wards(); track ward._id) {
+                  <option [value]="ward.name">{{ ward.name }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Detail Address -->
+            <div class="form-group">
+              <input 
+                type="text" 
+                placeholder="Nhập địa chỉ cụ thể"
+                [(ngModel)]="formDetailAddress"
+                name="detailAddress"
+                required
+                class="form-input">
+            </div>
+
+            <!-- Set as Default -->
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox"
+                  [(ngModel)]="formIsDefault"
+                  name="isDefault"
+                  class="checkbox-input">
+                <span class="checkbox-custom"></span>
+                <span>Đặt làm địa chỉ mặc định</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-submit">Hoàn tất</button>
+          
+          <!-- Error Message -->
+          @if (addressError()) {
+            <div class="address-error-message">{{ addressError() }}</div>
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+}

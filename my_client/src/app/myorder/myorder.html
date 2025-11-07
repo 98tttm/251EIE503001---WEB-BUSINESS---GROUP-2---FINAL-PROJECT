@@ -1,0 +1,315 @@
+<div class="myorder-container">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a [routerLink]="['/']" class="breadcrumb-link">Trang chủ</a>
+    <span class="breadcrumb-separator">/</span>
+    <a [routerLink]="['/profile']" class="breadcrumb-link">Cá nhân</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Đơn hàng của tôi</span>
+  </div>
+
+  <!-- Header -->
+  <div class="myorder-header">
+    <div class="header-top">
+      <h1 class="page-title">Đơn hàng của tôi</h1>
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <input 
+          type="text" 
+          class="search-input"
+          placeholder="Tìm theo tên đơn, mã đơn, hoặc tên sản phẩm..."
+          [value]="searchQuery()"
+          (input)="onSearch($event)"
+        >
+        <button class="search-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Tabs -->
+  <div class="status-tabs">
+    <button 
+      class="status-tab"
+      [class.active]="selectedStatus() === 'all'"
+      (click)="onStatusChange('all')"
+    >
+      Tất cả
+    </button>
+    <button 
+      class="status-tab"
+      [class.active]="selectedStatus() === 'processing'"
+      (click)="onStatusChange('processing')"
+    >
+      Đang xử lý
+    </button>
+    <button 
+      class="status-tab"
+      [class.active]="selectedStatus() === 'delivering'"
+      (click)="onStatusChange('delivering')"
+    >
+      Đang giao
+    </button>
+    <button 
+      class="status-tab"
+      [class.active]="selectedStatus() === 'delivered'"
+      (click)="onStatusChange('delivered')"
+    >
+      Đã giao
+    </button>
+    <button 
+      class="status-tab"
+      [class.active]="selectedStatus() === 'cancelled'"
+      (click)="onStatusChange('cancelled')"
+    >
+      Đã hủy
+    </button>
+    <button 
+      class="status-tab"
+      [class.active]="selectedStatus() === 'return'"
+      (click)="onStatusChange('return')"
+    >
+      Trả hàng
+    </button>
+  </div>
+
+  <!-- Orders List -->
+  @if (loading()) {
+    <div class="loading-state">
+      <p>Đang tải đơn hàng...</p>
+    </div>
+  } @else if (filteredOrders().length === 0) {
+    <div class="empty-state">
+      <img 
+        src="https://nhathuoclongchau.com.vn/estore-images/default/profile/order-not-found.svg" 
+        alt="No orders" 
+        class="empty-state-image"
+      >
+      <h2 class="empty-state-title">Bạn chưa có đơn hàng nào.</h2>
+      <p class="empty-state-message">Cùng khám phá hàng ngàn sản phẩm tại Nhà thuốc MediCare nhé!</p>
+      <a [routerLink]="['/']" class="btn-explore">
+        Khám phá ngay
+      </a>
+    </div>
+  } @else {
+    <div class="orders-list">
+      @for (order of filteredOrders(); track order._id) {
+        <div class="order-card">
+          <!-- Order Header -->
+          <div class="order-card-header">
+            <div class="order-header-left">
+              @if (isEditingOrder(order._id || order.orderNumber)) {
+                <div class="order-name-edit">
+                  <input
+                    type="text"
+                    [attr.data-order-id]="order._id || order.orderNumber"
+                    [value]="getEditingOrderName(order._id || order.orderNumber)"
+                    (input)="onOrderNameInput(order._id || order.orderNumber, $event)"
+                    (keydown)="onOrderNameKeydown(order, $event)"
+                    class="order-name-input"
+                    placeholder="Nhập tên đơn hàng"
+                  >
+                  <button class="save-name-btn" (click)="saveOrderName(order, $event)" title="Lưu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M20 6L9 17l-5-5"></path>
+                    </svg>
+                  </button>
+                  <button class="cancel-name-btn" (click)="cancelEditOrderName(order, $event)" title="Hủy">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+              } @else {
+                <h3 class="order-name">
+                  {{ order.orderName || ('Đơn hàng ' + formatDate(order.createdAt)) }}
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="14" 
+                    height="14" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    stroke-width="2" 
+                    class="edit-icon-small"
+                    (click)="startEditOrderName(order, $event)"
+                    title="Đổi tên đơn hàng"
+                  >
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </h3>
+              }
+              <div class="order-meta">
+                <span class="delivery-type">Giao hàng tận nơi</span>
+                <span class="order-number">#{{ order.orderNumber }}</span>
+              </div>
+            </div>
+            <div class="order-status-badge" [style.color]="getStatusColor(order.status)">
+              <span class="status-dot" [style.background-color]="getStatusColor(order.status)"></span>
+              {{ getStatusText(order.status) }}
+            </div>
+          </div>
+
+          <!-- Order Content -->
+          <div class="order-card-content">
+            <div class="order-product">
+              <img 
+                [src]="getFirstItemImage(order)" 
+                [alt]="getFirstItemName(order)"
+                class="product-image"
+              >
+              <div class="product-info">
+                <h4 class="product-name">{{ getFirstItemName(order) }}</h4>
+                <div class="product-pricing">
+                  <span class="current-price">{{ formatPrice(getFirstItemPrice(order)) }}</span>
+                  @if (getFirstItemOriginalPrice(order)) {
+                    <span class="original-price">{{ formatPrice(getFirstItemOriginalPrice(order)!) }}</span>
+                  }
+                  <span class="product-quantity">{{ getFirstItemQuantity(order) }}</span>
+                </div>
+                @if (order.items && order.items.length > 1) {
+                  <p class="more-products">Và {{ order.items.length - 1 }} sản phẩm khác</p>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Footer -->
+          <div class="order-card-footer">
+            <a href="#" class="view-details-link" (click)="viewOrderDetails(order); $event.preventDefault()">
+              Xem chi tiết
+            </a>
+            <div class="order-footer-right">
+              <div class="order-total">
+                <span class="total-label">Thành tiền:</span>
+                <span class="total-value">{{ formatPrice(order.pricing ? order.pricing.total : 0) }}</span>
+              </div>
+              <div class="order-actions">
+                @if (canCancelOrder(order)) {
+                  <button class="btn-cancel-order" (click)="openCancelModal(order)">
+                    Hủy đơn
+                  </button>
+                }
+                @if (canReturnOrder(order)) {
+                  <button class="btn-return-order" (click)="openReturnModal(order)">
+                    Trả hàng
+                  </button>
+                }
+                <button class="btn-buy-again" (click)="buyAgain(order)">
+                  Mua lại
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+<!-- Return Order Modal -->
+@if (showReturnModal()) {
+  <div class="modal-backdrop" (click)="closeReturnModal()"></div>
+  <div class="return-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Yêu cầu trả hàng</h3>
+      <button class="modal-close" (click)="closeReturnModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-message">
+        Bạn có chắc chắn muốn yêu cầu trả hàng cho đơn hàng 
+        <strong>#{{ selectedOrderForReturn()?.orderNumber }}</strong>?
+      </p>
+      <div class="form-group">
+        <label for="return-reason">Lý do trả hàng (tùy chọn):</label>
+        <textarea
+          id="return-reason"
+          class="return-reason-input"
+          rows="3"
+          placeholder="Nhập lý do trả hàng..."
+          [value]="returnReason()"
+          (input)="onReturnReasonInput($event)"
+        ></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeReturnModal()" [disabled]="returningOrderId() !== null">
+        Không trả hàng
+      </button>
+      <button 
+        class="btn-confirm-return" 
+        (click)="returnOrder()" 
+        [disabled]="returningOrderId() !== null"
+      >
+        @if (returningOrderId()) {
+          <span class="spinner"></span>
+          Đang xử lý...
+        } @else {
+          Xác nhận trả hàng
+        }
+      </button>
+    </div>
+  </div>
+}
+
+<!-- Cancel Order Modal -->
+@if (showCancelModal()) {
+  <div class="modal-backdrop" (click)="closeCancelModal()"></div>
+  <div class="cancel-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Hủy đơn hàng</h3>
+      <button class="modal-close" (click)="closeCancelModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-message">
+        Bạn có chắc chắn muốn hủy đơn hàng 
+        <strong>#{{ selectedOrderForCancel()?.orderNumber }}</strong>?
+      </p>
+      <div class="form-group">
+        <label for="cancel-reason">Lý do hủy đơn (tùy chọn):</label>
+        <textarea
+          id="cancel-reason"
+          class="cancel-reason-input"
+          rows="3"
+          placeholder="Nhập lý do hủy đơn..."
+          [value]="cancelReason()"
+          (input)="onCancelReasonInput($event)"
+        ></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeCancelModal()" [disabled]="cancellingOrderId() !== null">
+        Không hủy
+      </button>
+      <button 
+        class="btn-confirm-cancel" 
+        (click)="cancelOrder()" 
+        [disabled]="cancellingOrderId() !== null"
+      >
+        @if (cancellingOrderId()) {
+          <span class="spinner"></span>
+          Đang xử lý...
+        } @else {
+          Xác nhận hủy
+        }
+      </button>
+    </div>
+  </div>
+}
+

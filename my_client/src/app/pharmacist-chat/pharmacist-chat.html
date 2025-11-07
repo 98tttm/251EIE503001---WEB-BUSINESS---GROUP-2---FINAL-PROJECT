@@ -1,0 +1,227 @@
+<div class="pharmacist-chat-container">
+  <!-- Header -->
+  <div class="pharmacist-chat-header">
+    <div class="header-left">
+      <div class="pharmacy-avatar">
+        <img src="/assets/images/icon/bacsi.png" alt="Dược sĩ MediCare" />
+        <span class="presence-dot online"></span>
+      </div>
+      <div class="header-info">
+        <h2 class="header-title">Chat với Dược Sĩ</h2>
+        <div class="header-meta">
+          <span class="brand">MediCare</span>
+          <span class="separator">•</span>
+          <span class="availability"><span class="status-dot"></span>Đang sẵn sàng hỗ trợ</span>
+        </div>
+      </div>
+    </div>
+    <button class="close-btn" (click)="goHome()" type="button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Phone Input (if not logged in) -->
+  @if (showPhoneInput()) {
+    <div class="phone-input-section">
+      <div class="phone-input-card">
+        <h3 class="phone-input-title">Nhập số điện thoại để tiếp tục</h3>
+        <p class="phone-input-subtitle">Chúng tôi cần số điện thoại để liên hệ với bạn</p>
+        <div class="phone-input-wrapper">
+          <input
+            type="tel"
+            class="phone-input"
+            placeholder="Nhập số điện thoại"
+            [value]="phoneNumber()"
+            (input)="phoneNumber.set($any($event.target).value)"
+            (keyup.enter)="submitPhone()"
+            maxlength="11"
+          />
+          <button class="phone-submit-btn" (click)="submitPhone()" [disabled]="loading()">
+            @if (loading()) {
+              <span>Đang xử lý...</span>
+            } @else {
+              <span>Tiếp tục</span>
+            }
+          </button>
+        </div>
+        <p class="login-prompt">
+          Đã có tài khoản? 
+          <a (click)="goHome()" class="login-link">Đăng nhập</a>
+        </p>
+      </div>
+    </div>
+  }
+
+  <!-- Chat Messages -->
+  @if (!showPhoneInput() && !loading()) {
+    <div class="pharmacist-chat-messages" #messagesContainer>
+      @for (message of messages(); track $index) {
+        <!-- Date Separator -->
+        @if ($index === 0 || formatDate(message.timestamp) !== formatDate(messages()[$index - 1].timestamp)) {
+          <div class="date-separator">
+            <span>{{ formatDate(message.timestamp) }}</span>
+          </div>
+        }
+
+        <!-- System Message -->
+        @if (message.sender === 'system') {
+          <div class="message system-message">
+            <div class="message-bubble system-bubble">
+              <p>{{ message.message }}</p>
+            </div>
+          </div>
+        }
+        
+        <!-- User Message -->
+        @if (message.sender === 'user') {
+          <div class="message user-message">
+            <div class="message-bubble user-bubble" [class.message-file]="message.type === 'file'">
+              @if (message.type === 'file' && message.fileUrl) {
+                <div class="message-file-content">
+                  <div class="file-icon-wrapper">
+                    <span class="material-icon">attach_file</span>
+                  </div>
+                  <div class="file-info">
+                    <div class="file-name">{{ message.fileName || 'File đính kèm' }}</div>
+                    <div class="file-size">{{ formatFileSize(message.fileSize || 0) }}</div>
+                  </div>
+                  <a [href]="'http://localhost:3000' + message.fileUrl" target="_blank" class="file-download" title="Tải xuống">
+                    <span class="material-icon">download</span>
+                  </a>
+                </div>
+                <span class="message-time">{{ formatTime(message.timestamp) }}</span>
+              } @else {
+                <p>{{ message.content || message.message }}</p>
+                <span class="message-time">{{ formatTime(message.timestamp) }}</span>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Pharmacist Message -->
+        @if (message.sender === 'pharmacist') {
+          <div class="message pharmacist-message">
+            <div class="pharmacist-avatar">
+              <img src="/assets/images/icon/bacsi.png" alt="Dược sĩ MediCare" />
+            </div>
+            <div class="message-bubble pharmacist-bubble" [class.message-file]="message.type === 'file'">
+              @if (message.type === 'file' && message.fileUrl) {
+                <div class="message-file-content">
+                  <div class="file-icon-wrapper">
+                    <span class="material-icon">attach_file</span>
+                  </div>
+                  <div class="file-info">
+                    <div class="file-name">{{ message.fileName || 'File đính kèm' }}</div>
+                    <div class="file-size">{{ formatFileSize(message.fileSize || 0) }}</div>
+                  </div>
+                  <a [href]="'http://localhost:3000' + message.fileUrl" target="_blank" class="file-download" title="Tải xuống">
+                    <span class="material-icon">download</span>
+                  </a>
+                </div>
+                <span class="message-time">{{ formatTime(message.timestamp) }}</span>
+              } @else {
+                <p>{{ message.content || message.message }}</p>
+                <span class="message-time">{{ formatTime(message.timestamp) }}</span>
+              }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Typing Indicator -->
+      @if (isTyping()) {
+        <div class="message pharmacist-message">
+          <div class="pharmacist-avatar">
+            <img src="/assets/images/icon/bacsi.png" alt="Dược sĩ MediCare" />
+          </div>
+          <div class="message-bubble pharmacist-bubble typing-indicator">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Input Area -->
+    <div class="pharmacist-chat-input">
+      <!-- Selected File Preview -->
+      @if (selectedFile()) {
+        <div class="file-preview">
+          <span class="material-icon">attach_file</span>
+          <span class="file-name">{{ selectedFile()!.name }}</span>
+          <button type="button" class="remove-file-btn" (click)="removeSelectedFile()" title="Xóa">
+            <span class="material-icon">close</span>
+          </button>
+        </div>
+      }
+
+      <!-- Emoji Picker -->
+      @if (showEmojiPicker()) {
+        <div class="emoji-picker">
+          <div class="emoji-grid">
+            @for (emoji of commonEmojis; track emoji) {
+              <button
+                type="button"
+                class="emoji-btn"
+                (click)="insertEmoji(emoji)"
+                [title]="emoji"
+              >
+                {{ emoji }}
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <div class="input-wrapper">
+        <button type="button" class="input-icon-btn" title="Emoji" (click)="toggleEmojiPicker()" [class.active]="showEmojiPicker()">
+          <span class="material-icon">mood</span>
+        </button>
+        <input
+          type="text"
+          class="message-input"
+          placeholder="Gửi yêu cầu..."
+          [value]="userMessage()"
+          (input)="userMessage.set($any($event.target).value)"
+          (keyup.enter)="sendMessage()"
+          [disabled]="isTyping() || !chat()"
+        />
+        <input
+          type="file"
+          id="file-input"
+          class="file-input-hidden"
+          (change)="onFileSelected($event)"
+          accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx"
+        />
+        <label for="file-input" class="input-icon-btn" title="Đính kèm file (<5MB)">
+          <span class="material-icon">attach_file</span>
+        </label>
+        <button
+          class="send-btn"
+          (click)="sendMessage()"
+          [disabled]="(!userMessage().trim() && !selectedFile()) || isTyping() || !chat()"
+          type="button"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+      <p class="input-hint">Dược sĩ sẽ phản hồi trong thời gian sớm nhất</p>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading() && !showPhoneInput()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Đang tải cuộc trò chuyện...</p>
+    </div>
+  }
+</div>
+

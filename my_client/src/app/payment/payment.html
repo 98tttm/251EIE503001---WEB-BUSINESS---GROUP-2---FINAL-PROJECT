@@ -1,0 +1,683 @@
+<!-- ==================== PAYMENT PAGE ==================== -->
+<div class="payment-page">
+  <div class="payment-container">
+    
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <button class="breadcrumb-back" (click)="backToCart()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Quay lại giỏ hàng
+      </button>
+    </div>
+
+    <div class="payment-layout">
+      
+      <!-- Main Content -->
+      <div class="payment-main">
+        
+        <!-- Product List -->
+        <div class="section product-section">
+          <h2 class="section-title">Danh sách sản phẩm</h2>
+          
+          <!-- Free shipping banner -->
+          <div class="shipping-banner">
+            <span><strong>Miễn phí vận chuyển</strong> đối với đơn hàng trên 300.000đ</span>
+          </div>
+
+          <div class="product-list">
+            @for (item of items(); track item._id) {
+              <div class="product-item">
+                <div class="product-left">
+                  <img [src]="item.image" [alt]="item.name" class="product-img">
+                  <div class="product-info">
+                    <h3 class="product-name">{{ item.name }}</h3>
+                    @if (item.discount && item.discount > 0) {
+                      <div class="discount-badge">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="discount-icon">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                        <span>Giảm ngay {{ calculateDiscountPercent(item.price, item.discount) }}% áp dụng đến 31/10</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+                <div class="product-right">
+                  <div class="price-box">
+                    <span class="product-price">{{ formatPrice(item.price) }}</span>
+                    @if (item.discount && item.discount > 0) {
+                      <span class="product-original-price">{{ formatPrice(item.price + item.discount) }}</span>
+                    }
+                  </div>
+                  <span class="product-quantity">x{{ item.quantity }} {{ item.unit }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+
+        <!-- Guest User Information Form (for non-logged-in users) -->
+        @if (!isLoggedIn()) {
+          <div class="section guest-info-section">
+            <!-- Orderer Information -->
+            <div class="form-section">
+              <div class="section-header">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="section-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+                <h3 class="section-title">Thông tin người đặt</h3>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Họ và tên người đặt</label>
+                  <input 
+                  type="text" 
+                  class="form-input"
+                  placeholder="Nhập họ và tên"
+                  [value]="guestOrdererName()"
+                  (input)="guestOrdererName.set($any($event.target).value)"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label class="form-label">Số điện thoại</label>
+                  <input 
+                  type="tel" 
+                  class="form-input"
+                  placeholder="Nhập số điện thoại"
+                  [value]="guestOrdererPhone()"
+                  (input)="guestOrdererPhone.set($any($event.target).value)"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email (không bắt buộc)</label>
+                <input 
+                  type="email" 
+                  class="form-input"
+                  placeholder="Nhập email"
+                  [value]="guestOrdererEmail()"
+                  (input)="guestOrdererEmail.set($any($event.target).value)"
+                >
+              </div>
+            </div>
+
+            <!-- Shipping Address -->
+            <div class="form-section">
+              <div class="section-header">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="section-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                <h3 class="section-title">Địa chỉ nhận hàng</h3>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Họ và tên người nhận</label>
+                  <input 
+                  type="text" 
+                  class="form-input"
+                  placeholder="Nhập họ và tên người nhận"
+                  [value]="guestRecipientName()"
+                  (input)="guestRecipientName.set($any($event.target).value)"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label class="form-label">Số điện thoại</label>
+                <input 
+                  type="tel" 
+                  class="form-input"
+                  placeholder="Nhập số điện thoại"
+                  [value]="guestRecipientPhone()"
+                  (input)="guestRecipientPhone.set($any($event.target).value)"
+                  required
+                >
+              </div>
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label class="form-label">Chọn Tỉnh/Thành phố</label>
+                  <select 
+                    class="form-select"
+                    (change)="onGuestProvinceChange($event)"
+                    [value]="guestSelectedProvinceId()"
+                  >
+                    <option value="">-- Chọn Tỉnh/Thành phố --</option>
+                    @for (province of provinces(); track province._id || province.code) {
+                      <option [value]="province._id || province.code">{{ province.name }}</option>
+                    }
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Chọn Quận/Huyện</label>
+                  <select 
+                    class="form-select"
+                    (change)="onGuestDistrictChange($event)"
+                    [value]="guestSelectedDistrictId()"
+                    [disabled]="guestDistricts().length === 0"
+                  >
+                    <option value="">-- Chọn Quận/Huyện --</option>
+                    @for (district of guestDistricts(); track district._id || district.code) {
+                      <option [value]="district._id || district.code">{{ district.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Chọn Phường/Xã</label>
+                <select 
+                  class="form-select"
+                  (change)="onGuestWardChange($event)"
+                  [disabled]="!guestSelectedDistrictId() || guestWards().length === 0"
+                >
+                  <option value="">-- Chọn Phường/Xã --</option>
+                  @for (ward of guestWards(); track ward._id || ward.code) {
+                    <option [value]="ward._id || ward.code">{{ ward.name }}</option>
+                  }
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nhập địa chỉ cụ thể</label>
+                  <input 
+                  type="text" 
+                  class="form-input"
+                  placeholder="Nhập số nhà, tên đường..."
+                  [value]="guestDetailAddress()"
+                  (input)="guestDetailAddress.set($any($event.target).value)"
+                  required
+                >
+              </div>
+            </div>
+
+            <!-- Note -->
+            <div class="form-section">
+              <label class="form-label">Ghi chú (không bắt buộc)</label>
+              <textarea 
+                class="note-input" 
+                placeholder="Ví dụ: Hãy gọi cho tôi 15 phút trước khi giao"
+                [(ngModel)]="note"
+                rows="3"></textarea>
+            </div>
+          </div>
+        }
+
+        <!-- Address Section (for logged-in users) -->
+        @if (isLoggedIn() && selectedAddress()) {
+          <div class="section address-section">
+            <div class="address-header">
+              <div class="address-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+              </div>
+              <div class="address-content">
+                <div class="address-title-row">
+                  <h3 class="address-title">Địa chỉ nhận hàng</h3>
+                  @if (selectedAddress()!.isDefault) {
+                    <span class="default-badge">Mặc định</span>
+                  }
+                </div>
+                <p class="address-name">{{ selectedAddress()!.detailAddress }}</p>
+                <p class="address-detail">
+                  {{ selectedAddress()!.ward }}, {{ selectedAddress()!.district }}, {{ selectedAddress()!.province }}
+                </p>
+                <div class="address-contact">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                  </svg>
+                  <span>{{ selectedAddress()!.name }} · {{ selectedAddress()!.phone }}</span>
+                </div>
+              </div>
+              <button class="btn-change" (click)="changeAddress()">Thay đổi</button>
+            </div>
+
+            <!-- Note -->
+            <div class="note-section">
+              <label class="note-label">Ghi chú (không bắt buộc)</label>
+              <textarea 
+                class="note-input" 
+                placeholder="Ví dụ: Hãy gọi cho tôi 15 phút trước khi giao"
+                [(ngModel)]="note"
+                rows="3"></textarea>
+            </div>
+          </div>
+        }
+
+        <!-- Delivery Time -->
+        <div class="section delivery-time-section">
+          <div class="delivery-time-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="delivery-time-content">
+            <span class="delivery-time-label">Thời gian nhận hàng dự kiến</span>
+            <span class="delivery-time-value">{{ expectedDelivery() }}</span>
+          </div>
+          <button class="btn-change-time" (click)="openDeliveryTimeModal()">Thay đổi</button>
+        </div>
+
+        <!-- Invoice Toggle -->
+        <div class="section invoice-section">
+          <span class="invoice-label">Yêu cầu xuất hóa đơn điện tử</span>
+          <label class="toggle-switch">
+            <input 
+              type="checkbox" 
+              [checked]="requireInvoice()"
+              (change)="toggleInvoice($event)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="section payment-methods-section">
+          <h2 class="section-title">Chọn phương thức thanh toán</h2>
+
+          <div class="payment-options">
+            <!-- COD -->
+            <label class="payment-option">
+              <input 
+                type="radio" 
+                name="payment" 
+                value="cod" 
+                [checked]="paymentMethod() === 'cod'"
+                (change)="selectPaymentMethod('cod')">
+              <div class="option-content">
+                <img src="/assets/images/bank/cash.png" alt="COD" class="payment-icon">
+                <span class="payment-label">Thanh toán tiền mặt khi nhận hàng</span>
+              </div>
+            </label>
+
+            <!-- QR Code -->
+            <label class="payment-option">
+              <input 
+                type="radio" 
+                name="payment" 
+                value="qr" 
+                [checked]="paymentMethod() === 'qr'"
+                (change)="selectPaymentMethod('qr')">
+              <div class="option-content">
+                <img src="/assets/images/bank/qr.png" alt="QR" class="payment-icon">
+                <span class="payment-label">Thanh toán bằng chuyển khoản (QR Code)</span>
+              </div>
+            </label>
+
+            <!-- ATM -->
+            <label class="payment-option">
+              <input 
+                type="radio" 
+                name="payment" 
+                value="atm" 
+                [checked]="paymentMethod() === 'atm'"
+                (change)="selectPaymentMethod('atm')">
+              <div class="option-content">
+                <img src="/assets/images/bank/bank.png" alt="ATM" class="payment-icon">
+                <span class="payment-label">Thanh toán bằng thẻ ATM nội địa và tài khoản ngân hàng</span>
+              </div>
+            </label>
+
+            <!-- Visa/Master -->
+            <label class="payment-option">
+              <input 
+                type="radio" 
+                name="payment" 
+                value="card" 
+                [checked]="paymentMethod() === 'card'"
+                (change)="selectPaymentMethod('card')">
+              <div class="option-content">
+                <img src="/assets/images/bank/card.png" alt="Card" class="payment-icon">
+                <span class="payment-label">Thanh toán bằng thẻ quốc tế (Visa, Master...), Apple Pay, Google Pay và ví VNPay</span>
+              </div>
+            </label>
+
+            <!-- MoMo -->
+            <label class="payment-option">
+              <input 
+                type="radio" 
+                name="payment" 
+                value="momo" 
+                [checked]="paymentMethod() === 'momo'"
+                (change)="selectPaymentMethod('momo')">
+              <div class="option-content">
+                <img src="/assets/images/bank/momo.png" alt="MoMo" class="payment-icon momo-logo">
+                <span class="payment-label">Thanh toán bằng ví MoMo</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sidebar Summary -->
+      <div class="payment-sidebar">
+        <div class="summary-card">
+          <div class="summary-row">
+            <span class="summary-label">Tổng tiền</span>
+            <span class="summary-value">{{ formatPrice(originalTotal) }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Giảm giá trực tiếp</span>
+            <span class="summary-value text-orange">-{{ formatPrice(discount) }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Giảm giá voucher 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="help-icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+              </svg>
+            </span>
+            <span class="summary-value">
+              @if (appliedVoucher()) {
+                <span class="voucher-code">{{ appliedVoucher()?.code }}</span>
+                <span class="text-orange">-{{ formatPrice(voucherDiscount()) }}</span>
+              } @else {
+                <span>0đ</span>
+              }
+            </span>
+          </div>
+
+          <div class="summary-row highlight">
+            <span class="summary-label">Tiết kiệm được</span>
+            <span class="summary-value text-orange">{{ formatPrice(discount + voucherDiscount()) }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="summary-label">Phí vận chuyển</span>
+            <span class="summary-value">{{ formatPrice(shippingFee) }}</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <span class="total-label">Thành tiền</span>
+            <div class="total-price">
+              @if (originalTotal > total) {
+                <span class="total-original">{{ formatPrice(originalTotal) }}</span>
+              }
+              <span class="total-final">{{ formatPrice(total) }}</span>
+            </div>
+          </div>
+
+          <button class="btn-complete" (click)="completeOrder()">
+            Hoàn tất
+          </button>
+
+          <p class="checkout-note">
+            Bằng việc tiến hành đặt mua hàng, bạn đồng ý với 
+            <a href="#">Điều khoản dịch vụ</a> và 
+            <a href="#">Chính sách xử lý dữ liệu cá nhân</a> 
+            của Nhà thuốc MediCare
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Address Selection Modal -->
+@if (showAddressModal()) {
+  <div class="modal-overlay" (click)="closeAddressModal()"></div>
+  
+  <div class="address-modal" [@slideIn]>
+    <div class="modal-views-container" [class.show-form]="showAddForm()">
+      <!-- Address List View -->
+      <div class="modal-view address-list-view">
+        <div class="modal-header">
+          <h2 class="modal-title">Chọn địa chỉ nhận hàng</h2>
+          <button class="modal-close" (click)="closeAddressModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="address-list">
+            @for (address of addresses(); track address._id) {
+              <label class="address-item">
+                <input 
+                  type="radio" 
+                  name="address" 
+                  [value]="address._id"
+                  [checked]="selectedAddress()?._id === address._id"
+                  (change)="selectAddress(address)">
+                <div class="address-item-content">
+                  <div class="address-item-header">
+                    <span class="address-item-name">{{ address.name }}</span>
+                    <span class="address-item-phone">{{ address.phone }}</span>
+                    @if (address.isDefault) {
+                      <span class="default-tag">Mặc định</span>
+                    }
+                    <button class="btn-edit" (click)="editAddress($event, address)">Sửa</button>
+                  </div>
+                  <p class="address-item-detail">{{ address.detailAddress }}</p>
+                  <p class="address-item-detail">{{ address.ward }}, {{ address.district }}, {{ address.province }}</p>
+                </div>
+              </label>
+            }
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-confirm" (click)="confirmAddress()">Xác nhận</button>
+          <button class="btn-add-new" (click)="openAddForm()">Thêm địa chỉ mới</button>
+        </div>
+      </div>
+
+      <!-- Add/Edit Address Form View -->
+      <div class="modal-view address-form-view">
+        <div class="modal-header">
+          <button class="btn-back" (click)="closeAddForm()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h2 class="modal-title">{{ isEditMode() ? 'Sửa địa chỉ' : 'Thêm địa chỉ mới' }}</h2>
+          <button class="modal-close" (click)="closeAddressModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <form class="address-form">
+            <div class="form-section">
+              <h3 class="form-section-title">Thông tin người nhận</h3>
+              
+              <div class="form-group">
+                <input 
+                  type="text" 
+                  class="form-input" 
+                  placeholder="Họ và tên"
+                  [(ngModel)]="formName"
+                  name="name">
+              </div>
+
+              <div class="form-group">
+                <input 
+                  type="tel" 
+                  class="form-input" 
+                  placeholder="Số điện thoại"
+                  [(ngModel)]="formPhone"
+                  name="phone">
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="form-section-title">Địa chỉ nhận hàng</h3>
+              
+              <div class="form-group">
+                <select class="form-select" [(ngModel)]="formProvince" (change)="onProvinceChange($event)" name="province">
+                  <option value="">Chọn Tỉnh/Thành phố</option>
+                  @for (province of provinces(); track province._id) {
+                    <option [value]="province._id">{{ province.name }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <select class="form-select" [(ngModel)]="formDistrict" (change)="onDistrictChange($event)" name="district" [disabled]="!formProvince()">
+                  <option value="">Chọn Quận/Huyện</option>
+                  @for (district of districts(); track district._id) {
+                    <option [value]="district._id">{{ district.name }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <select class="form-select" [(ngModel)]="formWard" name="ward" [disabled]="!formDistrict()">
+                  <option value="">Chọn Phường/Xã</option>
+                  @for (ward of wards(); track ward._id) {
+                    <option [value]="ward._id">{{ ward.name }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <input 
+                  type="text" 
+                  class="form-input" 
+                  placeholder="Nhập địa chỉ cụ thể"
+                  [(ngModel)]="formDetailAddress"
+                  name="detailAddress">
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-submit-address" (click)="saveNewAddress()">
+            {{ isEditMode() ? 'Cập nhật' : 'Hoàn tất' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Invoice Modal -->
+@if (showInvoiceModal()) {
+  <div class="modal-overlay" (click)="closeInvoiceModal()"></div>
+  
+  <div class="invoice-modal" [@slideIn]>
+    <div class="modal-header">
+      <h2 class="modal-title">Yêu cầu xuất hóa đơn điện tử</h2>
+      <button class="modal-close" (click)="closeInvoiceModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Note -->
+      <p class="invoice-note">Xuất hóa đơn cho</p>
+
+      <!-- Individual Option (Only one) -->
+      <div class="invoice-type-option active">
+        <div class="invoice-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+          </svg>
+        </div>
+        <span class="invoice-type-text">Cá nhân</span>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="invoice-form">
+        <div class="form-group">
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Họ và tên"
+            [(ngModel)]="invoiceFullName"
+            name="invoiceFullName">
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="tel" 
+            class="form-input" 
+            placeholder="Số điện thoại"
+            [(ngModel)]="invoicePhone"
+            name="invoicePhone">
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Địa chỉ"
+            [(ngModel)]="invoiceAddress"
+            name="invoiceAddress">
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="email" 
+            class="form-input" 
+            placeholder="Email"
+            [(ngModel)]="invoiceEmail"
+            name="invoiceEmail"
+            required>
+        </div>
+      </div>
+
+      <!-- Note at bottom -->
+      <p class="invoice-footer-note">Lưu ý: Nhà thuốc MediCare chỉ xuất hóa đơn điện tử.</p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-confirm" (click)="confirmInvoice()">Xác nhận</button>
+    </div>
+  </div>
+}
+
+<!-- Delivery Time Selection Modal -->
+@if (showDeliveryTimeModal()) {
+  <div class="modal-overlay" (click)="closeDeliveryTimeModal()"></div>
+  
+  <div class="delivery-time-modal" [@slideIn]>
+    <div class="modal-header">
+      <h2 class="modal-title">Chọn thời gian nhận hàng</h2>
+      <button class="modal-close" (click)="closeDeliveryTimeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Select Date -->
+      <div class="time-select-section">
+        <label class="time-select-label">Chọn ngày nhận:</label>
+        <div class="date-options">
+          @for (date of getAvailableDates(); track date.value) {
+            <button 
+              class="date-option"
+              [class.active]="selectedDeliveryDate() === date.value"
+              (click)="selectDeliveryDate(date.value)">
+              {{ date.display }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Select Time -->
+      <div class="time-select-section">
+        <label class="time-select-label">Chọn giờ nhận:</label>
+        <div class="time-options">
+          @for (time of getAvailableTimeSlots(); track time) {
+            <button 
+              class="time-option"
+              [class.active]="selectedDeliveryTime() === time"
+              (click)="selectDeliveryTime(time)">
+              {{ time }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Preview -->
+      @if (selectedDeliveryDate() && selectedDeliveryTime()) {
+        <div class="delivery-preview">
+          <span class="preview-label">Thời gian nhận hàng dự kiến:</span>
+          <span class="preview-value">{{ expectedDelivery() }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-confirm" (click)="confirmDeliveryTime()">Xác nhận</button>
+      <button class="btn-reset" (click)="resetToEarliestTime()">Thiết lập lại thời gian sớm nhất</button>
+    </div>
+  </div>
+}

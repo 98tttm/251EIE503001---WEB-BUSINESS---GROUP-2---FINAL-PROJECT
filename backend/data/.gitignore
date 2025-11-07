@@ -1,0 +1,6 @@
+# Ignore all JSON files (scraped data)
+*.json
+
+# But keep this .gitignore
+!.gitignore
+

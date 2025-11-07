@@ -1,0 +1,66 @@
+<!-- ==================== PROFILE LAYOUT ==================== -->
+<div class="profile-layout">
+  <div class="profile-layout-container">
+    
+    <!-- ==================== SIDEBAR (LEFT) ==================== -->
+    <aside class="profile-sidebar">
+      <!-- User Card -->
+      <div class="user-card">
+        <div class="user-card-avatar">
+          <img src="/assets/images/icon/avt.png" alt="Avatar">
+        </div>
+        <h3 class="user-card-name">{{ fullName() || 'User' }}</h3>
+        <p class="user-card-phone">{{ phone() || '0987655755' }}</p>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="profile-nav">
+        <a routerLink="/profile/info" routerLinkActive="active" class="profile-nav-item">
+          <img src="/assets/images/icon/user.png" alt="Profile" class="nav-icon">
+          <span>Thông tin cá nhân</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="nav-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+
+        <a routerLink="/profile/orders" routerLinkActive="active" class="profile-nav-item">
+          <img src="/assets/images/icon/order.png" alt="Orders" class="nav-icon">
+          <span>Đơn hàng của tôi</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="nav-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+
+        <a routerLink="/profile/addresses" routerLinkActive="active" class="profile-nav-item">
+          <img src="/assets/images/icon/location.png" alt="Address" class="nav-icon">
+          <span>Quản lý sổ địa chỉ</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="nav-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+
+        <button class="profile-nav-item logout-btn" (click)="onLogout()">
+          <img src="/assets/images/icon/sign_out.png" alt="Logout" class="nav-icon">
+          <span>Đăng xuất</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="nav-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT (RIGHT) ==================== -->
+    <main class="profile-content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>
+
+<!-- Logout Confirmation Popup -->
+@if (showLogoutConfirm()) {
+  <app-logout-confirm 
+    (confirmLogout)="confirmLogout()"
+    (cancelLogout)="cancelLogout()">
+  </app-logout-confirm>
+}

@@ -1,0 +1,161 @@
+<div class="drug-search-container">
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a [routerLink]="['/']">Trang chủ</a>
+    <span class="separator">/</span>
+    <a [routerLink]="['/category', 'thuoc']">Thuốc</a>
+    <span class="separator">/</span>
+    <span class="current">Tra cứu thuốc</span>
+  </nav>
+
+  <!-- Search Section -->
+  <div class="search-section">
+    <div class="search-content">
+      <h1 class="page-title">Tra cứu thuốc</h1>
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Nhập tên thuốc cần tìm..."
+          [value]="searchQuery()"
+          (input)="searchQuery.set($any($event.target).value)"
+          (keyup.enter)="onSearch()"
+        />
+        <button class="search-btn" (click)="onSearch()" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="search-illustration">
+      <img src="/assets/images/pharmacist-illustration.svg" alt="Pharmacist" class="illustration-img" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <!-- Common Medicines Section -->
+  <div class="common-medicines-section">
+    <h2 class="section-title">Thuốc thông dụng</h2>
+    
+    <!-- Alphabet Filter -->
+    <div class="alphabet-filter">
+      @for (letter of alphabetList(); track letter) {
+        <button
+          type="button"
+          class="alphabet-btn"
+          [class.active]="selectedAlphabet() === letter"
+          (click)="onAlphabetSelect(letter)"
+        >
+          {{ letter }}
+        </button>
+      }
+    </div>
+
+    <!-- Loading State -->
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Đang tải danh sách thuốc...</p>
+      </div>
+    }
+
+    <!-- Products Grid -->
+    @if (!loading() && displayedProducts().length > 0) {
+      <div class="products-grid">
+        @for (product of displayedProducts(); track product._id) {
+          <div class="product-card" (click)="navigateToProduct(product)">
+            <div class="product-name">{{ product.name }}</div>
+            @if (product.description) {
+              <div class="product-description">{{ product.description }}</div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Pagination -->
+      @if (totalPages() > 1) {
+        <div class="pagination">
+          <button
+            type="button"
+            class="pagination-btn"
+            [disabled]="currentPage() === 1"
+            (click)="onPageChange(currentPage() - 1)"
+          >
+            &lt;
+          </button>
+          
+          @for (page of getPagesArray(); track $index) {
+            @if (page === '...') {
+              <span class="pagination-ellipsis">...</span>
+            } @else {
+              <button
+                type="button"
+                class="pagination-btn"
+                [class.active]="currentPage() === page"
+                (click)="onPageChange(typeof page === 'number' ? page : 1)"
+              >
+                {{ page }}
+              </button>
+            }
+          }
+          
+          <button
+            type="button"
+            class="pagination-btn"
+            [disabled]="currentPage() === totalPages()"
+            (click)="onPageChange(currentPage() + 1)"
+          >
+            &gt;
+          </button>
+        </div>
+      }
+
+      <!-- Results Count -->
+      <div class="results-count">
+        Hiển thị {{ displayedProducts().length }} / {{ filteredProducts().length }} kết quả
+      </div>
+    }
+
+    <!-- No Results -->
+    @if (!loading() && displayedProducts().length === 0) {
+      <div class="no-results">
+        <p>Không tìm thấy thuốc nào phù hợp.</p>
+        <button type="button" class="reset-btn" (click)="selectedAlphabet.set('all'); searchQuery.set(''); applyFilters()">
+          Xóa bộ lọc
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Recently Viewed Products -->
+  @if (recentlyViewed().length > 0) {
+    <div class="recently-viewed-section">
+      <h2 class="section-title">
+        <span class="title-icon">●</span>
+        Sản phẩm vừa xem
+      </h2>
+      <div class="recently-viewed-slider">
+        @for (product of recentlyViewed(); track product._id) {
+          <div class="recent-product-card" (click)="navigateToProduct(product)">
+            @if (product.image) {
+              <img [src]="product.image" [alt]="product.name" class="product-image">
+            } @else {
+              <div class="product-image-placeholder"></div>
+            }
+            @if (product.discount) {
+              <div class="discount-badge">-{{ product.discount }}%</div>
+            }
+            <div class="product-info">
+              <div class="product-title">{{ product.name }}</div>
+              @if (product.price) {
+                <div class="product-price">{{ formatPrice(product.price) }}</div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
+

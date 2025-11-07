@@ -1,0 +1,305 @@
+<div class="blog-page">
+  <div class="blog-container">
+    <header class="page-header">
+      <nav class="breadcrumb">
+        <a routerLink="/">Trang chủ</a>
+        <span>/</span>
+        <a routerLink="/blogs">Góc sức khỏe</a>
+        @if (selectedTagTitle()) {
+          <span>/</span>
+          <span>Chuyên đề</span>
+          <span>/</span>
+          <span>{{ selectedTagTitle() }}</span>
+        }
+      </nav>
+      <h1 class="page-title">
+        @if (selectedTagTitle()) {
+          Bài viết #{{ selectedTagTitle() }}
+        } @else {
+          Góc sức khỏe
+        }
+      </h1>
+      <p class="page-subtitle">
+        @if (selectedTagTitle()) {
+          Tổng hợp {{ tagTotal() }} bài viết về chủ đề {{ selectedTagTitle() }}
+        } @else {
+          Tổng hợp kiến thức bảo vệ sức khỏe, dinh dưỡng, phòng bệnh và nhiều chủ đề hữu ích khác từ đội ngũ chuyên môn của MediCare.
+        }
+      </p>
+    </header>
+
+    @if (selectedTagTitle()) {
+      <div class="tag-filter-header">
+        <div class="tag-filter-info">
+          <h2 class="tag-filter-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+            <span>Bài viết #{{ selectedTagTitle() }}</span>
+          </h2>
+          <p class="tag-filter-count">{{ tagTotal() }} bài viết</p>
+        </div>
+        <button type="button" class="btn-clear-filter" (click)="clearTagFilter()">
+          Xóa bộ lọc
+        </button>
+      </div>
+    }
+
+    @if (!showTagList()) {
+      @if (categories().length > 0) {
+        <div class="category-chips">
+          @for (category of categories(); track category.slug) {
+            <button
+              type="button"
+              class="chip"
+              [class.active]="selectedCategorySlug() === category.slug"
+              (click)="selectCategoryChip(category)"
+            >
+              {{ category.name }}
+            </button>
+          }
+        </div>
+      }
+
+      @if (heroPrimary(); as feature) {
+      <section class="hero-section">
+        <div class="hero-main" (click)="navigateToArticle(feature)">
+          <div class="hero-image">
+            <img [src]="getCategoryImage(feature)" [alt]="feature.title" loading="lazy" decoding="async">
+          </div>
+          <div class="hero-content">
+            <span class="hero-category">{{ feature.category || 'Góc sức khỏe' }}</span>
+            <h2 class="hero-title">{{ feature.title }}</h2>
+            <p class="hero-summary">{{ truncate(getArticleDescription(feature), 220) }}</p>
+            <div class="hero-meta">
+              <span>{{ feature.author || 'MediCare' }}</span>
+              <span>{{ formatDate(feature.publishedAt) }}</span>
+            </div>
+          </div>
+        </div>
+
+        @if (heroSecondary().length > 0) {
+          <div class="hero-list">
+            @for (article of heroSecondary(); track article.id) {
+              <button type="button" class="hero-item" (click)="navigateToArticle(article)">
+                <div class="item-content">
+                  <span class="item-category">{{ article.category || 'Góc sức khỏe' }}</span>
+                  <h3 class="item-title">{{ article.title }}</h3>
+                  <span class="item-date">{{ formatDate(article.publishedAt) }}</span>
+                </div>
+              </button>
+            }
+          </div>
+        }
+      </section>
+    }
+    }
+
+    @if (showTagList()) {
+      <div class="tag-articles-with-sidebar">
+        <div class="tag-articles-layout">
+          <div class="tag-articles-list">
+            @for (article of tagArticles(); track article.id || article.slug || $index) {
+              <article class="tag-article-card" (click)="navigateToArticle(article)">
+                <div class="tag-article-image">
+                  <img [src]="getCategoryImage(article)" [alt]="article.title" loading="lazy" decoding="async">
+                </div>
+                <div class="tag-article-content">
+                  @if (article.category) {
+                    <span class="tag-article-category">{{ article.category }}</span>
+                  }
+                  <h3 class="tag-article-title">{{ article.title }}</h3>
+                  @if (getArticleDescription(article)) {
+                    <p class="tag-article-description">{{ truncate(getArticleDescription(article), 150) }}</p>
+                  }
+                  <div class="tag-article-meta">
+                    <span>{{ article.author || 'MediCare' }}</span>
+                    @if (article.publishedAt) {
+                      <span>{{ formatDate(article.publishedAt) }}</span>
+                    }
+                  </div>
+                </div>
+              </article>
+            }
+          </div>
+          
+          @if (hasMoreTagArticles()) {
+            <div class="load-more-container">
+              <button type="button" class="btn-load-more" (click)="loadMoreTagArticles()" [disabled]="loading()">
+                @if (loading()) {
+                  <span>Đang tải...</span>
+                } @else {
+                  <span>Xem thêm {{ tagTotal() - tagArticles().length }} bài viết</span>
+                }
+              </button>
+            </div>
+          }
+        </div>
+
+        <aside class="sidebar" *ngIf="trendingTags().length || experts().length">
+          @if (trendingTags().length > 0) {
+            <section class="sidebar-card">
+              <h3 class="sidebar-title">Chuyên đề nổi bật</h3>
+              <ul class="tag-list">
+                @for (tag of trendingTags(); track tag.slug) {
+                  <li>
+                    <button type="button" class="tag-item" [class.active]="selectedTag() === tag.slug" (click)="viewTag(tag)">
+                      <span>#{{ tag.title }}</span>
+                      <small>{{ formatTagCount(tag.articleCount) }}</small>
+                    </button>
+                  </li>
+                }
+              </ul>
+            </section>
+          }
+
+          @if (experts().length > 0) {
+            <section class="sidebar-card">
+              <h3 class="sidebar-title">Đội ngũ chuyên môn</h3>
+              <ul class="expert-list">
+                @for (expert of experts(); track expert.id) {
+                  <li class="expert-item">
+                    <div class="expert-avatar">
+                      @if (expert.avatar) {
+                        <img [src]="expert.avatar" [alt]="expert.fullName" loading="lazy" decoding="async">
+                      } @else {
+                        <span>{{ getExpertInitials(expert.fullName) }}</span>
+                      }
+                    </div>
+                    <div class="expert-info">
+                      <p class="expert-name">{{ expert.fullName }}</p>
+                      @if (expert.position) {
+                        <p class="expert-position">{{ expert.position }}</p>
+                      }
+                      @if (expert.degree) {
+                        <p class="expert-degree">{{ expert.degree }}</p>
+                      }
+                    </div>
+                  </li>
+                }
+              </ul>
+            </section>
+          }
+        </aside>
+      </div>
+    }
+
+    @if (!showTagList()) {
+      <div class="content-layout">
+      <div class="main-column">
+        @for (category of categories(); track category.slug) {
+          <section class="category-section" [attr.id]="'category-' + category.slug">
+            <div class="category-header">
+              <div class="category-info">
+                <h2 class="category-title">{{ category.name }}</h2>
+                @if (category.subcategories?.length) {
+                  <div class="subcategory-chips">
+                    @for (sub of category.subcategories; track sub.slug) {
+                      <button type="button" (click)="viewSubcategory(category.slug, sub.slug)">{{ sub.name }}</button>
+                    }
+                  </div>
+                }
+              </div>
+              <button type="button" class="view-all" (click)="viewCategory(category)">Xem tất cả</button>
+            </div>
+
+            <div class="category-body">
+              @if (getFeatureArticle(category); as featureArticle) {
+                <article class="feature-card" (click)="navigateToArticle(featureArticle)">
+                  <div class="feature-image">
+                    <img [src]="getCategoryImage(featureArticle)" [alt]="featureArticle.title" loading="lazy" decoding="async">
+                  </div>
+                  <div class="feature-content">
+                    <span class="feature-category">{{ featureArticle.category || category.name }}</span>
+                    <h3 class="feature-title">{{ featureArticle.title }}</h3>
+                    <p class="feature-description">{{ truncate(getArticleDescription(featureArticle), 180) }}</p>
+                    <div class="feature-meta">
+                      <span>{{ featureArticle.author || 'MediCare' }}</span>
+                      <span>{{ formatDate(featureArticle.publishedAt) }}</span>
+                    </div>
+                  </div>
+                </article>
+              }
+
+              @if (getSupportingArticles(category).length > 0) {
+                <div class="supporting-list">
+                  @for (article of getSupportingArticles(category); track article.id) {
+                    <article class="supporting-card" (click)="navigateToArticle(article)">
+                      <div class="supporting-image">
+                        <img [src]="getCategoryImage(article)" [alt]="article.title" loading="lazy" decoding="async">
+                      </div>
+                      <div class="supporting-content">
+                        <span class="supporting-category">{{ article.category || category.name }}</span>
+                        <h4 class="supporting-title">{{ article.title }}</h4>
+                        <span class="supporting-date">{{ formatDate(article.publishedAt) }}</span>
+                      </div>
+                    </article>
+                  }
+                </div>
+              }
+            </div>
+          </section>
+        }
+      </div>
+
+      <aside class="sidebar" *ngIf="trendingTags().length || experts().length">
+        @if (trendingTags().length > 0) {
+          <section class="sidebar-card">
+            <h3 class="sidebar-title">Chuyên đề nổi bật</h3>
+            <ul class="tag-list">
+              @for (tag of trendingTags(); track tag.slug) {
+                <li>
+                  <button type="button" class="tag-item" (click)="viewTag(tag)">
+                    <span>#{{ tag.title }}</span>
+                    <small>{{ formatTagCount(tag.articleCount) }}</small>
+                  </button>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        @if (experts().length > 0) {
+          <section class="sidebar-card">
+            <h3 class="sidebar-title">Đội ngũ chuyên môn</h3>
+            <ul class="expert-list">
+              @for (expert of experts(); track expert.id) {
+                <li class="expert-item">
+                  <div class="expert-avatar">
+                    @if (expert.avatar) {
+                      <img [src]="expert.avatar" [alt]="expert.fullName" loading="lazy" decoding="async">
+                    } @else {
+                      <span>{{ getExpertInitials(expert.fullName) }}</span>
+                    }
+                  </div>
+                  <div class="expert-info">
+                    <p class="expert-name">{{ expert.fullName }}</p>
+                    @if (expert.position) {
+                      <p class="expert-position">{{ expert.position }}</p>
+                    }
+                    @if (expert.degree) {
+                      <p class="expert-degree">{{ expert.degree }}</p>
+                    }
+                  </div>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+      </aside>
+    </div>
+    }
+
+    @if (loading()) {
+      <div class="loading-overlay"></div>
+    }
+
+    @if (error() && !loading()) {
+      <div class="error-banner">
+        <p>{{ error() }}</p>
+        <button type="button" (click)="loadOverview()">Thử lại</button>
+      </div>
+    }
+  </div>
+</div>

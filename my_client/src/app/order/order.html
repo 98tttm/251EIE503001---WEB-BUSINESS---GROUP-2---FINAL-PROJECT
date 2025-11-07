@@ -1,0 +1,243 @@
+<div class="order-container">
+  <!-- Login Component -->
+  <app-login></app-login>
+  
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a [routerLink]="['/']" class="breadcrumb-link">Trang chủ</a>
+    <span class="breadcrumb-separator">/</span>
+    <a [routerLink]="['/profile']" class="breadcrumb-link">Cá nhân</a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="#" class="breadcrumb-link" (click)="navigateToOrders($event)">Đơn hàng của tôi</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Chi tiết đơn hàng</span>
+  </div>
+
+  @if (orderData()) {
+    <div class="order-content">
+      <!-- Left Column -->
+      <div class="order-left">
+        <!-- Order Header -->
+        <div class="order-header-card">
+          <div class="order-header-top">
+            <div class="order-title-section">
+              @if (isEditingOrderName()) {
+                <div class="order-name-edit">
+                  <input 
+                    type="text" 
+                    class="order-name-input"
+                    [value]="editingOrderName()"
+                    (input)="editingOrderName.set($any($event.target).value)"
+                    (keydown)="onOrderNameKeydown($event)"
+                    (blur)="saveOrderName()"
+                    #orderNameInput
+                  >
+                  <button class="save-name-btn" (click)="saveOrderName()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </button>
+                  <button class="cancel-name-btn" (click)="cancelEditOrderName()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+              } @else {
+                <h1 class="order-title">
+                  {{ orderData()!.orderName || ('Đơn hàng ' + formatDate(orderData()!.orderDate)) }}
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    stroke-width="2" 
+                    class="edit-icon"
+                    (click)="startEditOrderName()"
+                  >
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                </h1>
+              }
+              <div class="order-number-section">
+                <span class="delivery-method">Giao hàng tận nơi #{{ orderData()!.orderNumber || 'N/A' }}</span>
+                <a href="#" class="copy-link" (click)="copyOrderNumber(); $event.preventDefault()">Sao chép</a>
+              </div>
+            </div>
+            <div class="order-status-section">
+              @if (orderData()!.status === 'cancelled' || orderData()!.status === 'Đã hủy') {
+                <div class="status-badge cancelled">
+                  <span class="status-dot"></span>
+                  Đã hủy
+                </div>
+              } @else {
+                <div class="status-badge" [style.color]="getStatusColor(orderData()!.status || '')">
+                  <span class="status-dot" [style.background-color]="getStatusColor(orderData()!.status || '')"></span>
+                  {{ getStatusText(orderData()!.status || '') }}
+                </div>
+              }
+            </div>
+          </div>
+
+          @if (orderData()!.status === 'cancelled' || orderData()!.status === 'Đã hủy') {
+            @if (getCancellationInfo()) {
+              <div class="cancellation-message">
+                <h2>Đơn hàng đã hủy lúc {{ formatDateTime(getCancellationInfo()!.timestamp) }}</h2>
+                <p>Rất mong được phục vụ bạn trong lần tới.</p>
+              </div>
+            } @else {
+              <div class="cancellation-message">
+                <h2>Đơn hàng đã bị hủy</h2>
+                <p>Rất mong được phục vụ bạn trong lần tới.</p>
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Delivery Information Card -->
+        <div class="info-card">
+          <div class="info-row driver-row">
+            <div class="info-icon">
+              <img src="/assets/images/icon/shipper.png" alt="Shipper" class="shipper-icon">
+            </div>
+            <div class="info-content driver-content">
+              <div class="info-label driver-label">Tài xế giao hàng</div>
+              <div class="driver-info">
+                <div class="driver-logo-wrapper">
+                  <img src="/assets/images/icon/logograb.webp" alt="GrabExpress" class="driver-logo">
+                </div>
+                <div class="driver-details">
+                  <div class="driver-name">Trần Thanh Thịnh</div>
+                  <div class="driver-phone">0987 655 755</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Two columns layout for recipient and address -->
+          <div class="info-row-two-columns">
+            <div class="info-row">
+              <div class="info-icon">
+                <img src="/assets/images/icon/avtt.png" alt="User" class="info-icon-img">
+              </div>
+              <div class="info-content">
+                <div class="info-label">Thông tin người nhận</div>
+                <div class="recipient-name">{{ orderData()!.address?.name || 'N/A' }}</div>
+                <div class="recipient-phone">{{ orderData()!.address?.phone || 'N/A' }}</div>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <div class="info-icon">
+                <img src="/assets/images/icon/locationn.png" alt="Location" class="info-icon-img">
+              </div>
+              <div class="info-content">
+                <div class="info-label">Nhận hàng tại</div>
+                <div class="delivery-address">
+                  {{ orderData()!.address?.detailAddress }}, {{ orderData()!.address?.ward }}, {{ orderData()!.address?.district }}, {{ orderData()!.address?.province }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product List -->
+        <div class="product-list-section">
+          <h2 class="section-title">Danh sách sản phẩm</h2>
+          <div class="product-list">
+            @for (item of orderData()!.items; track item._id) {
+              <div class="product-item">
+                <img [src]="item.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="item.name" class="product-image">
+                <div class="product-details">
+                  <h3 class="product-name">{{ item.name }}</h3>
+                  <a href="#" class="product-link">Xem cách dùng và bảo quản ></a>
+                </div>
+                <div class="product-pricing">
+                  <div class="product-price">{{ formatPrice(item.price * item.quantity) }}</div>
+                  @if (item.discount && item.discount > 0) {
+                    <div class="product-original-price">{{ formatPrice((item.price + item.discount) * item.quantity) }}</div>
+                  }
+                  <div class="product-quantity">x{{ item.quantity }} {{ item.unit }}</div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="order-right">
+        <!-- Payment Information Card -->
+        <div class="payment-card">
+          <h3 class="card-title">Thông tin thanh toán</h3>
+          
+          <div class="payment-row">
+            <span class="payment-label">Tổng tiền</span>
+            <span class="payment-value">{{ formatPrice(orderData()!.subtotal || 0) }}</span>
+          </div>
+
+          <div class="payment-row discount">
+            <span class="payment-label">Giảm giá trực tiếp</span>
+            <span class="payment-value text-orange">-{{ formatPrice(orderData()!.discount || 0) }}</span>
+          </div>
+
+          <div class="payment-row">
+            <span class="payment-label">
+              Giảm giá voucher
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="help-icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </span>
+            <span class="payment-value">
+              @if (orderData()!.voucherCode && orderData()!.voucherDiscount !== undefined && orderData()!.voucherDiscount! > 0) {
+                <span class="voucher-code">{{ orderData()!.voucherCode }}</span>
+                <span class="text-orange">-{{ formatPrice(orderData()!.voucherDiscount!) }}</span>
+              } @else {
+                <span>0đ</span>
+              }
+            </span>
+          </div>
+
+          <div class="payment-row">
+            <span class="payment-label">Phí vận chuyển</span>
+            <span class="payment-value">{{ formatPrice(orderData()!.shippingFee || 0) }}</span>
+          </div>
+
+          <div class="payment-divider"></div>
+
+          <div class="payment-row total">
+            <span class="payment-label">Thành tiền</span>
+            <span class="payment-value final">{{ formatPrice(orderData()!.total || 0) }}</span>
+          </div>
+
+          <div class="payment-method-section">
+            <h4 class="method-title">Phương thức thanh toán</h4>
+            <div class="payment-method-display">
+              @if (orderData()!.paymentMethod === 'cod') {
+                <img src="/assets/images/bank/cash.png" alt="COD" class="payment-icon-small">
+              } @else if (orderData()!.paymentMethod === 'qr') {
+                <img src="/assets/images/bank/qr.png" alt="QR" class="payment-icon-small">
+              } @else if (orderData()!.paymentMethod === 'bank') {
+                <img src="/assets/images/bank/bank.png" alt="Bank" class="payment-icon-small">
+              } @else if (orderData()!.paymentMethod === 'card') {
+                <img src="/assets/images/bank/card.png" alt="Card" class="payment-icon-small">
+              } @else if (orderData()!.paymentMethod === 'momo') {
+                <img src="/assets/images/bank/momo.png" alt="MoMo" class="payment-icon-small momo-rounded">
+              }
+              <span class="payment-text">{{ getPaymentMethodName(orderData()!.paymentMethod || '') }}</span>
+            </div>
+          </div>
+
+          <button class="btn-buy-again" (click)="buyAgain()">Mua lại</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+

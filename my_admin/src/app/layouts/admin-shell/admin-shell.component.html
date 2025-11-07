@@ -1,0 +1,105 @@
+<div class="admin-layout" [class.sidebar-collapsed]="sidebarCollapsed()">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand" (click)="navigateToDashboard()">
+        <img class="brand-logo" src="/img/MEDICARE.png" alt="MediCare logo" />
+        <div class="brand-text">
+          <span class="brand-name">MediCare Admin</span>
+          <span class="brand-desc">Control Center</span>
+        </div>
+      </div>
+      <button type="button" class="sidebar-toggle" (click)="toggleSidebar()" title="Thu gọn menu">
+        <span class="material-icon">menu_open</span>
+      </button>
+    </div>
+
+    <div class="sidebar-search">
+      <input
+        type="search"
+        placeholder="Tìm tài nguyên..."
+        [ngModel]="menuFilter()"
+        (ngModelChange)="menuFilter.set($event)"
+      />
+      <button class="refresh" type="button" (click)="refreshCollections()" [disabled]="collectionsLoading()">
+        <span class="material-icon">refresh</span>
+      </button>
+    </div>
+
+    <nav class="menu">
+      <ng-container *ngFor="let section of menuSections(); trackBy: trackBySection">
+        <span class="menu-section" *ngIf="section.items.length">{{ section.title }}</span>
+        <div class="menu-list" *ngIf="section.items.length">
+          <a
+            *ngFor="let item of section.items; trackBy: trackByItem"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span class="material-icon">{{ item.icon }}</span>
+            <div class="item">
+              <span class="item-title">{{ item.label }}</span>
+              <span class="item-sub" *ngIf="item.description">{{ item.description }}</span>
+            </div>
+          </a>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!hasMenuItems()">
+        <div class="empty-state">
+          <span class="material-icon">inventory_2</span>
+          <p>Không tìm thấy tài nguyên phù hợp</p>
+        </div>
+      </ng-container>
+    </nav>
+
+    <footer class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">
+          <span>{{ (user()?.name || user()?.email || '?') | slice:0:2 | uppercase }}</span>
+        </div>
+        <div class="meta">
+          <span class="name">{{ user()?.name || 'Admin' }}</span>
+          <span class="roles">{{ roles().join(', ') || 'Administrator' }}</span>
+        </div>
+      </div>
+      <button type="button" class="logout" (click)="logout()">
+        <span class="material-icon">logout</span>
+        <span>Đăng xuất</span>
+      </button>
+    </footer>
+  </aside>
+
+  <section class="content">
+    <header class="topbar">
+      <button type="button" class="hamburger" (click)="toggleSidebar()">
+        <span class="material-icon">menu</span>
+      </button>
+      <div class="page-info">
+        <h1>Trang quản trị MediCare</h1>
+        <p>Giám sát, quản lý và tối ưu toàn bộ dữ liệu của hệ thống</p>
+      </div>
+      <div class="topbar-actions">
+        <app-notification-bell></app-notification-bell>
+        <button class="action" type="button" routerLink="/collections/orders">
+          <span class="material-icon">shopping_cart</span>
+          <span>Đơn hàng</span>
+        </button>
+        <button class="action" type="button" routerLink="/collections/products">
+          <span class="material-icon">inventory</span>
+          <span>Sản phẩm</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="loader" *ngIf="collectionsLoading()">
+        <span class="spinner"></span>
+        <span>Đang đồng bộ dữ liệu...</span>
+      </div>
+      <router-outlet></router-outlet>
+    </main>
+  </section>
+
+  <app-notification-center></app-notification-center>
+  <app-scroll-to-top></app-scroll-to-top>
+</div>
+

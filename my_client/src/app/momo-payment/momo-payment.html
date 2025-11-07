@@ -1,0 +1,167 @@
+<div class="momo-payment-container">
+  <div class="momo-payment-content">
+    <!-- Header -->
+    <div class="payment-header">
+      <button class="btn-back" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Quay lại
+      </button>
+      <h1 class="payment-title">Thanh toán bằng ví MoMo</h1>
+    </div>
+
+    <div class="payment-main">
+      <!-- Left: QR Code -->
+      <div class="payment-left">
+        <!-- Recipient Info -->
+        <div class="recipient-info">
+          <h2 class="recipient-name">{{ recipientName() || 'Người nhận' }}</h2>
+          <p class="recipient-phone">{{ recipientPhone() || '0987655755' }}</p>
+        </div>
+
+        <!-- QR Code Card -->
+        <div class="qr-card">
+          <!-- Payment Logos -->
+          <div class="payment-logos">
+            <div class="logo-item">
+              <img src="/assets/images/bank/momo.png" alt="MoMo" class="momo-logo-image">
+            </div>
+            <div class="logo-divider"></div>
+            <div class="logo-item">
+              <img src="/assets/images/bank/vietqr.png" alt="VIETQR" class="logo-image">
+            </div>
+            <div class="logo-divider"></div>
+            <div class="logo-item">
+              <img src="/assets/images/bank/napas.png" alt="napas 247" class="logo-image">
+            </div>
+          </div>
+
+          <!-- QR Code with Animation -->
+          <div class="qr-code-wrapper">
+            <div class="qr-code-frame">
+              <div class="qr-code-container">
+                <img [src]="qrCode()" alt="MoMo QR Code" class="qr-code-image">
+                <!-- Scanning Animation -->
+                <div class="scan-line"></div>
+                <!-- Glow Effect -->
+                <div class="qr-glow"></div>
+                <!-- Avatar in center -->
+                <div class="qr-avatar">
+                  <img src="/assets/images/icon/avt.png" alt="Avatar" class="avatar-image">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instructions -->
+          <div class="instructions">
+            <h3>Cách thanh toán:</h3>
+            <ol>
+              <li>Mở ứng dụng MoMo trên điện thoại</li>
+              <li>Chọn chức năng "Quét mã QR"</li>
+              <li>Quét mã QR code trên màn hình</li>
+              <li>Kiểm tra thông tin và xác nhận thanh toán</li>
+              <li>Nhấn "Xác nhận thanh toán" bên dưới sau khi đã thanh toán thành công</li>
+            </ol>
+          </div>
+
+          <!-- Payment Info -->
+          <div class="bank-info">
+            <h3 class="bank-info-title">Thông tin thanh toán</h3>
+            <div class="bank-details">
+              <div class="bank-row">
+                <span class="bank-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <path d="M9 10h.01M15 10h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"></path>
+                  </svg>
+                  Ví điện tử:
+                </span>
+                <span class="bank-value bank-name">MoMo</span>
+              </div>
+              <div class="bank-row highlight-row">
+                <span class="bank-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                  Số tiền:
+                </span>
+                <span class="bank-value amount">{{ formatPrice(total()) }}</span>
+              </div>
+              <div class="bank-row">
+                <span class="bank-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                  Nội dung:
+                </span>
+                <span class="bank-value content">Thanh toán đơn hàng {{ getOrderNumberForContent() }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Order Summary -->
+      <div class="payment-right">
+        <div class="order-summary">
+          <h2 class="summary-title">Tóm tắt đơn hàng</h2>
+          
+          <!-- Order Items -->
+          <div class="summary-items">
+            @for (item of items(); track item._id) {
+              <div class="summary-item">
+                <img [src]="item.image" [alt]="item.name" class="item-image">
+                <div class="item-info">
+                  <h4 class="item-name">{{ item.name }}</h4>
+                  <p class="item-details">
+                    {{ item.quantity }} x {{ formatPrice(getItemFinalPrice(item)) }}
+                  </p>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Order Total -->
+          <div class="summary-total">
+            <div class="total-row">
+              <span>Tạm tính:</span>
+              <span>{{ formatPrice(total()) }}</span>
+            </div>
+            <div class="total-row">
+              <span>Phí vận chuyển:</span>
+              <span class="free-shipping">Miễn phí</span>
+            </div>
+            <div class="total-row final-total">
+              <span>Tổng cộng:</span>
+              <span class="total-price">{{ formatPrice(total()) }}</span>
+            </div>
+          </div>
+
+          <!-- Payment Button -->
+          <button 
+            class="btn-pay-momo" 
+            (click)="confirmPayment()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+              <line x1="1" y1="10" x2="23" y2="10"></line>
+            </svg>
+            Xác nhận thanh toán
+          </button>
+
+          <!-- Cancel Button -->
+          <button class="btn-cancel" (click)="cancelPayment()">
+            Hủy thanh toán
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,356 @@
+<div class="listproduct-container">
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    @for (item of breadcrumbLinks(); track $index) {
+      @if ($index > 0) {
+        <span class="separator">/</span>
+      }
+      <a [routerLink]="item.path">{{ item.name }}</a>
+    }
+    @if (breadcrumbLinks().length === 0) {
+      <a [routerLink]="['/']">Trang chủ</a>
+      @for (cat of breadcrumb(); track cat._id) {
+        <span class="separator">/</span>
+        <a [routerLink]="['/category', cat.slug]">{{ cat.name }}</a>
+      }
+    }
+  </nav>
+
+  <!-- Category Header -->
+  @if (searchKeyword().trim()) {
+    <h1 class="category-title">Kết quả tìm kiếm: "{{ searchKeyword() }}"</h1>
+    <p class="search-results-count">{{ filteredProducts().length }} sản phẩm được tìm thấy</p>
+  } @else if (currentCategory()) {
+    <h1 class="category-title">{{ currentCategory()!.name }}</h1>
+  } @else {
+    <h1 class="category-title">Tất cả sản phẩm</h1>
+  }
+
+  <!-- Subcategories Grid -->
+  @if (subcategories().length > 0 && shouldShowSubcategories()) {
+    <div class="subcategories-section">
+      <div class="subcategories-grid">
+        @for (subcat of subcategories(); track subcat._id) {
+          <a [routerLink]="['/category', subcat.slug]" class="subcat-card">
+            <div class="subcat-icon-wrapper">
+              @if (subcat.icon) {
+                <img [src]="subcat.icon" [alt]="subcat.name" class="subcat-icon">
+              } @else {
+                <div class="subcat-icon-placeholder"></div>
+              }
+            </div>
+            <div class="subcat-info">
+              <h3 class="subcat-name">{{ subcat.name }}</h3>
+              <p class="subcat-count">{{ getProductCount(subcat._id) }} sản phẩm</p>
+            </div>
+          </a>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar">
+      <div class="filter-section">
+        <div class="filter-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="6" x2="16" y2="6"></line>
+            <line x1="8" y1="11" x2="20" y2="11"></line>
+            <line x1="4" y1="16" x2="14" y2="16"></line>
+          </svg>
+          <h3>Bộ lọc nâng cao</h3>
+        </div>
+      </div>
+
+      <!-- Price Filter -->
+      <div class="filter-section">
+        <button class="filter-section-title" (click)="toggleFilterSection('price')" [class.expanded]="isFilterExpanded('price')">
+          Giá bán
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" [class.rotated]="isFilterExpanded('price')">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        @if (isFilterExpanded('price')) {
+          <div class="filter-options">
+            <label class="filter-checkbox">
+              <input type="radio" name="priceRange" [checked]="isPriceRangeSelected('all')" (change)="onPriceRangeChange('all')">
+              <span>Tất cả</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="radio" name="priceRange" [checked]="isPriceRangeSelected('<100k')" (change)="onPriceRangeChange('<100k')">
+              <span>Dưới 100.000đ</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="radio" name="priceRange" [checked]="isPriceRangeSelected('100k-200k')" (change)="onPriceRangeChange('100k-200k')">
+              <span>100.000đ - 200.000đ</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="radio" name="priceRange" [checked]="isPriceRangeSelected('200k-500k')" (change)="onPriceRangeChange('200k-500k')">
+              <span>200.000đ - 500.000đ</span>
+            </label>
+            <label class="filter-checkbox">
+              <input type="radio" name="priceRange" [checked]="isPriceRangeSelected('>500k')" (change)="onPriceRangeChange('>500k')">
+              <span>Trên 500.000đ</span>
+            </label>
+          </div>
+        }
+      </div>
+
+      <!-- Brand Filter -->
+      <div class="filter-section">
+        <button class="filter-section-title" (click)="toggleFilterSection('brand')" [class.expanded]="isFilterExpanded('brand')">
+          Thương hiệu
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" [class.rotated]="isFilterExpanded('brand')">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        @if (isFilterExpanded('brand')) {
+          <div class="filter-options">
+            <!-- Option Tất cả -->
+            <label class="filter-checkbox">
+              <input type="checkbox" [checked]="isBrandSelected('all')" (change)="toggleBrand('all')">
+              <span>Tất cả</span>
+            </label>
+            
+            @if (availableBrands().length === 0) {
+              <div class="filter-empty">Không có thương hiệu</div>
+            }
+            @for (brand of availableBrands(); track brand) {
+              <label class="filter-checkbox">
+                <input type="checkbox" [checked]="isBrandSelected(brand)" (change)="toggleBrand(brand)">
+                <span>{{ brand }}</span>
+              </label>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Country Filter -->
+      <div class="filter-section">
+        <button class="filter-section-title" (click)="toggleFilterSection('country')" [class.expanded]="isFilterExpanded('country')">
+          Nước sản xuất
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" [class.rotated]="isFilterExpanded('country')">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        @if (isFilterExpanded('country')) {
+          <div class="filter-options">
+            <!-- Option Tất cả -->
+            <label class="filter-checkbox">
+              <input type="checkbox" [checked]="isCountrySelected('all')" (change)="toggleCountry('all')">
+              <span>Tất cả</span>
+            </label>
+            
+            @if (availableCountries().length === 0) {
+              <div class="filter-empty">Không có dữ liệu</div>
+            }
+            @for (country of availableCountries(); track country) {
+              <label class="filter-checkbox">
+                <input type="checkbox" [checked]="isCountrySelected(country)" (change)="toggleCountry(country)">
+                <span>{{ country }}</span>
+              </label>
+            }
+          </div>
+        }
+      </div>
+    </aside>
+
+    <!-- Products Section -->
+    <div class="products-section">
+      <!-- Product Header -->
+      <div class="products-header">
+        <div class="products-header-left">
+          <h2 class="section-title">Danh sách sản phẩm</h2>
+          @if (filteredProducts().length > 0) {
+            <span class="products-count-info">
+              (Đang hiển thị {{ displayedProducts().length }}/{{ filteredProducts().length }} sản phẩm)
+            </span>
+          }
+        </div>
+        <div class="products-controls">
+          <div class="sort-controls">
+            <span>Sắp xếp theo:</span>
+            <button 
+              class="sort-btn" 
+              [class.active]="sortBy() === 'bestseller'"
+              (click)="onSortChange('bestseller')">
+              Bán chạy
+            </button>
+            <button 
+              class="sort-btn sort-price-btn" 
+              [class.active]="priceSort() !== 'none'"
+              [class.price-asc]="priceSort() === 'asc'"
+              [class.price-desc]="priceSort() === 'desc'"
+              (click)="togglePriceSort()">
+              <span class="sort-label">Giá</span>
+              @if (priceSort() === 'asc') {
+                <svg class="sort-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+              } @else if (priceSort() === 'desc') {
+                <svg class="sort-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              }
+            </button>
+          </div>
+          <div class="view-controls">
+            <button 
+              class="view-btn view-toggle-btn" 
+              [class.grid-active]="viewMode() === 'grid'"
+              [class.list-active]="viewMode() === 'list'"
+              (click)="toggleViewMode()"
+              [title]="viewMode() === 'grid' ? 'Hiển thị dạng lưới' : 'Hiển thị dạng danh sách'">
+              @if (viewMode() === 'grid') {
+                <!-- Grid Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                </svg>
+              } @else {
+                <!-- List Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Note -->
+      <p class="products-note">Lưu ý: Thuốc kê đơn và một số sản phẩm sẽ cần tư vấn từ dược sĩ</p>
+
+      <!-- Products Grid -->
+      @if (loading()) {
+        <div class="loading">Đang tải sản phẩm...</div>
+      } @else if (filteredProducts().length === 0) {
+        <div class="no-products">Không có sản phẩm nào</div>
+      } @else {
+        <div class="products-grid" [class.grid-view]="viewMode() === 'grid'" [class.list-view]="viewMode() === 'list'">
+          @for (product of displayedProducts(); track product._id) {
+            <div class="product-card">
+              <!-- Discount Badge -->
+              @if (product.discount && product.discount > 0) {
+                <div class="discount-badge">-{{ calculateDiscountPercent(product.price, product.discount) }}%</div>
+              }
+              
+              <!-- Product Image -->
+              <a [routerLink]="['/product', product._id]" class="product-image">
+                <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" loading="lazy" decoding="async"
+                     (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+              </a>
+              
+              <!-- Product Info -->
+              <div class="product-info">
+                <a [routerLink]="['/product', product._id]" class="product-name">
+                  {{ product.name }}
+                </a>
+                
+                @if (needsConsultation(product.price)) {
+                  <div class="product-consultation">Cần được tư vấn</div>
+                } @else {
+                  <div class="product-pricing">
+                    <span class="product-price">{{ formatPrice(product.price) }}</span>
+                    @if (product.unit) {
+                      <span class="product-unit">/ {{ product.unit }}</span>
+                    }
+                  </div>
+                  
+                  @if (product.discount && product.discount > 0) {
+                    <div class="product-original-price">{{ formatPrice(product.price + product.discount) }}</div>
+                  }
+                }
+                
+                <!-- Add to Cart Button -->
+                <button class="btn-add-cart" (click)="addToCart(product)">Chọn mua</button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Load More Button -->
+        @if (hasMoreProducts()) {
+          <div class="load-more">
+            <button class="btn-load-more" (click)="loadMore()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+              Xem thêm {{ getRemainingProductsCount() }} sản phẩm
+            </button>
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  <!-- Recently Viewed Products -->
+  @if (recentlyViewed().length > 0) {
+    <div class="recently-viewed">
+      <h2 class="section-title">Sản phẩm vừa xem</h2>
+      <div class="slider-container">
+        @if (recentlyViewed().length > 5) {
+          <button class="slider-btn prev" (click)="prevSlide()" [disabled]="currentSlide() === 0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <button class="slider-btn next" (click)="nextSlide()" [disabled]="currentSlide() >= recentlyViewed().length - 5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
+        }
+        <div class="slider-wrapper">
+          <div class="products-slider" [style.transform]="'translateX(-' + (currentSlide() * getSlideWidth()) + 'px)'">
+            @for (product of recentlyViewed(); track product._id) {
+              <div class="product-card">
+                <!-- Discount Badge -->
+                @if (product.discount && product.discount > 0) {
+                  <div class="discount-badge">-{{ calculateDiscountPercent(product.price, product.discount) }}%</div>
+                }
+                
+                <!-- Product Image -->
+                <a [routerLink]="['/product', product._id]" class="product-image">
+                  <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name">
+                </a>
+                
+                <!-- Product Info -->
+                <div class="product-info">
+                  <a [routerLink]="['/product', product._id]" class="product-name">
+                    {{ product.name }}
+                  </a>
+                  
+                  <div class="product-pricing">
+                    <span class="product-price">{{ formatPrice(product.price) }}</span>
+                    @if (product.unit) {
+                      <span class="product-unit">/ {{ product.unit }}</span>
+                    }
+                  </div>
+                  
+                  @if (product.discount && product.discount > 0) {
+                    <div class="product-original-price">{{ formatPrice(product.price + product.discount) }}</div>
+                  }
+                  
+                  <!-- Add to Cart Button -->
+                  <button class="btn-add-cart" (click)="addToCart(product)">Chọn mua</button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+

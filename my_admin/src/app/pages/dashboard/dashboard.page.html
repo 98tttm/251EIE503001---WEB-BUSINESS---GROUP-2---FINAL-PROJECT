@@ -1,0 +1,413 @@
+<section class="dashboard" *ngIf="summary(); else loadingState">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h2>
+          <span class="dashboard-icon">📊</span>
+          Tổng quan hoạt động
+        </h2>
+        <p>Ảnh hưởng toàn hệ thống trong 30 ngày gần nhất • Cập nhật lúc {{ currentTime() }}</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="toggle-view" (click)="toggleViewMode()">
+          <span class="material-icon">{{ viewMode() === 'simple' ? 'bar_chart' : 'table_chart' }}</span>
+          <span>{{ viewMode() === 'simple' ? 'Xem trực quan' : 'Xem đơn giản' }}</span>
+        </button>
+        <button type="button" class="refresh" (click)="refresh()" [disabled]="loading()">
+          <span class="material-icon">autorenew</span>
+          <span>Cập nhật</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick Actions Panel -->
+  <section class="quick-actions">
+    <h3 class="section-title">
+      <span class="material-icon">flash_on</span>
+      Thao tác nhanh
+    </h3>
+    <div class="actions-grid">
+      <button type="button" class="action-card" routerLink="/collections/products/new">
+        <div class="action-icon products">
+          <span class="material-icon">add_shopping_cart</span>
+        </div>
+        <div class="action-content">
+          <span class="action-title">Thêm sản phẩm</span>
+          <span class="action-desc">Tạo sản phẩm mới</span>
+        </div>
+      </button>
+
+      <button type="button" class="action-card" routerLink="/collections/categories/new">
+        <div class="action-icon categories">
+          <span class="material-icon">add_box</span>
+        </div>
+        <div class="action-content">
+          <span class="action-title">Thêm danh mục</span>
+          <span class="action-desc">Tạo danh mục mới</span>
+        </div>
+      </button>
+
+      <button type="button" class="action-card" routerLink="/collections/orders">
+        <div class="action-icon orders">
+          <span class="material-icon">receipt_long</span>
+        </div>
+        <div class="action-content">
+          <span class="action-title">Quản lý đơn hàng</span>
+          <span class="action-desc">{{ orderStats().pending || 0 }} đơn chờ xử lý</span>
+        </div>
+      </button>
+
+      <button type="button" class="action-card special" routerLink="/admin/create-order">
+        <div class="action-icon create-order">
+          <span class="material-icon">add_shopping_cart</span>
+        </div>
+        <div class="action-content">
+          <span class="action-title">Đặt hàng dùm khách</span>
+          <span class="action-desc">Tạo đơn hàng mới</span>
+        </div>
+      </button>
+
+      <button type="button" class="action-card" routerLink="/collections/promotions/new">
+        <div class="action-icon promotions">
+          <span class="material-icon">local_offer</span>
+        </div>
+        <div class="action-content">
+          <span class="action-title">Tạo khuyến mãi</span>
+          <span class="action-desc">Thêm mã giảm giá</span>
+        </div>
+      </button>
+
+      <button type="button" class="action-card" routerLink="/collections/blogs/new">
+        <div class="action-icon blogs">
+          <span class="material-icon">post_add</span>
+        </div>
+        <div class="action-content">
+          <span class="action-title">Viết bài mới</span>
+          <span class="action-desc">Thêm bài viết blog</span>
+        </div>
+      </button>
+
+      <button type="button" class="action-card" routerLink="/collections/users">
+        <div class="action-icon users">
+          <span class="material-icon">people</span>
+        </div>
+        <div class="action-content">
+          <span class="action-title">Quản lý người dùng</span>
+          <span class="action-desc">Xem danh sách user</span>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <section class="stat-cards">
+    <article
+      class="card"
+      *ngFor="let item of totalsCards(); index as i"
+      [class.accent-blue]="item.accent === 'accent-blue'"
+      [class.accent-indigo]="item.accent === 'accent-indigo'"
+      [class.accent-rose]="item.accent === 'accent-rose'"
+      [class.accent-emerald]="item.accent === 'accent-emerald'"
+      [class.accent-purple]="item.accent === 'accent-purple'"
+      [class.accent-amber]="item.accent === 'accent-amber'"
+      [class.clickable]="!!item.link"
+      (click)="navigateTo(item.link)"
+      (keydown)="handleCardKeydown($event, item.link)"
+      [attr.tabindex]="item.link ? 0 : null"
+      [attr.role]="item.link ? 'button' : null"
+      [attr.aria-label]="item.link ? 'Đi tới ' + item.label : null"
+    >
+      <div class="icon">
+        <span class="material-icon">{{ item.icon }}</span>
+      </div>
+      <div class="meta">
+        <span class="label">{{ item.label }}</span>
+        <span class="value">{{ item.value | number }}</span>
+      </div>
+    </article>
+  </section>
+
+  <!-- Simple View -->
+  <section class="grid" *ngIf="viewMode() === 'simple'">
+    <article class="panel revenue">
+      <div class="panel-header">
+        <div>
+          <h3>Doanh thu 30 ngày</h3>
+          <p>Gồm đơn giao thành công &amp; hoàn tất</p>
+        </div>
+      </div>
+      <div class="chart" *ngIf="revenueSeries().length; else revenueEmpty">
+        <div class="bars">
+          <div
+            class="bar-wrapper"
+            *ngFor="let point of revenueSeries()"
+          >
+            <div
+              class="bar"
+              [style.--height]="getBarHeight(point.total)"
+              [title]="(point.total | currency:'VND':'symbol':'1.0-0') + ' - ' + (point.day | date:'dd/MM')"
+            >
+              <span class="tooltip">
+                <strong>{{ point.day | date: 'dd/MM' }}</strong>
+                <span>{{ point.total | currency: 'VND':'symbol':'1.0-0' }}</span>
+                <small>{{ point.orders }} đơn</small>
+              </span>
+            </div>
+            <span class="bar-label">{{ point.day | date: 'dd/MM' }}</span>
+          </div>
+        </div>
+        <div class="chart-footer">
+          <span>Đỉnh: {{ maxRevenue() | currency: 'VND':'symbol':'1.0-0' }}</span>
+          <span>Tổng điểm dữ liệu: {{ revenueSeries().length }}</span>
+        </div>
+      </div>
+      <ng-template #revenueEmpty>
+        <div class="empty">Chưa có dữ liệu doanh thu</div>
+      </ng-template>
+    </article>
+
+    <article class="panel status">
+      <div class="panel-header">
+        <div>
+          <h3>Trạng thái đơn hàng</h3>
+          <p>Phân bổ theo số lượng đơn</p>
+        </div>
+      </div>
+      <ul class="status-list" *ngIf="ordersByStatus().length; else statusEmpty">
+        <li *ngFor="let row of ordersByStatus()">
+          <div class="info">
+            <span class="name">{{ row._id || 'Không xác định' }}</span>
+            <span class="count">{{ row.count | number }}</span>
+          </div>
+          <div class="progress">
+            <div class="fill" [style.width.%]="(row.count / (ordersByStatus()[0]?.count || 1)) * 100"></div>
+          </div>
+        </li>
+      </ul>
+      <ng-template #statusEmpty>
+        <div class="empty">Không có dữ liệu trạng thái đơn hàng</div>
+      </ng-template>
+    </article>
+  </section>
+
+  <section class="grid details" *ngIf="viewMode() === 'simple'">
+    <article class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Đơn hàng gần đây</h3>
+          <p>8 đơn hàng mới nhất trong hệ thống</p>
+        </div>
+        <a routerLink="/collections/orders">Xem tất cả</a>
+      </div>
+      <div class="table" *ngIf="recentOrders().length; else ordersEmpty">
+        <table>
+          <thead>
+            <tr>
+              <th>Mã đơn</th>
+              <th>Khách hàng</th>
+              <th>Trạng thái</th>
+              <th>Tổng tiền</th>
+              <th>Ngày tạo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of recentOrders()">
+              <td>{{ order.orderNumber || order._id }}</td>
+              <td>{{ order.customerInfo?.name || order.shippingAddress?.name || 'Ẩn danh' }}</td>
+              <td><span class="badge">{{ order.status || 'unknown' }}</span></td>
+              <td>{{ order.pricing?.total | currency: 'VND':'symbol':'1.0-0' }}</td>
+              <td>{{ order.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #ordersEmpty>
+        <div class="empty">Chưa có đơn hàng nào</div>
+      </ng-template>
+    </article>
+
+    <article class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Người dùng mới</h3>
+          <p>8 tài khoản vừa đăng ký hoặc kích hoạt</p>
+        </div>
+        <a routerLink="/collections/users">Xem tất cả</a>
+      </div>
+      <div class="table" *ngIf="recentUsers().length; else usersEmpty">
+        <table>
+          <thead>
+            <tr>
+              <th>Tên</th>
+              <th>Email</th>
+              <th>Số điện thoại</th>
+              <th>Trạng thái</th>
+              <th>Ngày tạo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of recentUsers()">
+              <td>{{ user.profile?.name || user.mail || user.phone }}</td>
+              <td>{{ user.mail || '—' }}</td>
+              <td>{{ user.phone || '—' }}</td>
+              <td><span class="badge status" [class.active]="user.status === 'active'">{{ user.status || 'unknown' }}</span></td>
+              <td>{{ user.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #usersEmpty>
+        <div class="empty">Chưa có người dùng mới</div>
+      </ng-template>
+    </article>
+  </section>
+
+  <section class="panel top-categories" *ngIf="viewMode() === 'simple'">
+    <div class="panel-header">
+      <div>
+        <h3>Danh mục bán chạy</h3>
+        <p>Top 8 danh mục có nhiều sản phẩm và doanh thu cao</p>
+      </div>
+      <a routerLink="/collections/categories">Quản lý danh mục</a>
+    </div>
+    <div class="table" *ngIf="topCategories().length; else categoryEmpty">
+      <table>
+        <thead>
+          <tr>
+            <th>Danh mục</th>
+            <th>Số sản phẩm</th>
+            <th>Doanh thu ước tính</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of topCategories()">
+            <td>{{ item.category?.name || item._id || 'Không xác định' }}</td>
+            <td>{{ item.products | number }}</td>
+            <td>{{ item.totalRevenue | currency: 'VND':'symbol':'1.0-0' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #categoryEmpty>
+      <div class="empty">Chưa có số liệu danh mục</div>
+    </ng-template>
+  </section>
+
+  <!-- Visual View with Charts -->
+  <section class="visual-dashboard" *ngIf="viewMode() === 'visual'">
+    <div class="charts-grid">
+      <article class="chart-panel large">
+        <div class="panel-header">
+          <div>
+            <h3>Biểu đồ doanh thu 30 ngày</h3>
+            <p>Xu hướng doanh thu theo thời gian</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas #revenueChart></canvas>
+        </div>
+      </article>
+
+      <article class="chart-panel">
+        <div class="panel-header">
+          <div>
+            <h3>Phân bổ trạng thái đơn</h3>
+            <p>Tỷ lệ đơn hàng theo trạng thái</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas #statusChart></canvas>
+        </div>
+      </article>
+
+      <article class="chart-panel">
+        <div class="panel-header">
+          <div>
+            <h3>Số lượng đơn hàng</h3>
+            <p>Thống kê đơn hàng 30 ngày</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas #ordersChart></canvas>
+        </div>
+      </article>
+
+      <article class="chart-panel full-width">
+        <div class="panel-header">
+          <div>
+            <h3>Top danh mục bán chạy</h3>
+            <p>Doanh thu theo danh mục sản phẩm</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas #categoryChart></canvas>
+        </div>
+      </article>
+    </div>
+
+    <!-- Key Insights Section -->
+    <div class="insights-section">
+      <h3 class="insights-title">
+        <span class="material-icon">lightbulb</span>
+        Phân tích Insight
+      </h3>
+      <div class="insights-grid">
+        <article class="insight-card" *ngIf="revenueSeries().length > 0">
+          <div class="insight-icon revenue">
+            <span class="material-icon">trending_up</span>
+          </div>
+          <div class="insight-content">
+            <h4>Doanh thu trung bình</h4>
+            <p class="insight-value">{{ averageRevenue() | currency: 'VND':'symbol':'1.0-0' }}</p>
+            <p class="insight-desc">Trung bình mỗi ngày trong 30 ngày qua</p>
+          </div>
+        </article>
+
+        <article class="insight-card" *ngIf="ordersByStatus().length > 0">
+          <div class="insight-icon orders">
+            <span class="material-icon">shopping_cart</span>
+          </div>
+          <div class="insight-content">
+            <h4>Tổng đơn hàng</h4>
+            <p class="insight-value">{{ totalOrders() | number }}</p>
+            <p class="insight-desc">Tất cả đơn hàng trong hệ thống</p>
+          </div>
+        </article>
+
+        <article class="insight-card" *ngIf="topCategory()">
+          <div class="insight-icon category">
+            <span class="material-icon">star</span>
+          </div>
+          <div class="insight-content">
+            <h4>Danh mục hàng đầu</h4>
+            <p class="insight-value">{{ topCategory()?.category?.name || 'N/A' }}</p>
+            <p class="insight-desc">{{ topCategory()?.totalRevenue | currency: 'VND':'symbol':'1.0-0' }} doanh thu</p>
+          </div>
+        </article>
+
+        <article class="insight-card" *ngIf="revenueSeries().length > 1">
+          <div class="insight-icon growth">
+            <span class="material-icon">analytics</span>
+          </div>
+          <div class="insight-content">
+            <h4>Tăng trưởng</h4>
+            <p class="insight-value" 
+               [class.positive]="revenueGrowth() > 0"
+               [class.negative]="revenueGrowth() <= 0">
+              {{ revenueGrowth() | number:'1.0-1' }}%
+            </p>
+            <p class="insight-desc">So với đầu kỳ 30 ngày</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</section>
+
+<ng-template #loadingState>
+  <div class="loading-state">
+    <span class="spinner"></span>
+    <span>Đang tải dữ liệu quản trị...</span>
+  </div>
+</ng-template>
+

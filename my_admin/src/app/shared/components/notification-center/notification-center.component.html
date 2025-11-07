@@ -1,0 +1,23 @@
+<div class="notification-container" *ngIf="notifications().length > 0">
+  <div
+    class="notification"
+    [class.success]="note.type === 'success'"
+    [class.info]="note.type === 'info'"
+    [class.warning]="note.type === 'warning'"
+    [class.error]="note.type === 'error'"
+    *ngFor="let note of notifications(); trackBy: trackById"
+  >
+    <div class="summary">
+      <span class="status-indicator"></span>
+      <div class="content">
+        <span class="title">{{ note.title || (note.type | titlecase) }}</span>
+        <span class="message">{{ note.message }}</span>
+      </div>
+      <button type="button" class="close" (click)="dismiss(note.id)">×</button>
+    </div>
+    <div class="meta">
+      <span>{{ note.timestamp | date: 'HH:mm:ss dd/MM/yyyy' }}</span>
+    </div>
+  </div>
+</div>
+

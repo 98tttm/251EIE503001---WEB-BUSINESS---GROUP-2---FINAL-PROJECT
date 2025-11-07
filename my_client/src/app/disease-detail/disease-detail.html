@@ -1,0 +1,138 @@
+<div class="disease-detail-page">
+  @if (loading()) {
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Đang tải thông tin bệnh...</p>
+    </div>
+  } @else if (error()) {
+    <div class="error-container">
+      <h2>❌ {{ error() }}</h2>
+      <button (click)="goBack()" class="btn-back">← Quay lại danh sách bệnh</button>
+    </div>
+  } @else if (disease(); as d) {
+    <div class="disease-hero" [class.has-background]="heroBackground()">
+      <div class="disease-hero-bg" [style.background-image]="heroBackground() ? 'url(' + heroBackground() + ')' : ''"></div>
+      <div class="disease-hero-overlay"></div>
+      <div class="disease-hero-content">
+        <div class="hero-top">
+          <button class="btn-back" (click)="goBack()">← Quay lại danh sách bệnh</button>
+          <nav class="hero-breadcrumb">
+            <a routerLink="/">Trang chủ</a>
+            <span>/</span>
+            <a routerLink="/diseases">Bệnh lý</a>
+            @if (primaryCategoryName()) {
+              <span>/</span>
+              <span>{{ primaryCategoryName() }}</span>
+            }
+            <span>/</span>
+            <span>{{ d.name }}</span>
+          </nav>
+        </div>
+        <div class="hero-card">
+          @if (primaryCategoryName()) {
+            <span class="hero-category">{{ primaryCategoryName() }}</span>
+          }
+          <h1 class="hero-title">{{ d.name }}</h1>
+          @if (d.headline) {
+            <p class="hero-headline">{{ d.headline }}</p>
+          }
+          <p class="hero-subtitle">{{ heroSubtitle() }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="disease-detail-container">
+      <div class="disease-body">
+        <div class="disease-content-area">
+          @if (tableOfContents().length > 0) {
+            <aside class="toc-panel">
+              <h3 class="toc-title">Mục lục bài viết</h3>
+              <div class="toc-list">
+                @for (item of tableOfContents(); track item.id) {
+                  <button type="button" class="toc-button" [class.active]="activeSection() === item.id" (click)="scrollToSection(item.id)">
+                    {{ item.label }}
+                  </button>
+                }
+              </div>
+            </aside>
+          }
+
+          <div class="content-panel" #contentPanel (scroll)="onContentScroll()">
+            @if (d.primary_image?.url && heroBackground() !== d.primary_image!.url) {
+              <div class="featured-image-wrapper">
+                <img [src]="d.primary_image!.url" 
+                     [alt]="d.primary_image!.alternativeText || d.name" 
+                     class="featured-image" 
+                     loading="lazy" 
+                     decoding="async"
+                     (error)="$event.target.src = 'https://via.placeholder.com/800x400?text=MediCare'; $event.target.onerror = null;"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400?text=MediCare';">
+              </div>
+            }
+
+            @if (d.summary) {
+              <div class="disease-summary">
+                <p>{{ d.summary }}</p>
+              </div>
+            }
+
+            @if (d.content_sections && d.content_sections.length > 0) {
+              <div class="disease-content">
+                @for (section of d.content_sections; track section.key) {
+                  <div class="content-section" [attr.id]="section.anchorId">
+                    <h3 class="section-title">{{ section.label }}</h3>
+                    <div class="section-content" [innerHTML]="section.html"></div>
+                  </div>
+                }
+              </div>
+            }
+
+            @if (d.tags && d.tags.length > 0) {
+              <div class="disease-tags">
+                <h3>Tags:</h3>
+                <div class="tags-list">
+                  @for (tag of d.tags; track tag.id) {
+                    <span class="tag">{{ tag.title }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (d.faqs && d.faqs.length > 0) {
+              <div class="disease-faqs">
+                <h2>Câu hỏi thường gặp</h2>
+                <div class="faq-list">
+                  @for (faq of d.faqs; track faq.id) {
+                    <div class="faq-item">
+                      <h4 class="faq-question">{{ faq.question }}</h4>
+                      <div class="faq-answer" [innerHTML]="faq.answer_html"></div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (d.related_diseases && d.related_diseases.length > 0) {
+              <div class="related-diseases">
+                <h2>Bệnh liên quan</h2>
+                <div class="related-list">
+                  @for (related of d.related_diseases; track related.id) {
+                    <a (click)="navigateToDisease(related.slug)" class="related-item">
+                      <div class="related-info">
+                        <h4>{{ related.name }}</h4>
+                        @if (related.headline) {
+                          <p>{{ related.headline }}</p>
+                        }
+                      </div>
+                    </a>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
