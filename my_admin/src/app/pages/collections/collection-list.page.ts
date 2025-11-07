@@ -14,6 +14,7 @@ import {
 } from '../../core/services/admin-api.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { AdminCollectionsStore } from '../../core/services/admin-collections.store';
+import { environment } from '../../../environments/environment';
 
 interface AdminPagination {
   total: number;
@@ -53,6 +54,9 @@ type CategoryListRow = {
 })
 export class CollectionListPage {
   @ViewChild('chatMessages') chatMessages?: ElementRef<HTMLDivElement>;
+
+  // API URL for file downloads in template
+  readonly apiUrl = environment.apiUrl;
 
   private readonly api = inject(AdminApiService);
   private readonly notifier = inject(NotificationService);

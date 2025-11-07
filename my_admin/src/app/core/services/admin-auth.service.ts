@@ -126,7 +126,7 @@ export class AdminAuthService {
 
     try {
       const response = await firstValueFrom(
-        this.http.get<AdminProfileResponse>('http://localhost:3000/api/auth/me')
+        this.http.get<AdminProfileResponse>(`${environment.apiUrl}/api/auth/me`)
       );
 
       if (!response.success || !response.data) {

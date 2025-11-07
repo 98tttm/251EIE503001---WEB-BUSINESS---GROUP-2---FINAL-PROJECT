@@ -9,6 +9,7 @@ import { firstValueFrom } from 'rxjs';
 import { AdminApiService, AdminCollectionMeta } from '../../core/services/admin-api.service';
 import { AdminCollectionsStore } from '../../core/services/admin-collections.store';
 import { NotificationService } from '../../core/services/notification.service';
+import { environment } from '../../../environments/environment';
 
 interface SpecListItem {
   label: string;
@@ -2584,7 +2585,7 @@ export class CollectionDetailPage {
         return;
       }
 
-      const response = await fetch(`http://localhost:3000/api/orders/${encodeURIComponent(orderId)}/return/approve`, {
+      const response = await fetch(`${environment.apiUrl}/api/orders/${encodeURIComponent(orderId)}/return/approve`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -2624,7 +2625,7 @@ export class CollectionDetailPage {
         return;
       }
 
-      const response = await fetch(`http://localhost:3000/api/orders/${encodeURIComponent(orderId)}/return/reject`, {
+      const response = await fetch(`${environment.apiUrl}/api/orders/${encodeURIComponent(orderId)}/return/reject`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
