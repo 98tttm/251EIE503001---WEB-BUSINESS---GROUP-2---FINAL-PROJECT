@@ -56,9 +56,17 @@ try {
     Write-Host "`n[4/7] Checking branch..." -ForegroundColor Yellow
     $currentBranch = git branch --show-current 2>$null
     if (-not $currentBranch) {
-        Write-Host "Creating main branch..." -ForegroundColor Yellow
-        git checkout -b main
-        $currentBranch = "main"
+        # Kiểm tra xem có branch master không
+        $masterBranch = git branch --list master 2>$null
+        if ($masterBranch) {
+            Write-Host "Using existing master branch..." -ForegroundColor Yellow
+            git checkout master
+            $currentBranch = "master"
+        } else {
+            Write-Host "Creating main branch..." -ForegroundColor Yellow
+            git checkout -b main
+            $currentBranch = "main"
+        }
     }
     Write-Host "Current branch: $currentBranch" -ForegroundColor Green
     
@@ -66,16 +74,21 @@ try {
     Write-Host "`n[5/7] Pulling latest changes..." -ForegroundColor Yellow
     git fetch origin 2>&1 | Out-Null
     
-    # Kiểm tra xem remote có branch main không
-    $remoteBranch = git ls-remote --heads origin main 2>$null
+    # Kiểm tra xem remote có branch tương ứng không
+    $remoteBranch = git ls-remote --heads origin $currentBranch 2>$null
     if ($remoteBranch) {
         Write-Host "Remote branch exists, pulling changes..." -ForegroundColor Yellow
         try {
-            git pull origin main --no-rebase --no-edit 2>&1 | Out-Null
-            Write-Host "Pull completed" -ForegroundColor Green
+            $pullResult = git pull origin $currentBranch --allow-unrelated-histories --no-rebase --no-edit 2>&1
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "Pull completed" -ForegroundColor Green
+            } else {
+                Write-Host "Warning: Pull had issues. Trying without --allow-unrelated-histories..." -ForegroundColor Yellow
+                git pull origin $currentBranch --no-rebase --no-edit 2>&1 | Out-Null
+            }
         } catch {
             Write-Host "Warning: Pull had conflicts or issues. Please resolve manually." -ForegroundColor Yellow
-            Write-Host "You may need to: git pull origin main --no-rebase" -ForegroundColor Yellow
+            Write-Host "You may need to: git pull origin $currentBranch --allow-unrelated-histories" -ForegroundColor Yellow
         }
     } else {
         Write-Host "Remote branch doesn't exist yet. Will create on first push." -ForegroundColor Yellow
