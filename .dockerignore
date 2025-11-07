@@ -1,0 +1,10 @@
+.git
+.gitignore
+node_modules
+npm-debug.log
+Dockerfile
+.dockerignore
+my_client
+my_admin
+scripts
+dist
