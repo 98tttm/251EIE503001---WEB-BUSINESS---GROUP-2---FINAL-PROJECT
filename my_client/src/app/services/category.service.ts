@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 export interface Category {
   _id: string;
@@ -40,7 +41,7 @@ export interface Product {
   providedIn: 'root'
 })
 export class CategoryService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = `${environment.apiUrl}/api`;
   
   // Signals for reactive state
   public categories = signal<Category[]>([]);

@@ -55,10 +55,12 @@ interface AdminCollectionsResponse {
   data: AdminCollectionMeta[];
 }
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({ providedIn: 'root' })
 export class AdminApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:3000/api/admin';
+  private readonly baseUrl = `${environment.apiUrl}/api/admin`;
 
   getCollections(): Observable<AdminCollectionMeta[]> {
     return this.http
@@ -171,11 +173,11 @@ export class AdminApiService {
 
   // Generic GET and POST for custom endpoints
   get<T = any>(url: string, options?: any): Observable<T> {
-    return this.http.get<T>(`http://localhost:3000${url}`, options) as Observable<T>;
+    return this.http.get<T>(`${environment.apiUrl}${url}`, options) as Observable<T>;
   }
 
   post<T = any>(url: string, payload: any, options?: any): Observable<T> {
-    return this.http.post<T>(`http://localhost:3000${url}`, payload, options) as Observable<T>;
+    return this.http.post<T>(`${environment.apiUrl}${url}`, payload, options) as Observable<T>;
   }
 }
 

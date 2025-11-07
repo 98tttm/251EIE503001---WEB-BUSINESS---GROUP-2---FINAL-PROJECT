@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { NotificationService } from './notification.service';
+import { environment } from '../../../environments/environment';
 
 export interface AdminLoginPayload {
   email: string;
@@ -90,7 +91,7 @@ export class AdminAuthService {
 
     try {
       const response = await firstValueFrom(
-        this.http.post<AdminLoginResponse>('http://localhost:3000/api/auth/login', payload)
+        this.http.post<AdminLoginResponse>(`${environment.apiUrl}/api/auth/login`, payload)
       );
 
       if (!response.success || !response.data?.token) {

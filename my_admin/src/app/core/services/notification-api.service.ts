@@ -22,12 +22,14 @@ export interface NotificationsResponse {
   unreadCount: number;
 }
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:3000/api';
+  private readonly baseUrl = `${environment.apiUrl}/api`;
 
   getAdminNotifications(options: { limit?: number; unreadOnly?: boolean } = {}): Observable<NotificationsResponse> {
     let params = new HttpParams();
