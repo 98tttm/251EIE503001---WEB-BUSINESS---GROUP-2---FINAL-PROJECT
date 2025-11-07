@@ -4,7 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { CategoryService } from '../services/category.service';
 import { CartService } from '../services/cart.service';
 import { ToastService } from '../toast.service';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 interface Banner {
   id: string;

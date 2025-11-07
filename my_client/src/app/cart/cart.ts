@@ -6,7 +6,7 @@ import { CartService } from '../services/cart.service';
 import { CategoryService, Product } from '../services/category.service';
 import { ToastService } from '../toast.service';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-cart',

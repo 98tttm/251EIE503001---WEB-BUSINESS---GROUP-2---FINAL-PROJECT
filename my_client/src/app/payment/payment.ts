@@ -6,7 +6,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { AddressService, AddressData } from '../services/address.service';
 import { AuthService } from '../services/auth.service';
 import { CartService } from '../services/cart.service';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 interface PaymentItem {
   _id: string;

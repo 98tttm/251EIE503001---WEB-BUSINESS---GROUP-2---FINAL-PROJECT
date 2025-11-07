@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CategoryService, Category, Product } from '../services/category.service';
 import { CartService } from '../services/cart.service';
 import { ToastService } from '../toast.service';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-listproduct',

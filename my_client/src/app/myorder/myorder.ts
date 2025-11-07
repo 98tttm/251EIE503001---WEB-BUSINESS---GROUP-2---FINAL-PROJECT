@@ -4,7 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CartService } from '../services/cart.service';
 import { ToastService } from '../toast.service';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 interface OrderItem {
   _id: string;

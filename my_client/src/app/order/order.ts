@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Login } from '../login/login';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 interface OrderItem {
   _id: string;
