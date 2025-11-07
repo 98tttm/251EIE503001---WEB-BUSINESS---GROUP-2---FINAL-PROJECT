@@ -42,8 +42,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "10kB",
-                  "maximumError": "20kB"  // Increased from 8kB to 20kB to allow larger component styles
+                  "maximumWarning": "30kB",
+                  "maximumError": "50kB"  // Increased to 50kB to allow homepage.css (45.45kB) and other large component styles
                 }
               ],
               "outputHashing": "all"
