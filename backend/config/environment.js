@@ -22,9 +22,16 @@ module.exports = {
   },
   
   // CORS
+  // ⚠️ QUAN TRỌNG: Cập nhật ALLOWED_ORIGINS trên Railway để cho phép client và admin truy cập
+  // Ví dụ: https://medicare-seven-kappa.vercel.app,https://your-admin-url.vercel.app
+  // Các origin phân cách bằng dấu phẩy, không có khoảng trắng
   allowedOrigins: process.env.ALLOWED_ORIGINS 
-    ? process.env.ALLOWED_ORIGINS.split(',')
-    : ['http://localhost:4200', 'http://localhost:4201'],
+    ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
+    : [
+        'http://localhost:4200', 
+        'http://localhost:4201', 
+        'https://medicare-seven-kappa.vercel.app'
+      ],
   
   // Rate Limiting - UNLIMITED
   rateLimit: {
