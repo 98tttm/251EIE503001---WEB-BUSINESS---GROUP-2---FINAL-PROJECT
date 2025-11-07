@@ -4,6 +4,6 @@
     "root": "backend"
   },
   "deploy": {
-    "startCommand": "cd backend && node server.js"
+    "startCommand": ""
   }
 }
