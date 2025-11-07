@@ -1,0 +1,259 @@
+@import '../about/about.css';
+@import '../booking/booking.css';
+
+.intro-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.payment-methods-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 30px 0;
+}
+
+.payment-method-card {
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.payment-method-card:hover {
+  border-color: #2c5aa0;
+  box-shadow: 0 8px 20px rgba(44, 90, 160, 0.15);
+}
+
+.payment-method-card.highlighted {
+  border-color: #4caf50;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f8e9 100%);
+}
+
+.payment-method-card.highlighted .method-header {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+}
+
+.method-header {
+  background: linear-gradient(135deg, #2c5aa0, #1e3f7a);
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.method-header .method-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.method-header .method-icon i {
+  font-size: 28px;
+  color: #fff;
+}
+
+.method-header h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.method-body {
+  padding: 30px;
+}
+
+.method-body > p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.card-logos {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  align-items: center;
+}
+
+.card-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.method-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.feature i {
+  color: #4caf50;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.feature span {
+  font-size: 14px;
+  color: #333;
+}
+
+.bank-details {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f5f5f5 100%);
+  border-radius: 10px;
+  padding: 25px;
+  margin: 20px 0;
+  border-left: 4px solid #2c5aa0;
+}
+
+.bank-details h4 {
+  color: #2c5aa0;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.bank-details h4 i {
+  margin-right: 8px;
+}
+
+.bank-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 15px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 6px;
+  align-items: center;
+}
+
+.info-row.important {
+  background: #fff3cd;
+  border-left: 3px solid #ff9800;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.info-value {
+  color: #2c5aa0;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.info-row.important .info-value {
+  color: #f57c00;
+}
+
+.mt-3 {
+  margin-top: 20px;
+}
+
+.security-section {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e3f2fd 100%);
+  border-radius: 10px;
+  padding: 40px 30px;
+  margin-top: 40px;
+}
+
+.security-section h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #1e3f7a;
+}
+
+.security-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #2c5aa0, #1e3f7a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.security-icon i {
+  font-size: 36px;
+  color: #fff;
+}
+
+.security-section h4 {
+  color: #1e3f7a;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.security-section p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .method-header {
+    padding: 20px;
+  }
+  
+  .method-header h3 {
+    font-size: 18px;
+  }
+  
+  .method-body {
+    padding: 20px;
+  }
+  
+  .info-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .info-label {
+    font-size: 13px;
+  }
+  
+  .info-value {
+    font-size: 13px;
+  }
+  
+  .card-logos {
+    justify-content: center;
+  }
+  
+  .method-features {
+    grid-template-columns: 1fr;
+  }
+}
+

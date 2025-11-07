@@ -1,0 +1,203 @@
+<div class="policy-detail">
+  <h1 class="policy-title">Kiểm tra đơn điện tử</h1>
+  
+  <section class="policy-section">
+    <div class="intro-box">
+      <p>
+        Nhập mã đơn hàng của bạn để tra cứu thông tin chi tiết về đơn hàng, tình trạng giao hàng và lịch sử thanh toán.
+      </p>
+    </div>
+  </section>
+
+  <section class="policy-section">
+    <div class="search-container">
+      <h3>Tra cứu đơn hàng</h3>
+      
+      <div class="search-box">
+        <div class="input-group">
+          <div class="input-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="orderNumber"
+            placeholder="Nhập mã đơn hàng (VD: ORD-20250107-XXXX)"
+            (keyup.enter)="searchOrder()"
+            [disabled]="isSearching"
+          >
+          <button 
+            *ngIf="orderNumber" 
+            class="btn-clear" 
+            (click)="clearSearch()"
+            [disabled]="isSearching"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <button 
+          class="btn-search" 
+          (click)="searchOrder()"
+          [disabled]="isSearching || !orderNumber.trim()"
+        >
+          <span *ngIf="!isSearching">
+            <i class="fas fa-search"></i> Tra cứu
+          </span>
+          <span *ngIf="isSearching">
+            <i class="fas fa-spinner fa-spin"></i> Đang tìm...
+          </span>
+        </button>
+      </div>
+      
+      <div class="error-message" *ngIf="errorMessage">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ errorMessage }}
+      </div>
+    </div>
+  </section>
+
+  <section class="policy-section">
+    <div class="info-cards">
+      <div class="info-card">
+        <div class="card-icon">
+          <i class="fas fa-barcode"></i>
+        </div>
+        <h4>Mã đơn hàng</h4>
+        <p>Mã đơn hàng được gửi qua email hoặc SMS sau khi đặt hàng thành công</p>
+      </div>
+      
+      <div class="info-card">
+        <div class="card-icon">
+          <i class="fas fa-receipt"></i>
+        </div>
+        <h4>Hóa đơn điện tử</h4>
+        <p>Xem và tải xuống hóa đơn điện tử của đơn hàng</p>
+      </div>
+      
+      <div class="info-card">
+        <div class="card-icon">
+          <i class="fas fa-truck"></i>
+        </div>
+        <h4>Theo dõi vận chuyển</h4>
+        <p>Cập nhật tình trạng giao hàng theo thời gian thực</p>
+      </div>
+      
+      <div class="info-card">
+        <div class="card-icon">
+          <i class="fas fa-history"></i>
+        </div>
+        <h4>Lịch sử đơn hàng</h4>
+        <p>Xem lại lịch sử các đơn hàng đã đặt</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="policy-section">
+    <h2>Hướng dẫn tra cứu</h2>
+    
+    <div class="guide-steps">
+      <div class="guide-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Tìm mã đơn hàng</h4>
+          <p>Mã đơn hàng được gửi qua email hoặc SMS ngay sau khi bạn đặt hàng thành công. Mã có dạng: <strong>ORD-YYYYMMDD-XXXX</strong></p>
+        </div>
+      </div>
+      
+      <div class="guide-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Nhập mã đơn hàng</h4>
+          <p>Nhập chính xác mã đơn hàng vào ô tìm kiếm ở trên</p>
+        </div>
+      </div>
+      
+      <div class="guide-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Xem thông tin</h4>
+          <p>Hệ thống sẽ hiển thị đầy đủ thông tin đơn hàng, tình trạng giao hàng và hóa đơn điện tử</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="policy-section">
+    <div class="faq-section">
+      <h2>Câu hỏi thường gặp</h2>
+      
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> Tôi không tìm thấy mã đơn hàng?</h4>
+        <p>
+          Kiểm tra hộp thư email (bao gồm cả thư rác) hoặc tin nhắn SMS. Nếu vẫn không tìm thấy, vui lòng liên hệ 
+          hotline <strong>1900 0908</strong> để được hỗ trợ.
+        </p>
+      </div>
+      
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> Nhập mã đơn hàng nhưng không tìm thấy?</h4>
+        <p>
+          Vui lòng kiểm tra lại mã đơn hàng có chính xác không. Nếu vẫn gặp vấn đề, liên hệ bộ phận chăm sóc 
+          khách hàng để được hỗ trợ.
+        </p>
+      </div>
+      
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> Tôi có thể hủy đơn hàng không?</h4>
+        <p>
+          Bạn có thể hủy đơn hàng trong vòng 24 giờ kể từ khi đặt hàng bằng cách liên hệ hotline hoặc chat 
+          trực tuyến với chúng tôi.
+        </p>
+      </div>
+      
+      <div class="faq-item">
+        <h4><i class="fas fa-question-circle"></i> Làm sao để tải hóa đơn điện tử?</h4>
+        <p>
+          Sau khi tra cứu đơn hàng thành công, bạn sẽ thấy nút "Tải hóa đơn" để tải xuống hóa đơn điện tử 
+          dạng PDF.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="policy-section">
+    <div class="alternative-methods">
+      <h2>Các cách tra cứu khác</h2>
+      
+      <div class="method-grid">
+        <div class="method-item">
+          <div class="method-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <h4>Tài khoản cá nhân</h4>
+          <p>Đăng nhập vào tài khoản để xem tất cả đơn hàng của bạn</p>
+          <a routerLink="/profile/orders" class="btn-link">Xem đơn hàng <i class="fas fa-arrow-right"></i></a>
+        </div>
+        
+        
+        <div class="method-item">
+          <div class="method-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h4>Hotline hỗ trợ</h4>
+          <p>Gọi 1900 0908 để được hỗ trợ trực tiếp từ nhân viên</p>
+          <a href="tel:19000908" class="btn-link">Gọi ngay <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="policy-section contact-section">
+    <h2>Cần hỗ trợ?</h2>
+    <p>
+      Nếu bạn gặp khó khăn trong việc tra cứu đơn hàng, vui lòng liên hệ:
+    </p>
+    <div class="contact-info">
+      <p><strong>Hotline:</strong> <a href="tel:19000908">1900 0908</a> (8:00 - 22:00)</p>
+      <p><strong>Email:</strong> <a href="mailto:support@medicare.com.vn">support&#64;medicare.com.vn</a></p>
+      <p><strong>Chat trực tuyến:</strong> Nhấn vào biểu tượng chat ở góc phải màn hình</p>
+    </div>
+  </section>
+</div>
+

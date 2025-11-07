@@ -1,0 +1,62 @@
+@import '../about/about.css';
+@import '../booking/booking.css';
+
+.info-list ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.info-list ul li {
+  background: #f8f9fa;
+  padding: 12px 20px;
+  border-radius: 6px;
+  border-left: 3px solid #2c5aa0;
+  font-weight: 500;
+}
+
+.company-info {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f5f5f5 100%);
+  border-radius: 10px;
+  padding: 25px;
+  border-left: 4px solid #2c5aa0;
+}
+
+.company-info p {
+  margin-bottom: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.company-info a {
+  color: #2c5aa0;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.company-info a:hover {
+  text-decoration: underline;
+}
+
+.security-features {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8f5e9 100%);
+  border-radius: 10px;
+  padding: 40px 30px;
+  margin-top: 40px;
+}
+
+.security-features h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #1e3f7a;
+}
+
+@media (max-width: 768px) {
+  .info-list ul {
+    grid-template-columns: 1fr;
+  }
+}
+

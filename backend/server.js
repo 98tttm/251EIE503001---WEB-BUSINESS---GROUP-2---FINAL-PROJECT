@@ -5949,6 +5949,42 @@ app.post('/api/orders', async (req, res) => {
   }
 });
 
+// Check if order exists by order number
+app.post('/api/orders/check', async (req, res) => {
+  try {
+    const { orderNumber } = req.body;
+    
+    if (!orderNumber) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Order number is required' 
+      });
+    }
+    
+    console.log('🔍 Checking order with number:', orderNumber);
+    
+    // Find order by orderNumber
+    const order = await db.collection('orders').findOne({ orderNumber: orderNumber });
+    
+    if (order) {
+      res.json({ 
+        success: true, 
+        exists: true,
+        orderId: order._id.toString()
+      });
+    } else {
+      res.json({ 
+        success: true, 
+        exists: false,
+        message: 'Order not found'
+      });
+    }
+  } catch (error) {
+    console.error('Error checking order:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // Get user's orders
 app.get('/api/orders/user/:userId', async (req, res) => {
   try {

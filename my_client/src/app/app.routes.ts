@@ -24,6 +24,15 @@ import { ActiveIngredientSearch } from './active-ingredient-search/active-ingred
 import { HerbalMedicineSearch } from './herbal-medicine-search/herbal-medicine-search';
 import { PharmacistChat } from './pharmacist-chat/pharmacist-chat';
 import { MedicineRequest } from './medicine-request/medicine-request';
+import { PoliciesLayout } from './policies/policies-layout/policies-layout';
+import { AboutPolicy } from './policies/about/about';
+import { BookingPolicy } from './policies/booking/booking';
+import { ContentPolicy } from './policies/content/content';
+import { ReturnPolicy } from './policies/return/return';
+import { DeliveryPolicy } from './policies/delivery/delivery';
+import { PrivacyPolicy } from './policies/privacy/privacy';
+import { PaymentPolicy } from './policies/payment/payment';
+import { InvoiceCheck } from './policies/invoice-check/invoice-check';
 
 export const routes: Routes = [
   { path: '', component: Homepage },
@@ -59,6 +68,21 @@ export const routes: Routes = [
       { path: 'info', component: ClientInfor },
       { path: 'orders', component: MyOrder },
       { path: 'addresses', component: Address }
+    ]
+  },
+  {
+    path: 'policies',
+    component: PoliciesLayout,
+    children: [
+      { path: '', redirectTo: 'about', pathMatch: 'full' },
+      { path: 'about', component: AboutPolicy },
+      { path: 'booking', component: BookingPolicy },
+      { path: 'content', component: ContentPolicy },
+      { path: 'return', component: ReturnPolicy },
+      { path: 'delivery', component: DeliveryPolicy },
+      { path: 'privacy', component: PrivacyPolicy },
+      { path: 'payment', component: PaymentPolicy },
+      { path: 'invoice-check', component: InvoiceCheck }
     ]
   },
   { path: '**', redirectTo: '' }

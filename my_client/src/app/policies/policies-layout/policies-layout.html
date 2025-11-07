@@ -1,0 +1,40 @@
+<div class="policies-container">
+  <div class="breadcrumb-section">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/">Trang chủ</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Chính sách</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container policies-content">
+    <div class="row">
+      <!-- Sidebar Navigation -->
+      <div class="col-lg-3 col-md-4">
+        <div class="sidebar-nav">
+          <div class="sidebar-header">
+            <h5>Bài viết trong danh mục</h5>
+          </div>
+          <ul class="policy-menu">
+            <li *ngFor="let link of policyLinks" 
+                [class.active]="link.active"
+                (click)="navigateTo(link.path)">
+              <a>{{ link.title }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="col-lg-9 col-md-8">
+        <div class="policy-content">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
