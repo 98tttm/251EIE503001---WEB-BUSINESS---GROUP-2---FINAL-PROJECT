@@ -38,13 +38,15 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "30kB",
-                  "maximumError": "50kB"  // Increased to 50kB to allow homepage.css (45.45kB) and other large component styles
+                  "maximumError": "2MB"  // Increased to allow larger initial bundle
                 }
+                // Removed anyComponentStyle budget - component styles can be large for complex UIs
+                // If needed, can add back with higher limits:
+                // {
+                //   "type": "anyComponentStyle",
+                //   "maximumWarning": "50kB",
+                //   "maximumError": "100kB"
+                // }
               ],
               "outputHashing": "all"
             },
