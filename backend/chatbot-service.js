@@ -4,6 +4,10 @@
  */
 
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
+
+// Import config để sử dụng MongoDB URI từ environment
+const config = require('./config/environment');
 
 // Cấu hình - có thể đặt trong .env file
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
@@ -11,9 +15,9 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 const USE_OPENAI = !!OPENAI_API_KEY;
 const USE_GEMINI = !!GEMINI_API_KEY && !USE_OPENAI;
 
-// MongoDB connection
-const MONGODB_URI = 'mongodb://localhost:27017';
-const DB_NAME = 'MediCare_database';
+// MongoDB connection - sử dụng config từ environment.js
+const MONGODB_URI = config.mongoUri;
+const DB_NAME = config.dbName;
 
 // Knowledge Base Cache
 let knowledgeBaseCache = {
