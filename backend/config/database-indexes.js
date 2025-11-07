@@ -99,14 +99,26 @@ async function createDatabaseIndexes(db) {
     //   { background: true, name: 'idx_user_cart', unique: true }
     // );
     
-    // NEW: Use partial index - only index when userId exists (not null)
+    // ATTEMPTED FIX 1: $ne: null not supported in partial index
+    // await carts.createIndex(
+    //   { userId: 1 },
+    //   { 
+    //     background: true, 
+    //     name: 'idx_user_cart', 
+    //     unique: true,
+    //     partialFilterExpression: { userId: { $exists: true, $ne: null } }
+    //   }
+    // );
+    
+    // FINAL FIX: Use sparse index - automatically ignores null/missing values
+    // Sparse index = unique only for non-null values, perfect for this use case
     await carts.createIndex(
       { userId: 1 },
       { 
         background: true, 
         name: 'idx_user_cart', 
         unique: true,
-        partialFilterExpression: { userId: { $exists: true, $ne: null } }
+        sparse: true  // Ignores documents where userId is null or missing
       }
     );
     
