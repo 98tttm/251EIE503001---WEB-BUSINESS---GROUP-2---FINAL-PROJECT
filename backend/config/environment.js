@@ -5,7 +5,8 @@ module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',
   
   // MongoDB
-  mongoUri: process.env.MONGODB_URI || 'mongodb://localhost:27017',
+  // Support both MONGODB_URI and MONGO_URI (Railway uses MONGO_URI)
+  mongoUri: process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017',
   dbName: process.env.DB_NAME || 'MediCare_database',
   
   // JWT
