@@ -60,19 +60,23 @@ await carts.createIndex(
 );
 ```
 
-### **Index mới (ĐÚNG):**
+### **Index mới (ĐÚNG) - SPARSE INDEX:**
 ```javascript
-// Chỉ áp dụng unique khi userId tồn tại
+// Sparse index: Tự động bỏ qua null/missing values
+// Đơn giản và hiệu quả hơn partial index!
 await carts.createIndex(
   { userId: 1 },
   { 
     unique: true,
-    partialFilterExpression: { 
-      userId: { $exists: true, $ne: null } 
-    }
+    sparse: true  // Automatically ignores null/missing
   }
 );
 ```
+
+**Giải thích:**
+- `sparse: true` = chỉ index documents có giá trị
+- Tự động bỏ qua `null`, `undefined`, hoặc field không tồn tại
+- Perfect cho use case này!
 
 **Kết quả:**
 - ✅ Cho phép nhiều documents với `userId: null` (guest carts)
