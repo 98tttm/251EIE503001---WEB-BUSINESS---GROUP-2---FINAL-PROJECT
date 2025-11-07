@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { CategoryService } from '../services/category.service';
 import { CartService } from '../services/cart.service';
 import { ToastService } from '../toast.service';
+import { environment } from '../environments/environment';
 
 interface Banner {
   id: string;
@@ -818,7 +819,7 @@ export class Homepage implements OnInit, OnDestroy {
   // Load banners from API
   async loadBanners() {
     try {
-      const response = await fetch('http://localhost:3000/api/banners?position=homepage');
+      const response = await fetch(`${environment.apiUrl}/api/banners?position=homepage`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -966,7 +967,7 @@ export class Homepage implements OnInit, OnDestroy {
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
       
       // Limit to 500 products for better performance
-      const response = await fetch('http://localhost:3000/api/products?limit=500', {
+      const response = await fetch(`${environment.apiUrl}/api/products?limit=500`, {
         signal: controller.signal
       });
       
@@ -1702,7 +1703,7 @@ export class Homepage implements OnInit, OnDestroy {
   async loadHealthCornerArticles() {
     this.healthCornerLoading.set(true);
     try {
-      const response = await fetch('http://localhost:3000/api/blogs/overview?heroLimit=1&latestLimit=5');
+      const response = await fetch(`${environment.apiUrl}/api/blogs/overview?heroLimit=1&latestLimit=5`);
       const result = await response.json();
       
       if (result.success && result.data) {
@@ -1803,7 +1804,7 @@ export class Homepage implements OnInit, OnDestroy {
   async loadSpecializedGroups() {
     this.specializedGroupsLoading.set(true);
     try {
-      const response = await fetch('http://localhost:3000/api/diseases/specialized-groups');
+      const response = await fetch(`${environment.apiUrl}/api/diseases/specialized-groups`);
       const result = await response.json();
       
       if (result.success && result.data) {

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-medicine-request',
@@ -116,7 +117,7 @@ export class MedicineRequest implements OnInit {
       formData.append('image', file);
 
       try {
-        const response = await fetch('http://localhost:3000/api/upload/image', {
+        const response = await fetch(`${environment.apiUrl}/api/upload/image`, {
           method: 'POST',
           body: formData
         });
@@ -181,7 +182,7 @@ export class MedicineRequest implements OnInit {
 
       // Submit to backend
       const response = await this.http.post<{ success: boolean; data?: any; message?: string }>(
-        'http://localhost:3000/api/medicine-requests',
+        `${environment.apiUrl}/api/medicine-requests`,
         requestData
       ).toPromise();
 

@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../environments/environment';
 
 interface Product {
   _id: string;
@@ -99,7 +100,7 @@ export class BrandDetail implements OnInit {
   sortBy = signal<string>('bestseller');
   viewMode = signal<'grid' | 'list'>('grid');
 
-  private readonly apiBase = 'http://localhost:3000/api';
+  private readonly apiBase = `${environment.apiUrl}/api`;
 
   constructor(
     private route: ActivatedRoute,

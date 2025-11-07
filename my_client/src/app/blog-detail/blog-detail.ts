@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy, AfterViewInit, computed, signal, ViewChil
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { environment } from '../../environments/environment';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = environment.apiUrl;
 
 interface BlogBreadcrumbItem {
   name?: string;

@@ -2,6 +2,7 @@ import { Component, OnInit, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { combineLatest } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 interface BlogSummary {
   id: number | string | null;
@@ -60,7 +61,7 @@ interface BlogCategoryDetail {
   styleUrl: './blog-category.css'
 })
 export class BlogCategory implements OnInit {
-  private readonly endpointBase = 'http://localhost:3000/api/blogs/category';
+  private readonly endpointBase = `${environment.apiUrl}/api/blogs/category`;
   private readonly defaultLimit = 18;
 
   private readonly detailState = signal<BlogCategoryDetail | null>(null);

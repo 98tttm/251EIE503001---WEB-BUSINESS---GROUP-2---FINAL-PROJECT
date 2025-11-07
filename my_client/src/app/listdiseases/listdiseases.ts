@@ -2,6 +2,7 @@ import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../environments/environment';
 
 interface Disease {
   _id?: string;
@@ -254,7 +255,7 @@ export class Listdiseases implements OnInit {
     this.error.set(null);
     try {
       // Build query URL with optional category filter
-      let url = 'http://localhost:3000/api/diseases?limit=10000';
+      let url = `${environment.apiUrl}/api/diseases?limit=10000`;
       if (category) {
         url += `&category=${encodeURIComponent(category)}`;
       }
@@ -298,7 +299,7 @@ export class Listdiseases implements OnInit {
   // Find category display name from slug
   async findCategoryName(categorySlug: string) {
     try {
-      const response = await fetch('http://localhost:3000/api/diseases/specialized-groups');
+      const response = await fetch(`${environment.apiUrl}/api/diseases/specialized-groups`);
       const result = await response.json();
       
       if (result.success && result.data) {
@@ -321,7 +322,7 @@ export class Listdiseases implements OnInit {
   async loadSpecializedGroups() {
     try {
       // Load specialized groups from backend
-      const response = await fetch('http://localhost:3000/api/diseases/specialized-groups');
+      const response = await fetch(`${environment.apiUrl}/api/diseases/specialized-groups`);
       const result = await response.json();
 
       if (result.success && result.data) {
@@ -384,7 +385,7 @@ export class Listdiseases implements OnInit {
       // Load diseases from each group (10 diseases per group)
       for (const group of groups) {
         try {
-          const response = await fetch(`http://localhost:3000/api/diseases/by-specialized-group/${group.id}?limit=10`);
+          const response = await fetch(`${environment.apiUrl}/api/diseases/by-specialized-group/${group.id}?limit=10`);
           const result = await response.json();
           
           if (result.success && result.data) {

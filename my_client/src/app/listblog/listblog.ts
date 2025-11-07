@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 interface BlogSummary {
   id: number | string | null;
@@ -57,8 +58,8 @@ interface BlogOverviewData {
   styleUrl: './listblog.css'
 })
 export class Listblog implements OnInit, OnDestroy {
-  private readonly overviewEndpoint = 'http://localhost:3000/api/blogs/overview';
-  private readonly listEndpoint = 'http://localhost:3000/api/blogs';
+  private readonly overviewEndpoint = `${environment.apiUrl}/api/blogs/overview`;
+  private readonly listEndpoint = `${environment.apiUrl}/api/blogs`;
 
   overview = signal<BlogOverviewData | null>(null);
   loading = signal<boolean>(false);

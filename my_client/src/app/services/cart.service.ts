@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 export interface CartItem {
   _id: string;
@@ -17,7 +18,7 @@ export interface CartItem {
 })
 export class CartService {
   cartItems = signal<CartItem[]>([]);
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = `${environment.apiUrl}/api`;
   
   constructor(private authService: AuthService) {
     this.loadCart();

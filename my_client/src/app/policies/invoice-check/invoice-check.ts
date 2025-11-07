@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-invoice-check',
@@ -31,7 +32,7 @@ export class InvoiceCheck {
     this.errorMessage = '';
 
     // API endpoint to check if order exists
-    const apiUrl = 'http://localhost:3000/api/orders/check';
+    const apiUrl = `${environment.apiUrl}/api/orders/check`;
     
     this.http.post<any>(apiUrl, { orderNumber: this.orderNumber })
       .subscribe({

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CategoryService, Product } from '../services/category.service';
 import { CartService } from '../services/cart.service';
 import { ToastService } from '../toast.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-drug-search',
@@ -79,13 +80,13 @@ export class DrugSearch implements OnInit {
         children.forEach(child => categoryIds.push(child._id));
         
         // Fetch products from these categories
-        const response = await fetch(`http://localhost:3000/api/products?categories=${categoryIds.join(',')}`);
+        const response = await fetch(`${environment.apiUrl}/api/products?categories=${categoryIds.join(',')}`);
         if (response.ok) {
           const data = await response.json();
           this.allProducts.set(data.data || data.products || []);
         } else {
           // Fallback: fetch all and filter by name/slug
-          const allResponse = await fetch('http://localhost:3000/api/products');
+          const allResponse = await fetch(`${environment.apiUrl}/api/products`);
           if (allResponse.ok) {
             const allData = await allResponse.json();
             const allProducts = allData.data || allData.products || [];
@@ -99,7 +100,7 @@ export class DrugSearch implements OnInit {
         }
       } else {
         // Fallback: fetch all products
-        const response = await fetch('http://localhost:3000/api/products');
+        const response = await fetch(`${environment.apiUrl}/api/products`);
         if (response.ok) {
           const data = await response.json();
           this.allProducts.set(data.data || data.products || []);

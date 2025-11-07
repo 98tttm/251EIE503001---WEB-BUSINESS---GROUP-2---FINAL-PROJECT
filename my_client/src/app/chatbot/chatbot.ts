@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ChatbotService } from '../services/chatbot.service';
+import { environment } from '../../environments/environment';
 
 interface ChatMessage {
   id: string;
@@ -199,7 +200,7 @@ export class Chatbot implements AfterViewChecked, OnInit {
       }
 
       // Call chatbot API
-      const response = await fetch('http://localhost:3000/api/chatbot/message', {
+      const response = await fetch(`${environment.apiUrl}/api/chatbot/message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

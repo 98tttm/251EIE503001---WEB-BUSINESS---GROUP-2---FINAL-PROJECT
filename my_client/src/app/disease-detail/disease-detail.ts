@@ -1,6 +1,7 @@
 import { Component, OnInit, signal, computed, effect, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 interface Disease {
   _id?: string;
@@ -180,7 +181,7 @@ export class DiseaseDetail implements OnInit, AfterViewInit {
     this.error.set(null);
 
     try {
-      const response = await fetch(`http://localhost:3000/api/diseases/${idOrSlug}`);
+      const response = await fetch(`${environment.apiUrl}/api/diseases/${idOrSlug}`);
       const result = await response.json();
 
       if (result.success && result.data) {

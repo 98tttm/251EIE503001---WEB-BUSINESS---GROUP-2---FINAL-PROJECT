@@ -88,7 +88,7 @@
                     <div class="file-name">{{ message.fileName || 'File đính kèm' }}</div>
                     <div class="file-size">{{ formatFileSize(message.fileSize || 0) }}</div>
                   </div>
-                  <a [href]="'http://localhost:3000' + message.fileUrl" target="_blank" class="file-download" title="Tải xuống">
+                  <a [href]="apiUrl + message.fileUrl" target="_blank" class="file-download" title="Tải xuống">
                     <span class="material-icon">download</span>
                   </a>
                 </div>
@@ -117,7 +117,7 @@
                     <div class="file-name">{{ message.fileName || 'File đính kèm' }}</div>
                     <div class="file-size">{{ formatFileSize(message.fileSize || 0) }}</div>
                   </div>
-                  <a [href]="'http://localhost:3000' + message.fileUrl" target="_blank" class="file-download" title="Tải xuống">
+                  <a [href]="apiUrl + message.fileUrl" target="_blank" class="file-download" title="Tải xuống">
                     <span class="material-icon">download</span>
                   </a>
                 </div>

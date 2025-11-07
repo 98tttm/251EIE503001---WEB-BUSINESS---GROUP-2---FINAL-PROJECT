@@ -6,6 +6,7 @@ import { CartService } from '../services/cart.service';
 import { CategoryService, Product } from '../services/category.service';
 import { ToastService } from '../toast.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -151,7 +152,7 @@ export class Cart implements OnInit {
 
     try {
       const response = await this.http.post<{ success: boolean; data?: any; message?: string }>(
-        'http://localhost:3000/api/vouchers/validate',
+        `${environment.apiUrl}/api/vouchers/validate`,
         {
           code: code,
           total: this.selectedTotal

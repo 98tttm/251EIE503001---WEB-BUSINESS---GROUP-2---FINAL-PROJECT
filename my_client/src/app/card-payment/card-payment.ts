@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 interface PaymentItem {
   _id: string;
@@ -127,7 +128,7 @@ export class CardPayment implements OnInit {
       
       try {
         // Create order in database
-        const response = await fetch('http://localhost:3000/api/orders', {
+        const response = await fetch(`${environment.apiUrl}/api/orders`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -160,7 +161,7 @@ export class CardPayment implements OnInit {
           console.log('🗑️ Removing ordered items from cart:', orderedItemIds);
           
           try {
-            const cartResponse = await fetch(`http://localhost:3000/api/cart/${localStorage.getItem('userId') || 'guest'}`);
+            const cartResponse = await fetch(`${environment.apiUrl}/api/cart/${localStorage.getItem('userId') || 'guest'}`);
             const cartData = await cartResponse.json();
             
             if (cartData.success && cartData.data && cartData.data.items) {
@@ -168,7 +169,7 @@ export class CardPayment implements OnInit {
                 !orderedItemIds.includes(String(item._id))
               );
               
-              await fetch(`http://localhost:3000/api/cart/${localStorage.getItem('userId') || 'guest'}`, {
+              await fetch(`${environment.apiUrl}/api/cart/${localStorage.getItem('userId') || 'guest'}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ items: remainingItems })
@@ -181,7 +182,7 @@ export class CardPayment implements OnInit {
           // Handle invoice if required
           if (pendingData.orderPayload?.requireInvoice) {
             try {
-              await fetch('http://localhost:3000/api/orders/send-invoice', {
+              await fetch(`${environment.apiUrl}/api/orders/send-invoice`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

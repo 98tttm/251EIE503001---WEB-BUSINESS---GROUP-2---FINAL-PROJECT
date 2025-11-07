@@ -6,6 +6,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { AddressService, AddressData } from '../services/address.service';
 import { AuthService } from '../services/auth.service';
 import { CartService } from '../services/cart.service';
+import { environment } from '../environments/environment';
 
 interface PaymentItem {
   _id: string;
@@ -1051,7 +1052,7 @@ export class Payment implements OnInit {
         
         try {
           const checkUserResponse = await fetch(
-            `http://localhost:3000/api/users/by-phone/${encodeURIComponent(guestPhone)}`
+            `${environment.apiUrl}/api/users/by-phone/${encodeURIComponent(guestPhone)}`
           );
           const checkUserResult = await checkUserResponse.json();
           
@@ -1131,7 +1132,7 @@ export class Payment implements OnInit {
       
       try {
         const checkUserResponse = await fetch(
-          `http://localhost:3000/api/users/by-phone/${encodeURIComponent(guestPhone)}`
+          `${environment.apiUrl}/api/users/by-phone/${encodeURIComponent(guestPhone)}`
         );
         const checkUserResult = await checkUserResponse.json();
         
@@ -1161,7 +1162,7 @@ export class Payment implements OnInit {
     };
 
     // Save order to database (for non-QR payment methods)
-    fetch('http://localhost:3000/api/orders', {
+    fetch(`${environment.apiUrl}/api/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1209,7 +1210,7 @@ export class Payment implements OnInit {
         
         // Handle invoice sending if required
         const sendInvoicePromise = this.requireInvoice() 
-          ? fetch('http://localhost:3000/api/orders/send-invoice', {
+          ? fetch(`${environment.apiUrl}/api/orders/send-invoice`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { environment } from '../../environments/environment';
 
 interface ChatMessage {
   _id?: string;
@@ -39,6 +40,9 @@ interface PharmacistChatData {
 })
 export class PharmacistChat implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('messagesContainer', { static: false }) messagesContainer!: ElementRef<HTMLDivElement>;
+  
+  // API URL for file downloads in template
+  apiUrl = environment.apiUrl;
   
   isLoggedIn = signal(false);
   showPhoneInput = signal(false);
@@ -103,7 +107,7 @@ export class PharmacistChat implements OnInit, AfterViewChecked, OnDestroy {
     this.loading.set(true);
     try {
       // Create or get chat session with phone number
-      const response = await fetch('http://localhost:3000/api/pharmacist-chat/init', {
+      const response = await fetch(`${environment.apiUrl}/api/pharmacist-chat/init`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -132,7 +136,7 @@ export class PharmacistChat implements OnInit, AfterViewChecked, OnDestroy {
       const user = this.authService.currentUser();
       const phone = this.phoneNumber();
       
-      let url = 'http://localhost:3000/api/pharmacist-chat';
+      let url = `${environment.apiUrl}/api/pharmacist-chat`;
       if (user?.userId) {
         url += `?userId=${user.userId}`;
       } else if (chatId) {
@@ -169,7 +173,7 @@ export class PharmacistChat implements OnInit, AfterViewChecked, OnDestroy {
     const phone = this.phoneNumber();
     
     try {
-      const response = await fetch('http://localhost:3000/api/pharmacist-chat', {
+      const response = await fetch(`${environment.apiUrl}/api/pharmacist-chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -238,7 +242,7 @@ export class PharmacistChat implements OnInit, AfterViewChecked, OnDestroy {
         formData.append('type', 'file');
       }
 
-      const response = await fetch(`http://localhost:3000/api/pharmacist-chat/${chatId}/message`, {
+      const response = await fetch(`${environment.apiUrl}/api/pharmacist-chat/${chatId}/message`, {
         method: 'POST',
         body: formData
       });
@@ -321,7 +325,7 @@ export class PharmacistChat implements OnInit, AfterViewChecked, OnDestroy {
     if (!chatId) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/api/pharmacist-chat/${chatId}/messages`);
+      const response = await fetch(`${environment.apiUrl}/api/pharmacist-chat/${chatId}/messages`);
       const data = await response.json();
       
       if (data.success && data.data) {

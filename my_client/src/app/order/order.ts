@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Login } from '../login/login';
+import { environment } from '../environments/environment';
 
 interface OrderItem {
   _id: string;
@@ -110,7 +111,7 @@ export class Order implements OnInit {
 
     // Always fetch from MongoDB API using orderNumber
     console.log('📦 Fetching order from MongoDB with orderNumber:', orderNumber);
-    fetch(`http://localhost:3000/api/orders/${encodeURIComponent(orderNumber)}`)
+    fetch(`${environment.apiUrl}/api/orders/${encodeURIComponent(orderNumber)}`)
       .then(async response => {
         console.log('📡 API Response status:', response.status);
         const data = await response.json();
@@ -240,7 +241,7 @@ export class Order implements OnInit {
         }
         errorMsg += '\n\nVui lòng kiểm tra:';
         errorMsg += '\n- Kết nối mạng';
-        errorMsg += '\n- Backend server đang chạy (localhost:3000)';
+        errorMsg += '\n- Backend server đang chạy';
         errorMsg += '\n- Số đơn hàng đúng';
         
         alert(errorMsg);
@@ -375,7 +376,7 @@ export class Order implements OnInit {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/orders/${encodeURIComponent(orderNumber)}/name`, {
+      const response = await fetch(`${environment.apiUrl}/api/orders/${encodeURIComponent(orderNumber)}/name`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -421,7 +422,7 @@ export class Order implements OnInit {
         errorMessage = error.message;
       }
       
-      alert(errorMessage + '\n\nVui lòng:\n1. Kiểm tra backend server đang chạy (localhost:3000)\n2. Restart backend server để load API endpoint mới');
+      alert(errorMessage + '\n\nVui lòng:\n1. Kiểm tra backend server đang chạy\n2. Restart backend server để load API endpoint mới');
     }
   }
 

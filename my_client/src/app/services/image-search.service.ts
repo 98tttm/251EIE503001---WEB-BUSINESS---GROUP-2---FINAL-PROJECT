@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface ImageSearchResult {
   id: string;
@@ -43,7 +44,7 @@ export interface ImageSearchResponse {
 })
 export class ImageSearchService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:3000/api';
+  private readonly apiUrl = `${environment.apiUrl}/api`;
 
   searchByImages(files: File[]): Observable<ImageSearchResponse> {
     const formData = new FormData();

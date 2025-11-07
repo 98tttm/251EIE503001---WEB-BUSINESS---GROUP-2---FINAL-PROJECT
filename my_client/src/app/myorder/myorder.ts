@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CartService } from '../services/cart.service';
 import { ToastService } from '../toast.service';
+import { environment } from '../environments/environment';
 
 interface OrderItem {
   _id: string;
@@ -95,7 +96,7 @@ export class MyOrder implements OnInit {
       const statusParam = status || this.selectedStatus();
       
       // Load all orders, then filter client-side for complex status groups
-      const url = `http://localhost:3000/api/orders/user/${user.userId}`;
+      const url = `${environment.apiUrl}/api/orders/user/${user.userId}`;
       
       const response = await fetch(url);
       const data = await response.json();
@@ -310,7 +311,7 @@ export class MyOrder implements OnInit {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/orders/${encodeURIComponent(orderNumber)}/name`, {
+      const response = await fetch(`${environment.apiUrl}/api/orders/${encodeURIComponent(orderNumber)}/name`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -427,7 +428,7 @@ export class MyOrder implements OnInit {
     const reason = this.cancelReason().trim() || 'Khách hàng yêu cầu hủy đơn';
 
     try {
-      const response = await fetch(`http://localhost:3000/api/orders/${encodeURIComponent(orderId)}/cancel`, {
+      const response = await fetch(`${environment.apiUrl}/api/orders/${encodeURIComponent(orderId)}/cancel`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -514,7 +515,7 @@ export class MyOrder implements OnInit {
     const reason = this.returnReason().trim() || 'Khách hàng yêu cầu trả hàng';
 
     try {
-      const response = await fetch(`http://localhost:3000/api/orders/${encodeURIComponent(orderId)}/return`, {
+      const response = await fetch(`${environment.apiUrl}/api/orders/${encodeURIComponent(orderId)}/return`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

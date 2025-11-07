@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CategoryService, Category, Product } from '../services/category.service';
 import { CartService } from '../services/cart.service';
 import { ToastService } from '../toast.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-listproduct',
@@ -194,7 +195,7 @@ export class Listproduct implements OnInit, AfterViewInit, OnDestroy {
     this.shouldShowSubcategories.set(false);
     
     try {
-      const response = await fetch(`http://localhost:3000/api/products/search?q=${encodeURIComponent(query)}`);
+      const response = await fetch(`${environment.apiUrl}/api/products/search?q=${encodeURIComponent(query)}`);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
@@ -220,7 +221,7 @@ export class Listproduct implements OnInit, AfterViewInit, OnDestroy {
       const searchTerms = this.getSearchTermsFromSlug(slug);
       
       // Fetch all products
-      const response = await fetch('http://localhost:3000/api/products');
+      const response = await fetch(`${environment.apiUrl}/api/products`);
       if (response.ok) {
         const data = await response.json();
         const allProducts = data.data || data.products || [];
@@ -326,7 +327,7 @@ export class Listproduct implements OnInit, AfterViewInit, OnDestroy {
     this.shouldShowSubcategories.set(false);
     
     try {
-      const response = await fetch('http://localhost:3000/api/products');
+      const response = await fetch(`${environment.apiUrl}/api/products`);
       const data = await response.json();
       this.products.set(data.data || []);
       

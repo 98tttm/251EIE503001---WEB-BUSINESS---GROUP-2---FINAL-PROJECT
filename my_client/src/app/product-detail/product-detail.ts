@@ -8,6 +8,7 @@ import { CartService } from '../services/cart.service';
 import { Login } from '../login/login';
 import { ToastService } from '../toast.service';
 import { ChatbotService } from '../services/chatbot.service';
+import { environment } from '../../environments/environment';
 
 interface Product {
   _id: string;
@@ -199,7 +200,7 @@ export class ProductDetail implements OnInit {
     this.loading.set(true);
     
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${id}`);
+      const response = await fetch(`${environment.apiUrl}/api/products/${id}`);
       const data = await response.json();
       
       if (data.success) {
@@ -222,7 +223,7 @@ export class ProductDetail implements OnInit {
 
   async loadReviews(productId: string) {
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${productId}/reviews`);
+      const response = await fetch(`${environment.apiUrl}/api/products/${productId}/reviews`);
       const data = await response.json();
       
       if (data.success) {
@@ -241,7 +242,7 @@ export class ProductDetail implements OnInit {
   async loadRelatedProducts(productId: string) {
     try {
       console.log('🔍 Loading related products for:', productId);
-      const response = await fetch(`http://localhost:3000/api/products/${productId}/related`);
+      const response = await fetch(`${environment.apiUrl}/api/products/${productId}/related`);
       const data = await response.json();
       
       console.log('📦 Related products API response:', data);
@@ -260,7 +261,7 @@ export class ProductDetail implements OnInit {
 
   async loadRatings(productId: string, filter = 'all') {
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${productId}/ratings?filter=${filter}`);
+      const response = await fetch(`${environment.apiUrl}/api/products/${productId}/ratings?filter=${filter}`);
       const data = await response.json();
       
       if (data.success) {
@@ -274,7 +275,7 @@ export class ProductDetail implements OnInit {
 
   async loadComments(productId: string, sort = 'newest') {
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${productId}/comments?sort=${sort}`);
+      const response = await fetch(`${environment.apiUrl}/api/products/${productId}/comments?sort=${sort}`);
       const data = await response.json();
       
       if (data.success) {
@@ -327,7 +328,7 @@ export class ProductDetail implements OnInit {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${product._id}/ratings`, {
+      const response = await fetch(`${environment.apiUrl}/api/products/${product._id}/ratings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -377,7 +378,7 @@ export class ProductDetail implements OnInit {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/products/${product._id}/comments`, {
+      const response = await fetch(`${environment.apiUrl}/api/products/${product._id}/comments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -421,7 +422,7 @@ export class ProductDetail implements OnInit {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/comments/${commentId}/helpful`, {
+      const response = await fetch(`${environment.apiUrl}/api/comments/${commentId}/helpful`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -950,7 +951,7 @@ export class ProductDetail implements OnInit {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/ratings/${ratingId}/replies`, {
+      const response = await fetch(`${environment.apiUrl}/api/ratings/${ratingId}/replies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -1001,7 +1002,7 @@ export class ProductDetail implements OnInit {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/comments/${commentId}/replies`, {
+      const response = await fetch(`${environment.apiUrl}/api/comments/${commentId}/replies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
