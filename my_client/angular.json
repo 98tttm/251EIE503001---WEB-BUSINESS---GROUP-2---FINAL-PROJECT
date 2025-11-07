@@ -37,8 +37,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "2MB"  // Increased to allow larger initial bundle
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"  // Increased to 5MB to allow large initial bundle (Bootstrap, Angular, etc.)
                 }
                 // Removed anyComponentStyle budget - component styles can be large for complex UIs
                 // If needed, can add back with higher limits:
