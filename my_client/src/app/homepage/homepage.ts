@@ -1865,6 +1865,18 @@ export class Homepage implements OnInit, OnDestroy {
     this.router.navigate(['/medicine-request']);
   }
 
+  // Handle image error - show emoji fallback
+  handleImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    if (img) {
+      img.style.display = 'none';
+      const nextElement = img.nextElementSibling as HTMLElement;
+      if (nextElement) {
+        nextElement.style.display = 'flex';
+      }
+    }
+  }
+
   // Navigate to product detail when clicking on feature banner
   onFeatureBannerClick() {
     const currentIndex = this.featureIndex();
