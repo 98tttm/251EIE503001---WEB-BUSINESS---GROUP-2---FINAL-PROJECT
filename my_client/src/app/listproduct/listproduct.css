@@ -201,8 +201,8 @@
   overflow-y: auto;
   transition: box-shadow 0.3s ease, transform 0.2s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  /* Z-index để đảm bảo nằm trên các element khác khi sticky */
-  z-index: 10;
+  /* Z-index thấp để modal/popup có thể hiển thị phía trên */
+  z-index: 1;
   /* Border mềm mại */
   border: 1px solid #e5e7eb;
   will-change: transform;
