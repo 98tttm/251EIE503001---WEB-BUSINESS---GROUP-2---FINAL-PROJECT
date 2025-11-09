@@ -231,7 +231,13 @@ export class Login implements OnInit {
         },
         error: (error) => {
           console.error('Register error:', error);
-          this.registerError.set(error.error?.message || 'Email hoặc số điện thoại đã được sử dụng!');
+          // Hiển thị lỗi chi tiết từ server
+          if (error.error?.errors && Array.isArray(error.error.errors)) {
+            const firstError = error.error.errors[0];
+            this.registerError.set(firstError.message || error.error.message || 'Dữ liệu không hợp lệ!');
+          } else {
+            this.registerError.set(error.error?.message || 'Email hoặc số điện thoại đã được sử dụng!');
+          }
         }
       });
     } catch (error) {

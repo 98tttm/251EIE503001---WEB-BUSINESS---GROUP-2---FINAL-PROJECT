@@ -19,8 +19,8 @@ const handleValidationErrors = (req, res, next) => {
 // Auth validation rules
 const registerValidation = [
   body('name')
+    .optional()
     .trim()
-    .notEmpty().withMessage('Tên không được để trống')
     .isLength({ min: 2, max: 100 }).withMessage('Tên phải từ 2-100 ký tự'),
   body('email')
     .trim()

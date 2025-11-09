@@ -588,7 +588,10 @@
             <div class="specialized-group-card" (click)="navigateToSpecializedGroup(group.id)">
               <div class="specialized-group-icon">
                 @if (group.image) {
-                  <img [src]="group.image" [alt]="group.name" class="category-icon-image">
+                  <img [src]="group.image" [alt]="group.name" class="category-icon-image"
+                       (error)="$event.target.style.display = 'none'; $event.target.nextElementSibling.style.display = 'flex';"
+                       onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <span class="icon-emoji" style="display: none;">{{ group.icon }}</span>
                 } @else {
                   <span class="icon-emoji">{{ group.icon }}</span>
                 }
