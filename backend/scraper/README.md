@@ -2,20 +2,20 @@
 
 Script để cào dữ liệu bài viết từ Góc Sức Khỏe của Nhà Thuốc Long Châu.
 
-## 📋 Yêu cầu
+## Yeu cau
 
 - Node.js >= 16
-- npm hoặc yarn
-- MongoDB (nếu muốn import vào database)
+- npm hoac yarn
+- MongoDB (neu muon import vao database)
 
-## 🚀 Cài đặt
+## Cai dat
 
 ```bash
 cd backend/scraper
 npm install
 ```
 
-## 🎯 Có 2 phương pháp cào dữ liệu
+## Co 2 phuong phap cao du lieu
 
 ### Phương pháp 1: Puppeteer (chậm hơn nhưng đầy đủ hơn)
 - Sử dụng headless browser
@@ -27,7 +27,7 @@ npm install
 - Nhanh hơn nhiều
 - Có thể miss một số nội dung được load bằng JS
 
-## 📖 Sử dụng
+## Su dung
 
 ### Phương pháp 1: Puppeteer (Khuyên dùng)
 
@@ -78,7 +78,7 @@ npm run import
 
 Script sẽ tự động tìm file JSON mới nhất và import vào MongoDB.
 
-## 📊 Dữ liệu được cào
+## Du lieu duoc cao
 
 Script sẽ cào các thông tin sau từ mỗi bài viết:
 
@@ -116,13 +116,13 @@ Script sẽ cào các thông tin sau từ mỗi bài viết:
 ### Metadata
 - `scrapedAt`: Thời gian cào dữ liệu
 
-## 📁 Output
+## Output
 
 Dữ liệu sẽ được lưu vào:
 - `backend/data/longchau-articles.json` - Toàn bộ dữ liệu
 - `backend/data/scraper-summary.json` - Thống kê tóm tắt
 
-## ⚙️ Cấu trúc file JSON
+## Cau truc file JSON
 
 ```json
 {
@@ -163,7 +163,7 @@ Dữ liệu sẽ được lưu vào:
 }
 ```
 
-## ⚠️ Lưu ý
+## Luu y
 
 1. **Rate Limiting**: Script có delay 2-3 giây giữa mỗi request để tránh bị block
 2. **Timeout**: Mỗi trang có timeout 60 giây
@@ -171,7 +171,7 @@ Dữ liệu sẽ được lưu vào:
 4. **Error Handling**: Script sẽ tiếp tục khi gặp lỗi ở một bài viết
 5. **Memory**: Cào nhiều bài viết có thể tốn nhiều RAM
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Lỗi "Cannot find module 'puppeteer'"
 ```bash
@@ -186,14 +186,14 @@ npm install
 - Giảm số lượng bài viết
 - Tăng delay giữa các request
 
-## 📈 Performance
+## Performance
 
 - **20 bài viết**: ~2-3 phút
 - **50 bài viết**: ~5-8 phút  
 - **100 bài viết**: ~10-15 phút
 - **500 bài viết**: ~50-90 phút
 
-## 🎯 Next Steps
+## Next Steps
 
 Sau khi có dữ liệu, bạn có thể:
 1. Import vào MongoDB

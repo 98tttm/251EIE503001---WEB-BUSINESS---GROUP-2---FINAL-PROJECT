@@ -2,17 +2,17 @@
 
 Backend API server kết nối với MongoDB database `MediCare_database`.
 
-## ✅ Đã Kết Nối Thành Công!
+## Da Ket Noi Thanh Cong!
 
-Database hiện có:
-- **8,122 sản phẩm** (products)
-- **279 danh mục** (categories)
-- **8 người dùng** (users)
-- **3,320 phường/xã** (wards)
-- **34 tỉnh/thành** (provinces)
+Database hien co:
+- **8,122 san pham** (products)
+- **279 danh muc** (categories)
+- **8 nguoi dung** (users)
+- **3,320 phuong/xa** (wards)
+- **34 tinh/thanh** (provinces)
 - **30 FAQ**
 
-## 🚀 Khởi Chạy Server
+## Khoi Chay Server
 
 ```bash
 cd D:\MEDICARE\MEDICARE_FINAL\backend
@@ -21,14 +21,14 @@ npm start
 
 Server chạy tại: **http://localhost:3000**
 
-## 📡 API Endpoints
+## API Endpoints
 
-### 🧪 Test & Health
+### Test & Health
 
 - `GET /api/test` - Test API với dữ liệu mẫu
 - `GET /api/health` - Kiểm tra trạng thái server & database
 
-### 📦 Products (Sản phẩm)
+### Products (San pham)
 
 - `GET /api/products` - Danh sách sản phẩm
   - Query params: `?limit=20&skip=0&category=...&search=...`
@@ -38,36 +38,36 @@ Server chạy tại: **http://localhost:3000**
 - `GET /api/products/flashsale` - 10 sản phẩm flash sale (giá < 500k)
 - `GET /api/products/search?q=keyword` - Tìm kiếm sản phẩm
 
-### 📁 Categories (Danh mục)
+### Categories (Danh muc)
 
 - `GET /api/categories` - Danh sách danh mục
 - `GET /api/categories/:id` - Chi tiết danh mục
 
-### 👥 Users (Người dùng)
+### Users (Nguoi dung)
 
 - `GET /api/users` - Danh sách users (thông tin cơ bản)
 
-### 🛒 Cart (Giỏ hàng)
+### Cart (Gio hang)
 
 - `GET /api/carts/:userId` - Lấy giỏ hàng
 - `POST /api/carts/:userId/items` - Thêm sản phẩm vào giỏ
   - Body: `{ "productId": "...", "quantity": 1 }`
 
-### ❓ FAQ
+### FAQ
 
 - `GET /api/faq` - Danh sách câu hỏi thường gặp
 
-### 📍 Locations (Địa điểm)
+### Locations (Dia diem)
 
 - `GET /api/provinces` - Danh sách tỉnh/thành
 - `GET /api/wards/:provinceCode` - Danh sách phường/xã theo tỉnh
 
-### 📰 Articles (Bài viết Góc sức khỏe)
+### Articles (Bai viet Goc suc khoe)
 
 - `GET /api/articles` - Danh sách tất cả bài viết
 - `GET /api/articles/:slug` - Chi tiết bài viết theo slug
 
-## 🧪 Test API
+## Test API
 
 Mở trình duyệt và truy cập:
 
@@ -78,7 +78,7 @@ Mở trình duyệt và truy cập:
 5. **Danh mục**: http://localhost:3000/api/categories
 6. **Tìm kiếm**: http://localhost:3000/api/products/search?q=vitamin
 
-## 📊 Response Format
+## Response Format
 
 ```json
 {
@@ -94,14 +94,14 @@ Mở trình duyệt và truy cập:
 }
 ```
 
-## 🔧 Cấu Hình
+## Cau Hinh
 
 - MongoDB URI: `mongodb://localhost:27017`
 - Database: `MediCare_database`
 - Port: `3000`
 - CORS: Enabled (cho phép tất cả origins)
 
-## 📝 Notes
+## Notes
 
 - Server tự động kết nối với MongoDB khi khởi động
 - Nếu kết nối thất bại, kiểm tra MongoDB đã chạy chưa: `net start MongoDB`
