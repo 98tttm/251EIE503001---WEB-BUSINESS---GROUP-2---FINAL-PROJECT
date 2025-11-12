@@ -72,8 +72,25 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static files from public directory
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+// Serve static files from public directory with CORS and proper headers
+app.use('/uploads', (req, res, next) => {
+  // Set CORS headers for static files
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
+  next();
+}, express.static(path.join(__dirname, 'public', 'uploads'), {
+  // Enable directory listing (optional, for debugging)
+  // dotfiles: 'ignore',
+  // etag: true,
+  // extensions: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf'],
+  // index: false,
+  // maxAge: '1y',
+  // setHeaders: (res, path) => {
+  //   res.set('X-Content-Type-Options', 'nosniff');
+  // }
+}));
 
 // General rate limiter for all requests
 app.use(generalLimiter);
@@ -4609,6 +4626,20 @@ const {
 
 app.post('/api/auth/register', authLimiter, registerValidation, async (req, res) => {
   try {
+    // Kiểm tra database connection
+    if (!db) {
+      console.error('❌ Database not connected');
+      return res.status(503).json({ 
+        success: false, 
+        message: 'Database chưa sẵn sàng. Vui lòng thử lại sau!' 
+      });
+    }
+
+    // Kiểm tra JWT_SECRET
+    if (!JWT_SECRET || JWT_SECRET === 'medicare_secret_key_2025_CHANGE_IN_PRODUCTION') {
+      console.warn('⚠️ JWT_SECRET is using default value. Please set a secure JWT_SECRET in production.');
+    }
+
     const { email, password, phone, name } = req.body;
 
     // Validate input
@@ -4672,10 +4703,22 @@ app.post('/api/auth/register', authLimiter, registerValidation, async (req, res)
     });
 
   } catch (error) {
-    console.error('Register error:', error);
+    console.error('❌ Register error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    
+    // Trong development, trả về thông tin lỗi chi tiết hơn
+    const errorMessage = config.nodeEnv === 'development' 
+      ? `Lỗi server: ${error.message}` 
+      : 'Lỗi server, vui lòng thử lại!';
+    
     res.status(500).json({ 
       success: false, 
-      message: 'Lỗi server, vui lòng thử lại!' 
+      message: errorMessage,
+      ...(config.nodeEnv === 'development' && { error: error.message })
     });
   }
 });
@@ -7794,6 +7837,102 @@ app.post('/api/medicine-requests', async (req, res) => {
       success: false,
       message: 'Không thể tạo yêu cầu. Vui lòng thử lại.',
       error: error.message
+    });
+  }
+});
+
+// ==================== PUBLIC IMAGE ACCESS ENDPOINTS ====================
+// Route to list all available images in uploads directory
+app.get('/api/images/list', async (req, res) => {
+  try {
+    const uploadsDir = path.join(__dirname, 'public', 'uploads');
+    const images = [];
+    
+    // Recursively scan all subdirectories
+    function scanDirectory(dir, basePath = '') {
+      if (!fs.existsSync(dir)) {
+        return;
+      }
+      
+      const items = fs.readdirSync(dir, { withFileTypes: true });
+      
+      for (const item of items) {
+        const fullPath = path.join(dir, item.name);
+        const relativePath = path.join(basePath, item.name).replace(/\\/g, '/');
+        
+        if (item.isDirectory()) {
+          scanDirectory(fullPath, relativePath);
+        } else if (item.isFile()) {
+          const ext = path.extname(item.name).toLowerCase();
+          const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
+          
+          if (imageExtensions.includes(ext)) {
+            const fileStats = fs.statSync(fullPath);
+            images.push({
+              name: item.name,
+              path: `/uploads/${relativePath}`,
+              size: fileStats.size,
+              modified: fileStats.mtime,
+              type: ext.substring(1)
+            });
+          }
+        }
+      }
+    }
+    
+    scanDirectory(uploadsDir);
+    
+    res.json({
+      success: true,
+      count: images.length,
+      images: images,
+      baseUrl: `${req.protocol}://${req.get('host')}`
+    });
+  } catch (error) {
+    console.error('Error listing images:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi khi lấy danh sách ảnh',
+      error: config.nodeEnv === 'development' ? error.message : undefined
+    });
+  }
+});
+
+// Route to get image by path
+app.get('/api/images/:folder/:filename', (req, res) => {
+  try {
+    const { folder, filename } = req.params;
+    const imagePath = path.join(__dirname, 'public', 'uploads', folder, filename);
+    
+    // Security check: prevent directory traversal
+    const normalizedPath = path.normalize(imagePath);
+    const uploadsDir = path.normalize(path.join(__dirname, 'public', 'uploads'));
+    
+    if (!normalizedPath.startsWith(uploadsDir)) {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied'
+      });
+    }
+    
+    if (!fs.existsSync(imagePath)) {
+      return res.status(404).json({
+        success: false,
+        message: 'Image not found'
+      });
+    }
+    
+    // Set headers for image
+    res.setHeader('Content-Type', `image/${path.extname(filename).substring(1)}`);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'public, max-age=31536000');
+    
+    res.sendFile(imagePath);
+  } catch (error) {
+    console.error('Error serving image:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi khi tải ảnh'
     });
   }
 });
