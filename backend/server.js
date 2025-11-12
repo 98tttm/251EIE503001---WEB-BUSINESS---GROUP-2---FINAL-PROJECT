@@ -4693,9 +4693,21 @@ app.post('/api/auth/register', authLimiter, registerValidation, async (req, res)
 
     const result = await db.collection('users').insertOne(newUser);
 
+    // Kiểm tra JWT_SECRET trước khi tạo token
+    if (!JWT_SECRET) {
+      console.error('❌ JWT_SECRET is not defined');
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Lỗi cấu hình server. Vui lòng thử lại sau!' 
+      });
+    }
+
+    // Convert ObjectId to string for JWT
+    const userIdString = result.insertedId.toString();
+
     // Tạo JWT token
     const token = jwt.sign(
-      { userId: result.insertedId, email: email },
+      { userId: userIdString, email: email },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -4704,7 +4716,7 @@ app.post('/api/auth/register', authLimiter, registerValidation, async (req, res)
       success: true,
       message: 'Đăng ký thành công!',
       data: {
-        userId: result.insertedId,
+        userId: userIdString,
         email: email,
         phone: phone,
         name: name || 'User',
