@@ -4,6 +4,31 @@
  */
 
 /**
+ * Removes CDN wrapper from image URLs
+ * Removes: https://cdn.nhathuoclongchau.com.vn/unsafe/.../filters:quality(...)/
+ * Keeps only the original URL
+ */
+export function cleanImageUrl(url: string | null | undefined): string | null {
+  if (!url || typeof url !== 'string' || url.trim() === '') {
+    return null;
+  }
+
+  const trimmed = url.trim();
+  
+  // Pattern to match: https://cdn.nhathuoclongchau.com.vn/unsafe/.../filters:quality(...)/https://...
+  const cdnPattern = /^https:\/\/cdn\.nhathuoclongchau\.com\.vn\/unsafe\/[^/]+\/filters:quality\([^)]+\)\/(https?:\/\/.+)$/;
+  const match = trimmed.match(cdnPattern);
+  
+  if (match && match[1]) {
+    // Return the original URL (the part after the CDN wrapper)
+    return match[1];
+  }
+  
+  // If no match, return original URL
+  return trimmed;
+}
+
+/**
  * Validates if a URL is valid
  */
 export function isValidImageUrl(url: string | null | undefined): boolean {
@@ -91,6 +116,7 @@ export function handleImageError(
 
 /**
  * Validates and returns a safe image URL
+ * Automatically cleans CDN wrapper URLs
  */
 export function getSafeImageUrl(
   url: string | null | undefined,
@@ -102,6 +128,8 @@ export function getSafeImageUrl(
     return getFallbackImage(fallbackType);
   }
 
-  return sanitized;
+  // Clean CDN wrapper if present
+  const cleaned = cleanImageUrl(sanitized);
+  return cleaned || getFallbackImage(fallbackType);
 }
 

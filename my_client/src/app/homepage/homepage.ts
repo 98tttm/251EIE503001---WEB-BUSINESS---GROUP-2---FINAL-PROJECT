@@ -299,18 +299,43 @@ export class Homepage implements OnInit, OnDestroy {
 
   private getSpecializedGroupImage(name: string, id?: string): string | null {
     const normalizedName = this.normalizeSpecializedGroupName(name);
+    let imageUrl: string | null = null;
+    
     if (normalizedName && this.specializedGroupImageMap[normalizedName]) {
-      return this.specializedGroupImageMap[normalizedName];
-    }
-
-    if (id) {
+      imageUrl = this.specializedGroupImageMap[normalizedName];
+    } else if (id) {
+      // Try to match by ID if name doesn't match
       const normalizedFromId = this.normalizeSpecializedGroupName(id.replace(/-/g, ' '));
       if (normalizedFromId && this.specializedGroupImageMap[normalizedFromId]) {
-        return this.specializedGroupImageMap[normalizedFromId];
+        imageUrl = this.specializedGroupImageMap[normalizedFromId];
       }
     }
-
+    
+    // Clean CDN wrapper from URL if present
+    if (imageUrl) {
+      return this.cleanImageUrl(imageUrl);
+    }
+    
     return null;
+  }
+
+  // Clean CDN wrapper from image URLs
+  private cleanImageUrl(url: string): string {
+    if (!url || typeof url !== 'string') {
+      return url;
+    }
+    
+    // Pattern to match: https://cdn.nhathuoclongchau.com.vn/unsafe/.../filters:quality(...)/https://...
+    const cdnPattern = /^https:\/\/cdn\.nhathuoclongchau\.com\.vn\/unsafe\/[^/]+\/filters:quality\([^)]+\)\/(https?:\/\/.+)$/;
+    const match = url.trim().match(cdnPattern);
+    
+    if (match && match[1]) {
+      // Return the original URL (the part after the CDN wrapper)
+      return match[1];
+    }
+    
+    // If no match, return original URL
+    return url;
   }
 
   showAllSpecializedGroups = signal<boolean>(false);
@@ -1815,9 +1840,11 @@ export class Homepage implements OnInit, OnDestroy {
           })
           .map((group: { id: string; name: string; icon: string; image?: string | null }) => {
             const mappedImage = this.getSpecializedGroupImage(group.name, group.id);
+            const finalImage = mappedImage || group.image || null;
+            // Clean CDN wrapper from image URL if present
             return {
               ...group,
-              image: mappedImage || group.image || null
+              image: finalImage ? this.cleanImageUrl(finalImage) : null
             };
           });
 

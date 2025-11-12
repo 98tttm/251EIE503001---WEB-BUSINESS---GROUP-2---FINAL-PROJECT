@@ -328,9 +328,10 @@ export class Listdiseases implements OnInit {
       if (result.success && result.data) {
         const mappedGroups = result.data.map((group: SpecializedGroup) => {
           const customIcon = this.specializedGroupIconMap[group.name];
+          const iconUrl = customIcon || group.icon;
           return {
             ...group,
-            icon: customIcon || group.icon
+            icon: iconUrl ? this.cleanImageUrl(iconUrl) : iconUrl
           };
         });
         this.specializedGroups.set(mappedGroups);
@@ -425,13 +426,35 @@ export class Listdiseases implements OnInit {
       { id: 'di-ung', name: 'Dị ứng', icon: '🤧', count: 27 }
     ];
 
-    const mapped = fallbackGroups.map(group => ({
-      ...group,
-      icon: this.specializedGroupIconMap[group.name] || group.icon
-    }));
+    const mapped = fallbackGroups.map(group => {
+      const iconUrl = this.specializedGroupIconMap[group.name] || group.icon;
+      return {
+        ...group,
+        icon: iconUrl ? this.cleanImageUrl(iconUrl) : iconUrl
+      };
+    });
 
     this.specializedGroups.set(mapped);
     this.showAllSpecializedGroups.set(false);
+  }
+
+  // Clean CDN wrapper from image URLs
+  private cleanImageUrl(url: string): string {
+    if (!url || typeof url !== 'string') {
+      return url;
+    }
+    
+    // Pattern to match: https://cdn.nhathuoclongchau.com.vn/unsafe/.../filters:quality(...)/https://...
+    const cdnPattern = /^https:\/\/cdn\.nhathuoclongchau\.com\.vn\/unsafe\/[^/]+\/filters:quality\([^)]+\)\/(https?:\/\/.+)$/;
+    const match = url.trim().match(cdnPattern);
+    
+    if (match && match[1]) {
+      // Return the original URL (the part after the CDN wrapper)
+      return match[1];
+    }
+    
+    // If no match, return original URL
+    return url;
   }
 
   // Filter diseases by body part

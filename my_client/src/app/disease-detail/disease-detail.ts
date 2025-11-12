@@ -95,10 +95,29 @@ export class DiseaseDetail implements OnInit, AfterViewInit {
     'Truyền nhiễm': 'https://cdn.nhathuoclongchau.com.vn/unsafe/1920x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/Truyen_nhiem_Desk_fix_b721fa5fca.png'
   };
 
+  // Clean CDN wrapper from image URLs
+  private cleanImageUrl(url: string): string {
+    if (!url || typeof url !== 'string') {
+      return url;
+    }
+    
+    // Pattern to match: https://cdn.nhathuoclongchau.com.vn/unsafe/.../filters:quality(...)/https://...
+    const cdnPattern = /^https:\/\/cdn\.nhathuoclongchau\.com\.vn\/unsafe\/[^/]+\/filters:quality\([^)]+\)\/(https?:\/\/.+)$/;
+    const match = url.trim().match(cdnPattern);
+    
+    if (match && match[1]) {
+      // Return the original URL (the part after the CDN wrapper)
+      return match[1];
+    }
+    
+    // If no match, return original URL
+    return url;
+  }
+
   private readonly specializedGroupBackgroundNormalized = new Map<string, string>(
     Object.entries(this.specializedGroupBackgroundMap).map(([name, url]) => [
       this.normalizeCategoryName(name),
-      url
+      this.cleanImageUrl(url)
     ])
   );
 

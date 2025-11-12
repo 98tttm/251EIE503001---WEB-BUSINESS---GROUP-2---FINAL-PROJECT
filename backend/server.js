@@ -4339,11 +4339,21 @@ app.get('/api/diseases/specialized-groups', async (req, res) => {
       
       const iconConfig = iconMapping[categoryName] || { icon: '🏥', image: null };
       
+      // Clean CDN wrapper from image URL if present
+      let cleanedImage = iconConfig.image;
+      if (cleanedImage && typeof cleanedImage === 'string') {
+        const cdnPattern = /^https:\/\/cdn\.nhathuoclongchau\.com\.vn\/unsafe\/[^/]+\/filters:quality\([^)]+\)\/(https?:\/\/.+)$/;
+        const match = cleanedImage.trim().match(cdnPattern);
+        if (match && match[1]) {
+          cleanedImage = match[1];
+        }
+      }
+      
       groups.push({
         id: slugify(categoryName),
         name: categoryName,
         icon: iconConfig.icon,
-        image: iconConfig.image, // null hoặc URL của hình ảnh nếu có
+        image: cleanedImage, // null hoặc URL của hình ảnh đã clean
         count: count
       });
     }
