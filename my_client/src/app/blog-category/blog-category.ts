@@ -275,7 +275,7 @@ export class BlogCategory implements OnInit {
   }
 
   getArticleImage(article: BlogSummary): string {
-    return article?.primaryImage || 'https://via.placeholder.com/720x480?text=MediCare+Blog';
+    return article?.primaryImage || '/assets/images/icon/logo_tròn.png';
   }
 
   getSubcategoryIcon(subcategory: SubcategoryMeta): string | null {

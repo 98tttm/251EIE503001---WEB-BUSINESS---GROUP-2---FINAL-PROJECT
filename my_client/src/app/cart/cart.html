@@ -46,7 +46,7 @@
                     
                     <!-- Product Image -->
                     <a [routerLink]="['/product', product._id]" class="product-image">
-                      <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name">
+                      <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name">
                     </a>
                     
                     <!-- Product Info -->
@@ -142,7 +142,7 @@
                 </div>
 
                 <div class="item-content">
-                  <img [src]="item.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="item.name" class="item-image">
+                  <img [src]="item.image || '/assets/images/icon/logo_tròn.png'" [alt]="item.name" class="item-image">
                   
                   <div class="item-info">
                     <h3 class="item-name">{{ item.name }}</h3>
@@ -284,7 +284,7 @@
                   
                   <!-- Product Image -->
                   <a [routerLink]="['/product', product._id]" class="product-image">
-                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name">
+                    <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name">
                   </a>
                   
                   <!-- Product Info -->

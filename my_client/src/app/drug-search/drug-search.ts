@@ -235,7 +235,7 @@ export class DrugSearch implements OnInit {
       name: product.name,
       price: product.price,
       discount: product.discount,
-      image: product.image || 'https://via.placeholder.com/400x400?text=MediCare',
+      image: product.image || '/assets/images/icon/logo_tròn.png',
       unit: product.unit,
       stock: product.stock || 0
     };

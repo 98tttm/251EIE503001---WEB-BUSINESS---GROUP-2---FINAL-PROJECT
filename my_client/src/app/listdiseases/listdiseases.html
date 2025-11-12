@@ -60,8 +60,8 @@
                 @if (disease.primary_image?.url) {
                   <div class="disease-card-image">
                     <img [src]="disease.primary_image!.url" [alt]="disease.name" loading="lazy" decoding="async"
-                         (error)="$event.target.src = 'https://via.placeholder.com/400x300?text=MediCare'; $event.target.onerror = null;"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=MediCare';">
+                         (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+                         onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
                   </div>
                 } @else {
                   <div class="disease-card-image no-image">

@@ -122,7 +122,7 @@
           <div class="order-items">
             @for (item of items(); track item._id) {
               <div class="order-item">
-                <img [src]="item.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="item.name" class="item-image">
+                <img [src]="item.image || '/assets/images/icon/logo_tròn.png'" [alt]="item.name" class="item-image">
                 <div class="item-details">
                   <h4 class="item-name">{{ item.name }}</h4>
                   <div class="item-meta">

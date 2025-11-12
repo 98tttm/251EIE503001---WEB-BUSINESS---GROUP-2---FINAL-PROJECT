@@ -185,9 +185,9 @@
                 @for (product of flashSaleProducts(); track product.id) {
                   <div class="product-card" (click)="navigateToProduct(product.id)">
                     <div class="discount-badge">-{{product.discount}}%</div>
-                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" class="product-image" loading="lazy" decoding="async"
-                         (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+                    <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name" class="product-image" loading="lazy" decoding="async"
+                         (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+                         onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
                     <div class="product-info">
                       <div class="product-name">{{product.name}}</div>
                       @if (product.originalPrice) {
@@ -250,9 +250,9 @@
                     @if (product.discount && product.discount > 0) {
                       <div class="discount-badge">-{{product.discount}}%</div>
                     }
-                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" class="product-image" loading="lazy" decoding="async"
-                         (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+                    <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name" class="product-image" loading="lazy" decoding="async"
+                         (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+                         onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
                     <div class="product-info">
                       <div class="product-name">{{product.name}}</div>
                       @if (product.originalPrice) {
@@ -445,9 +445,9 @@
                     @if (product.discount && product.discount > 0) {
                       <div class="discount-badge">-{{product.discount}}%</div>
                     }
-                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" class="product-image" loading="lazy" decoding="async"
-                         (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+                    <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name" class="product-image" loading="lazy" decoding="async"
+                         (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+                         onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
                     <div class="product-info">
                       <div class="product-name">{{product.name}}</div>
                       @if (product.originalPrice) {
@@ -514,8 +514,8 @@
             <div class="main-article" (click)="navigateToArticle(mainArticle()!.cleanSlug || mainArticle()!.slug)">
               <div class="main-article-image-wrapper">
                 <img [src]="getArticleImage(mainArticle())" [alt]="mainArticle()!.title" class="main-article-image" loading="lazy" decoding="async"
-                     (error)="$event.target.src = 'https://via.placeholder.com/600x400?text=MediCare'; $event.target.onerror = null;"
-                     onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400?text=MediCare';">
+                     (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+                     onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
               </div>
               <div class="main-article-content">
                 @if (mainArticle()!.category) {
@@ -537,8 +537,8 @@
               <div class="sidebar-article-item" (click)="navigateToArticle(article.cleanSlug || article.slug)">
                 <div class="sidebar-article-image-wrapper">
                   <img [src]="getArticleImage(article)" [alt]="article.title" class="sidebar-article-image" loading="lazy" decoding="async"
-                       (error)="$event.target.src = 'https://via.placeholder.com/300x200?text=MediCare'; $event.target.onerror = null;"
-                       onerror="this.onerror=null; this.src='https://via.placeholder.com/300x200?text=MediCare';">
+                       (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+                       onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
                 </div>
                 <div class="sidebar-article-content">
                   @if (article.category) {
@@ -642,7 +642,7 @@
                     <div class="discount-badge">-{{ calculateDiscountPercent(product.price, product.discount) }}%</div>
                   }
                   <div class="product-image" (click)="navigateToProduct(product.id)">
-                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" loading="lazy" decoding="async">
+                    <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name" loading="lazy" decoding="async">
                   </div>
                   <div class="product-info">
                     <div class="product-name" (click)="navigateToProduct(product.id)">{{ product.name }}</div>

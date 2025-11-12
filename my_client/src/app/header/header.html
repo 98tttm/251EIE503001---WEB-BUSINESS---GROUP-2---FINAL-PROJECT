@@ -166,7 +166,7 @@
               <div class="cart-dropdown-items">
                 @for (item of cartService.cartItems().slice(0, 3); track item._id) {
                   <div class="cart-dropdown-item">
-                    <img [src]="item.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="item.name" class="cart-item-img">
+                    <img [src]="item.image || '/assets/images/icon/logo_tròn.png'" [alt]="item.name" class="cart-item-img">
                     <div class="cart-item-info">
                       <h4 class="cart-item-name">{{ item.name }}</h4>
                       <div class="cart-item-pricing">

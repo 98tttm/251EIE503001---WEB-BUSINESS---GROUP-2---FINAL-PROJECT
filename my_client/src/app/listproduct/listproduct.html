@@ -246,9 +246,9 @@
               
               <!-- Product Image -->
               <a [routerLink]="['/product', product._id]" class="product-image">
-                <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name" loading="lazy" decoding="async"
-                     (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
-                     onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+                <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name" loading="lazy" decoding="async"
+                     (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+                     onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
               </a>
               
               <!-- Product Info -->
@@ -322,7 +322,7 @@
                 
                 <!-- Product Image -->
                 <a [routerLink]="['/product', product._id]" class="product-image">
-                  <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name">
+                  <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name">
                 </a>
                 
                 <!-- Product Info -->

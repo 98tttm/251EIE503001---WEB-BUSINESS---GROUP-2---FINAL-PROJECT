@@ -53,13 +53,15 @@ export function sanitizeImageUrl(url: string | null | undefined): string | null 
 
 /**
  * Gets a fallback image URL
+ * Uses local placeholder images instead of external service
  */
 export function getFallbackImage(type: 'product' | 'blog' | 'banner' | 'default' = 'default'): string {
+  // Use local placeholder images from assets
   const fallbackImages = {
-    product: 'https://via.placeholder.com/400x400?text=MediCare',
-    blog: 'https://via.placeholder.com/600x400?text=MediCare',
-    banner: 'https://via.placeholder.com/1200x400?text=MediCare',
-    default: 'https://via.placeholder.com/400x400?text=MediCare'
+    product: '/assets/images/icon/logo_tròn.png', // Use logo as product placeholder
+    blog: '/assets/images/icon/logo_tròn.png', // Use logo as blog placeholder
+    banner: '/assets/images/icon/logo_tròn.png', // Use logo as banner placeholder
+    default: '/assets/images/icon/logo_tròn.png' // Use logo as default placeholder
   };
 
   return fallbackImages[type] || fallbackImages.default;

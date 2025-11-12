@@ -852,7 +852,7 @@ export class ProductDetail implements OnInit {
     
     // If no images found, add fallback
     if (images.length === 0) {
-      images.push('https://via.placeholder.com/400x400?text=MediCare');
+      images.push('/assets/images/icon/logo_tròn.png');
       console.warn('⚠️ Product has no valid images, using fallback');
     }
     

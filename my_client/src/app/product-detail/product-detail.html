@@ -27,8 +27,8 @@
           
           <img [src]="allImages()[selectedImage()]" [alt]="product()!.name" (click)="openImageModal(selectedImage())" 
                loading="eager" decoding="async"
-               (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
-               onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+               (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+               onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
           
           @if (allImages().length > 1) {
             <button class="main-image-nav next" (click)="selectImage(selectedImage() === allImages().length - 1 ? 0 : selectedImage() + 1)">
@@ -51,8 +51,8 @@
                 [class.has-overlay]="isLast"
                 (click)="isLast ? openImageModal(0) : selectImage($index)">
                 <img [src]="img" [alt]="'Ảnh ' + ($index + 1)" loading="lazy" decoding="async"
-                     (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
-                     onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+                     (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+                     onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
                 @if (isLast) {
                   <div class="thumbnail-overlay">
                     <span class="overlay-text">Xem thêm<br>{{ allImages().length }} ảnh</span>
@@ -379,7 +379,7 @@
                   
                   <!-- Product Image -->
                   <a [routerLink]="['/product', product._id]" class="product-image">
-                    <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name">
+                    <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name">
                   </a>
                   
                   <!-- Product Info -->
@@ -757,7 +757,7 @@
                 
                 <!-- Product Image -->
                 <a [routerLink]="['/product', product._id]" class="product-image">
-                  <img [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="product.name">
+                  <img [src]="product.image || '/assets/images/icon/logo_tròn.png'" [alt]="product.name">
                 </a>
                 
                 <!-- Product Info -->
@@ -842,8 +842,8 @@
             <!-- Image -->
             <div class="modal-main-image">
               <img [src]="allImages()[modalImageIndex()]" [alt]="product()!.name" loading="eager" decoding="async"
-                   (error)="$event.target.src = 'https://via.placeholder.com/400x400?text=MediCare'; $event.target.onerror = null;"
-                   onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400?text=MediCare';">
+                   (error)="$event.target.src = '/assets/images/icon/logo_tròn.png'; $event.target.onerror = null;"
+                   onerror="this.onerror=null; this.src='/assets/images/icon/logo_tròn.png';">
             </div>
 
             @if (allImages().length > 1) {

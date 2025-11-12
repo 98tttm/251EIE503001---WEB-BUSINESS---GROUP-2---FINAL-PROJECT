@@ -151,7 +151,7 @@
           <div class="product-list">
             @for (item of orderData()!.items; track item._id) {
               <div class="product-item">
-                <img [src]="item.image || 'https://via.placeholder.com/400x400?text=MediCare'" [alt]="item.name" class="product-image">
+                <img [src]="item.image || '/assets/images/icon/logo_tròn.png'" [alt]="item.name" class="product-image">
                 <div class="product-details">
                   <h3 class="product-name">{{ item.name }}</h3>
                   <a href="#" class="product-link">Xem cách dùng và bảo quản ></a>

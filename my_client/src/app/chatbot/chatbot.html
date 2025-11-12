@@ -63,10 +63,10 @@
                   <a [routerLink]="['/product', message.productContext._id]" class="chatbot-product-context-card" (click)="closeChat()">
                     <div class="chatbot-product-context-image-wrapper">
                       <img 
-                        [src]="message.productContext.image || 'https://via.placeholder.com/400x400?text=MediCare'" 
+                        [src]="message.productContext.image || '/assets/images/icon/logo_tròn.png'" 
                         [alt]="message.productContext.name"
                         class="chatbot-product-context-image"
-                        (error)="$any($event.target).src='https://via.placeholder.com/400x400?text=MediCare'"
+                        (error)="$any($event.target).src='/assets/images/icon/logo_tròn.png'"
                       >
                       @if (message.productContext.discount && message.productContext.discount > 0) {
                         <div class="chatbot-product-context-discount">-{{ message.productContext.discount }}%</div>
@@ -98,10 +98,10 @@
                       <a [routerLink]="['/product', product._id]" class="chatbot-product-card" (click)="closeChat()">
                         <div class="chatbot-product-image-wrapper">
                           <img 
-                            [src]="product.image || 'https://via.placeholder.com/400x400?text=MediCare'" 
+                            [src]="product.image || '/assets/images/icon/logo_tròn.png'" 
                             [alt]="product.name"
                             class="chatbot-product-image"
-                            (error)="$any($event.target).src='https://via.placeholder.com/400x400?text=MediCare'"
+                            (error)="$any($event.target).src='/assets/images/icon/logo_tròn.png'"
                           >
                           @if (product.discount && product.discount > 0) {
                             <div class="chatbot-product-discount">-{{ product.discount }}%</div>

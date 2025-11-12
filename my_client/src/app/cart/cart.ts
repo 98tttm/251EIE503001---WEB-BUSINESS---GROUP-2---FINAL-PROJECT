@@ -349,7 +349,7 @@ export class Cart implements OnInit {
       name: product.name,
       price: product.discount ? product.price : product.price,
       discount: product.discount,
-      image: product.image || 'https://via.placeholder.com/400x400?text=MediCare',
+      image: product.image || '/assets/images/icon/logo_tròn.png',
       unit: product.unit || 'Hộp',
       stock: product.stock || 999
     });

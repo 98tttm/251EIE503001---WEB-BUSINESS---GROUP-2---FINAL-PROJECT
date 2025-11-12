@@ -302,9 +302,9 @@ export class Listblog implements OnInit, OnDestroy {
 
   getCategoryImage(article: BlogSummary | null): string {
     if (!article) {
-      return 'https://via.placeholder.com/800x500?text=MediCare';
+      return '/assets/images/icon/logo_tròn.png';
     }
-    return article.primaryImage || 'https://via.placeholder.com/800x500?text=MediCare';
+    return article.primaryImage || '/assets/images/icon/logo_tròn.png';
   }
 
   getArticleDescription(article: BlogSummary | null): string {

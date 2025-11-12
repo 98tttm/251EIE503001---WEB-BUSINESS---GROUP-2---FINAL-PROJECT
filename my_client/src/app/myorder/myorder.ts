@@ -221,7 +221,7 @@ export class MyOrder implements OnInit {
   }
 
   getFirstItemImage(order: Order): string {
-    return order.items?.[0]?.image || 'https://via.placeholder.com/400x400?text=MediCare';
+    return order.items?.[0]?.image || '/assets/images/icon/logo_tròn.png';
   }
 
   getFirstItemName(order: Order): string {

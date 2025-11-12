@@ -1663,7 +1663,7 @@ export class Homepage implements OnInit, OnDestroy {
           name: p.name,
           price: p.price,
           originalPrice: p.originalPrice || (p.discount ? p.price + p.discount : undefined),
-          image: p.image || 'https://via.placeholder.com/400x400?text=MediCare',
+          image: p.image || '/assets/images/icon/logo_tròn.png',
           discount: p.discount,
           unit: p.unit
         }));
@@ -1765,7 +1765,7 @@ export class Homepage implements OnInit, OnDestroy {
 
   getArticleImage(article: BlogSummary | null): string {
     if (!article) {
-      return 'https://via.placeholder.com/600x400?text=MediCare';
+      return '/assets/images/icon/logo_tròn.png';
     }
     
     const primaryImage = article.primaryImage;
@@ -1776,7 +1776,7 @@ export class Homepage implements OnInit, OnDestroy {
         primaryImage.trim() === '' || 
         primaryImage === 'null' || 
         primaryImage === 'undefined') {
-      return 'https://via.placeholder.com/600x400?text=MediCare';
+      return '/assets/images/icon/logo_tròn.png';
     }
     
     return primaryImage;
